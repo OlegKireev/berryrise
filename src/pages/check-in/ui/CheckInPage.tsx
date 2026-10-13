@@ -1,6 +1,213 @@
-import { Placeholder } from '@/shared/ui';
-import { t } from '@/shared/i18n';
+import { router, useTheme } from 'expo-router';
+import { useSQLiteContext } from 'expo-sqlite';
+import { useEffect, useState } from 'react';
+import { Button, TextInput, View } from 'react-native';
+
+import { checkinDay, getCheckin, saveCheckin, toDay } from '@/entities/checkin';
+import { getHabit } from '@/entities/habit';
+import { listReasons, reasonLabel, type ReasonRow } from '@/entities/reason';
+import {
+  cravings,
+  hardships,
+  helpers,
+  moods,
+  places,
+  type Craving,
+  type Hardship,
+  type Helper,
+  type Mood,
+  type Place,
+} from '@/shared/config';
+import { formatDay, t } from '@/shared/i18n';
+import { Chip, Screen, Text } from '@/shared/ui';
+
+const toggle = <K,>(list: K[], key: K) =>
+  list.includes(key) ? list.filter((k) => k !== key) : [...list, key];
+
+// Вариант "ничего" снимает остальные, любой другой снимает "ничего"
+const toggleExclusive = <K,>(list: K[], key: K, none: K) =>
+  key === none
+    ? list.includes(none)
+      ? []
+      : [none]
+    : toggle(
+        list.filter((k) => k !== none),
+        key,
+      );
+
+function Group<K extends string | number>({
+  title,
+  keys,
+  label,
+  isSelected,
+  onPress,
+}: {
+  title: string;
+  keys: readonly K[];
+  label: (k: K) => string;
+  isSelected: (k: K) => boolean;
+  onPress: (k: K) => void;
+}) {
+  return (
+    <>
+      <Text style={{ fontWeight: '600' }}>{title}</Text>
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
+        {keys.map((k) => (
+          <Chip
+            key={k}
+            label={label(k)}
+            selected={isSelected(k)}
+            onPress={() => onPress(k)}
+          />
+        ))}
+      </View>
+    </>
+  );
+}
 
 export function CheckInPage() {
-  return <Placeholder title={t('checkin')} />;
+  const db = useSQLiteContext();
+  const { colors } = useTheme();
+  // День считаем один раз при открытии: сохраняем ровно за тот, что в заголовке
+  const [{ day, isToday }] = useState(() => {
+    const now = Date.now();
+    const day = checkinDay(now);
+    return { day, isToday: day === toDay(now) };
+  });
+  // null - еще грузим
+  const [state, setState] = useState<{
+    beforeStart: boolean;
+    reasons: ReasonRow[];
+  } | null>(null);
+  const [mood, setMood] = useState<Mood | null>(null);
+  const [craving, setCraving] = useState<Craving | null>(null);
+  const [placeKeys, setPlaceKeys] = useState<Place[]>([]);
+  const [hardshipKeys, setHardshipKeys] = useState<Hardship[]>([]);
+  const [helperKeys, setHelperKeys] = useState<Helper[]>([]);
+  const [note, setNote] = useState('');
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      const [habit, reasons, existing] = await Promise.all([
+        getHabit(db),
+        listReasons(db),
+        getCheckin(db, day),
+      ]);
+      if (existing) {
+        setMood(existing.mood);
+        setCraving(existing.craving);
+        setPlaceKeys(JSON.parse(existing.places));
+        setHardshipKeys(JSON.parse(existing.hardships));
+        setHelperKeys(JSON.parse(existing.helpers));
+        setNote(existing.note ?? '');
+      }
+      setState({
+        beforeStart: !habit || day < toDay(habit.startAt),
+        reasons,
+      });
+    })();
+  }, [db, day]);
+
+  if (!state) return null;
+  if (state.beforeStart)
+    return (
+      <Screen>
+        <Text>{t('checkinLater')}</Text>
+      </Screen>
+    );
+
+  const save = async () => {
+    if (mood === null || craving === null) return;
+    setSaving(true);
+    await saveCheckin(db, {
+      date: day,
+      mood,
+      craving,
+      places: placeKeys,
+      hardships: hardshipKeys,
+      helpers: helperKeys,
+      note,
+    });
+    router.back();
+  };
+
+  return (
+    <Screen>
+      <Text style={{ fontSize: 28, fontWeight: '700' }}>
+        {isToday ? t('forToday') : t('forYesterday')}, {formatDay(day)}
+      </Text>
+
+      {state.reasons.length > 0 && (
+        <View style={{ gap: 4 }}>
+          <Text style={{ fontWeight: '600' }}>{t('myReasons')}</Text>
+          {state.reasons.map((r) => (
+            <Text key={r.id}>• {reasonLabel(r)}</Text>
+          ))}
+        </View>
+      )}
+
+      <Group
+        title={t('moodTitle')}
+        keys={moods}
+        label={(m) => t(`mood_${m}`)}
+        isSelected={(m) => mood === m}
+        onPress={setMood}
+      />
+      <Group
+        title={t('cravingTitle')}
+        keys={cravings}
+        label={(c) => t(`craving_${c}`)}
+        isSelected={(c) => craving === c}
+        onPress={setCraving}
+      />
+      <Group
+        title={t('placesTitle')}
+        keys={places}
+        label={(p) => t(`place_${p}`)}
+        isSelected={(p) => placeKeys.includes(p)}
+        onPress={(p) => setPlaceKeys(toggle(placeKeys, p))}
+      />
+      <Group
+        title={t('hardshipsTitle')}
+        keys={hardships}
+        label={(h) => t(`hardship_${h}`)}
+        isSelected={(h) => hardshipKeys.includes(h)}
+        onPress={(h) =>
+          setHardshipKeys(toggleExclusive(hardshipKeys, h, 'nothing'))
+        }
+      />
+      <Group
+        title={t('helpersTitle')}
+        keys={helpers}
+        label={(h) => t(`helper_${h}`)}
+        isSelected={(h) => helperKeys.includes(h)}
+        onPress={(h) =>
+          setHelperKeys(toggleExclusive(helperKeys, h, 'notNeeded'))
+        }
+      />
+
+      <TextInput
+        value={note}
+        onChangeText={setNote}
+        placeholder={t('note')}
+        placeholderTextColor={colors.border}
+        multiline
+        style={{
+          color: colors.text,
+          borderWidth: 1,
+          borderColor: colors.border,
+          borderRadius: 8,
+          padding: 8,
+          minHeight: 80,
+        }}
+      />
+
+      <Button
+        title={t('save')}
+        disabled={saving || mood === null || craving === null}
+        onPress={save}
+      />
+    </Screen>
+  );
 }

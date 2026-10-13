@@ -25,3 +25,14 @@ const dateTime = new Intl.DateTimeFormat(locale, {
 });
 
 export const formatDateTime = (ms: number) => dateTime.format(ms);
+
+const shortDate = new Intl.DateTimeFormat(locale, {
+  day: 'numeric',
+  month: 'short',
+});
+
+// "13 окт." из YYYY-MM-DD. Разбираем руками: new Date('YYYY-MM-DD') трактуется как UTC
+export const formatDay = (date: string) => {
+  const [y, m, d] = date.split('-').map(Number) as [number, number, number];
+  return shortDate.format(new Date(y, m - 1, d));
+};

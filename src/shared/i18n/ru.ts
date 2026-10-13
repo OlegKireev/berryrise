@@ -32,11 +32,32 @@ export const ru = {
   startTitle: 'Когда ты бросил?',
   startHint: 'Можно указать момент в прошлом.',
   startButton: 'Начать',
+  reasonsStepTitle: 'Ради чего ты бросаешь?',
+  reasonsStepHint: 'Выбери одну или несколько. Напомним о них в трудный вечер.',
+  skip: 'Пропустить',
 
   // Сегодня
   since: 'с',
   bestStreak: 'Лучший стрик',
   totalDays: 'Всего трезвых дней',
+  checkinToday: 'Чек-ин за сегодня',
+  checkinYesterday: 'Чек-ин за вчера',
+  checkinTodayDone: 'Чек-ин за сегодня заполнен',
+  checkinYesterdayDone: 'Чек-ин за вчера заполнен',
+  checkinLater: 'Первый чек-ин можно заполнить сегодня с 18:00',
+
+  // Чек-ин
+  forToday: 'За сегодня',
+  forYesterday: 'За вчера',
+  myReasons: 'Мои причины',
+  cravingTitle: 'Тянуло выпить',
+  helpersTitle: 'Что помогло',
+
+  // Причины
+  noReasons: 'Пока нет причин. Добавь то, ради чего бросаешь.',
+  addReasonTitle: 'Добавить причину',
+  customReason: 'Своя причина',
+  add: 'Добавить',
 
   // Срыв
   relapseSupport:
@@ -54,7 +75,7 @@ export const ru = {
   deleteRelapseTitle: 'Удалить срыв?',
   deleteRelapseText: 'Стрик пересчитается без него.',
 
-  // Подписи ключей из src/db/keys.ts, общие для срыва и чек-ина
+  // Подписи ключей из shared/config/options.ts, общие для срыва и чек-ина
   mood_1: 'Ужасно',
   mood_2: 'Плохо',
   mood_3: 'Нормально',
@@ -73,4 +94,24 @@ export const ru = {
   hardship_holiday: 'Праздник',
   hardship_othersDrinking: 'Рядом пили',
   hardship_nothing: 'Ничего',
+  craving_none: 'Нет',
+  craving_slight: 'Слегка',
+  craving_noticeable: 'Заметно',
+  craving_strong: 'Сильно',
+  helper_naDrink: 'Б/а напиток',
+  helper_sport: 'Спорт',
+  helper_food: 'Еда',
+  helper_talk: 'Разговор',
+  helper_sleep: 'Сон',
+  helper_activity: 'Занятие',
+  helper_notNeeded: 'Ничего не понадобилось',
+
+  // Готовые причины из entities/reason
+  reason_health: 'Здоровье',
+  reason_sleep: 'Нормальный сон',
+  reason_money: 'Деньги',
+  reason_family: 'Семья',
+  reason_clarity: 'Ясная голова',
+  reason_control: 'Контроль над собой',
+  reason_fitness: 'Спорт и форма',
 };

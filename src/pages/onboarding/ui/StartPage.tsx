@@ -7,7 +7,7 @@ import { createHabit } from '@/entities/habit';
 import { t } from '@/shared/i18n';
 import { DateTimeField, Screen, Text } from '@/shared/ui';
 
-// Последний шаг: привычка создается только здесь, ее наличие и значит "онбординг пройден"
+// Привычка создается только здесь, ее наличие и значит "онбординг пройден". Дальше только необязательные шаги
 export function StartPage() {
   const db = useSQLiteContext();
   // null - не трогали, старт в момент подтверждения
@@ -17,7 +17,9 @@ export function StartPage() {
   const start = async () => {
     setSaving(true);
     await createHabit(db, startAt?.getTime() ?? Date.now());
-    router.replace('/');
+    // Онбординг пройден. Сбрасываем его стек, чтобы "назад" не вернул на старт
+    router.dismissAll();
+    router.replace('/onboarding/reasons');
   };
 
   return (
