@@ -1,8 +1,11 @@
-import { Link, useTheme } from 'expo-router';
+import { Link, Redirect, useTheme } from 'expo-router';
 import { Tabs } from 'expo-router/tabs';
-import { Text } from 'react-native';
+import { useSQLiteContext } from 'expo-sqlite';
+import { useEffect, useState } from 'react';
 
-import { t } from '../../i18n';
+import { getHabit } from '@/entities/habit';
+import { t } from '@/shared/i18n';
+import { Text } from '@/shared/ui';
 
 function SettingsButton() {
   const { colors } = useTheme();
@@ -18,6 +21,16 @@ function SettingsButton() {
 }
 
 export default function TabsLayout() {
+  const db = useSQLiteContext();
+  // null - еще не знаем. Привычки нет, значит онбординг не пройден
+  const [onboarded, setOnboarded] = useState<boolean | null>(null);
+  useEffect(() => {
+    getHabit(db).then((habit) => setOnboarded(habit !== null));
+  }, [db]);
+
+  if (onboarded === null) return null;
+  if (!onboarded) return <Redirect href="/onboarding" />;
+
   return (
     <Tabs
       screenOptions={{

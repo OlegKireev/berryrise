@@ -3,8 +3,8 @@ import { SQLiteProvider } from 'expo-sqlite';
 import { StatusBar } from 'expo-status-bar';
 import { useColorScheme } from 'react-native';
 
-import { migrate } from '../db/migrations';
-import { t } from '../i18n';
+import { migrate } from '@/shared/db';
+import { t } from '@/shared/i18n';
 
 export default function RootLayout() {
   const scheme = useColorScheme();
@@ -20,6 +20,10 @@ export default function RootLayout() {
             options={{ headerShown: false }}
           />
           <Stack.Screen
+            name="onboarding"
+            options={{ headerShown: false, gestureEnabled: false }}
+          />
+          <Stack.Screen
             name="settings"
             options={{ title: t('settings') }}
           />
@@ -28,7 +32,7 @@ export default function RootLayout() {
             options={{ title: t('company') }}
           />
           <Stack.Screen
-            name="checkin"
+            name="check-in"
             options={{ title: t('checkin'), presentation: 'modal' }}
           />
           <Stack.Screen
