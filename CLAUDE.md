@@ -2,7 +2,7 @@
 
 Мобильное приложение для отказа от алкоголя, Android-first. Продуктовая спека: [docs/idea.md](docs/idea.md), ресерч конкурентов: [docs/competitors.md](docs/competitors.md).
 
-Статус: есть каркас навигации с экранами-заглушками, фич пока нет.
+Статус: есть каркас навигации с экранами-заглушками и локальная база со схемой MVP, фич пока нет.
 
 ## Стек
 
@@ -37,6 +37,7 @@ npx expo install <pkg>  # добавлять пакеты только так: �
 
 - `src/app/` - только роуты expo-router: каждый файл это экран, `_layout.tsx` задает навигатор. Остальной код (компоненты, логика, БД) держим вне `src/app/`.
 - Навигация: корневой `Stack` в `src/app/_layout.tsx`, внутри группа `(tabs)` с табами "Сегодня" (`index`), "Прогресс", "Причины". Шестеренка в шапке табов ведет на `settings`. Отдельные экраны стека: `settings`, `company` (режим "иду в компанию"), `checkin` и `relapse` (модалки). Тема по системе через `ThemeProvider` (`DarkTheme`/`DefaultTheme`), цвета берем из `useTheme()`.
+- `src/db/` - SQLite: `migrations.ts` (миграции по `PRAGMA user_version`, запускаются в `onInit` у `SQLiteProvider` в корневом layout), `types.ts` (типы строк), `keys.ts` (ключи готовых вариантов), `records.ts` (`newRow()` для служебных полей, `deleteRelapse`). В компонентах база берется через `useSQLiteContext()`. Схема и решения по ней: спека `local-data` в `openspec/specs/`.
 - `src/i18n.ts` - словари ru/en и `t(key)`. Язык определяется через `Intl` при старте.
 - `src/components/` - общие компоненты.
 - `docs/` - спека и ресерч.

@@ -20,6 +20,7 @@
       "predictiveBackGestureEnabled": false,
       "package": "dev.olegkireev.quit"
     },
-    "scheme": "resheno"
+    "scheme": "resheno",
+    "plugins": ["expo-sqlite"]
   }
 }

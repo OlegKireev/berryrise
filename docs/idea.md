@@ -129,8 +129,9 @@
    - пьешь почти каждый день?
    - больше 5 порций в день?
    - бывают дрожь, потливость, тревога или бессонница при перерывах?
-   
+
    Хотя бы одно "да" показывает экран "резкий отказ может быть опасен, лучше посоветоваться с наркологом" с контактами. Вход в приложение не блокируем.
+
 3. Дата и время старта.
 4. Траты и пресеты, шаг можно пропустить.
 5. Причины, шаг можно пропустить.
@@ -151,19 +152,22 @@
   - ручной экспорт и импорт в JSON через системное меню "Поделиться".
 - Аналитики нет. На этапе (b) подключаем только краш-репорты (Sentry), без персональных данных.
 
-Черновик сущностей:
+Сущности (подробности и решения в OpenSpec-спеке `local-data`):
 
-| Таблица | Поля |
-|---|---|
-| `habit` | type (`alcohol`), startAt, weeklySpend, currency, drinksPerWeek (JSON пресетов), naCountsAsRelapse |
-| `relapse` | habitId, at, situation?, company?, mood?, note? |
-| `checkin` | date, mood, craving, places[], hardships[], helpers[], note? |
-| `outing` | startAt, expectedEndAt, drink, result (`sober`/`drank`/null) |
-| `reason` | text или presetKey, order |
-| `achievement` | key, unlockedAt |
-| `settings` | key/value: уведомления, тема и прочее |
+| Таблица    | Поля                                                                                                                        |
+| ---------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `habit`    | type (`alcohol`), startAt, weeklySpendMinor?, currency?, drinks (JSON `{ключ пресета: порций в неделю}`), naCountsAsRelapse |
+| `relapse`  | habitId, at, mood?, places[]?, hardships[]?, note?                                                                          |
+| `checkin`  | date (`YYYY-MM-DD`, один на день), mood, craving, places[], hardships[], helpers[], note?                                   |
+| `party`    | startAt, expectedEndAt, drinkKey? или drinkCustom?, result (`sober`/`drank`/null), relapseId?                               |
+| `reason`   | key? или customText?, order                                                                                                 |
+| `reply`    | заготовки ответа на "а чего не пьешь?": key? или customText?, order                                                         |
+| `contact`  | экстренный контакт: name, phone, order                                                                                      |
+| `settings` | key/value: уведомления, дни риска, показанные ачивки и прочее                                                               |
 
-Стрик и экономию не храним, а вычисляем из `habit.startAt` и `relapse`.
+Моменты храним в epoch ms, деньги в минорных единицах, массивы в JSON-колонках. Словари мест, трудностей и настроения у срыва и чек-ина общие.
+
+Стрик, экономию и ачивки (с датами получения) не храним, а вычисляем из `habit.startAt`, `relapse`, `party` и `checkin`.
 
 ## Тексты
 

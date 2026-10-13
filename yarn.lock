@@ -2825,6 +2825,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"await-lock@npm:^2.2.2":
+  version: 2.2.2
+  resolution: "await-lock@npm:2.2.2"
+  checksum: 10c0/bedf00dad44c6325a655bf3bd523ab9e1ce41023da6a8c379990c76ac1d942ac7e5301627ab84ba37917ab5247506ba429b7f6e4bf77074093f255571b9ad5ee
+  languageName: node
+  linkType: hard
+
 "babel-plugin-polyfill-corejs2@npm:^0.4.14":
   version: 0.4.17
   resolution: "babel-plugin-polyfill-corejs2@npm:0.4.17"
@@ -4121,6 +4128,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"expo-crypto@npm:~57.0.3":
+  version: 57.0.3
+  resolution: "expo-crypto@npm:57.0.3"
+  peerDependencies:
+    expo: "*"
+  checksum: 10c0/33fd9eb978ef3a5032f2cbcecbff6fff03b2e34b615b9b218fe9e7c85161c15a2eaa497f54659bbbc2cae6c036567212d95beeee6f74c9c604621d29cacd8749
+  languageName: node
+  linkType: hard
+
 "expo-file-system@npm:~57.0.7":
   version: 57.0.7
   resolution: "expo-file-system@npm:57.0.7"
@@ -4287,6 +4303,19 @@ __metadata:
   version: 57.0.3
   resolution: "expo-server@npm:57.0.3"
   checksum: 10c0/541d9b319ba513df718868c87a8d57e30161c3879b7d5b43f308923290ce5ee349a1b3469901c2f382984b6595f4cf6beaee9d870f5eb874c45ddc0a42a13e56
+  languageName: node
+  linkType: hard
+
+"expo-sqlite@npm:~57.0.4":
+  version: 57.0.4
+  resolution: "expo-sqlite@npm:57.0.4"
+  dependencies:
+    await-lock: "npm:^2.2.2"
+  peerDependencies:
+    expo: "*"
+    react: "*"
+    react-native: "*"
+  checksum: 10c0/8c0c064f6413c01a2db728b361aae856272fdd719437cbbf54a549ade0f331668c015e67b1f8d8596765913ea8ba6100f25f2f001e3058c2dc0ab1a214a1e5f1
   languageName: node
   linkType: hard
 
@@ -7050,8 +7079,10 @@ __metadata:
     eslint-config-expo: "npm:~57.0.2"
     expo: "npm:~57.0.27"
     expo-constants: "npm:~57.0.21"
+    expo-crypto: "npm:~57.0.3"
     expo-linking: "npm:~57.0.12"
     expo-router: "npm:~57.0.25"
+    expo-sqlite: "npm:~57.0.4"
     expo-status-bar: "npm:~57.0.1"
     react: "npm:19.2.3"
     react-native: "npm:0.86.3"
