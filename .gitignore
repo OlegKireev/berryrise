@@ -1,0 +1,24 @@
+node_modules/
+.expo/
+dist/
+web-build/
+*.log
+.DS_Store
+.env*.local
+
+# yarn berry
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+.pnp.*
+
+# нативные папки генерирует expo prebuild
+/android
+/ios
+
+# eas
+*.jks
+*.keystore
+*.p8
+*.p12
+*.mobileprovision
