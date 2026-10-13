@@ -21,6 +21,7 @@
     "@types/react": "~19.2.2",
     "eslint": "^9.0.0",
     "eslint-config-expo": "~57.0.2",
+    "prettier": "^3.9.10",
     "typescript": "~6.0.3"
   },
   "scripts": {
@@ -31,7 +32,8 @@
     "typecheck": "tsc --noEmit",
     "doctor": "expo-doctor",
     "audit": "yarn npm audit --all --recursive",
-    "test": "TZ=Europe/Berlin node --test 'src/**/*.test.ts'"
+    "test": "TZ=Europe/Berlin node --test 'src/**/*.test.ts'",
+    "format": "prettier --write ."
   },
   "private": true
 }

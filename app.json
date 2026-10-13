@@ -21,9 +21,6 @@
       "package": "dev.olegkireev.quit"
     },
     "scheme": "resheno",
-    "plugins": [
-      "expo-sqlite",
-      "@react-native-community/datetimepicker"
-    ]
+    "plugins": ["expo-sqlite", "@react-native-community/datetimepicker"]
   }
 }

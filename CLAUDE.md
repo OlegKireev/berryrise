@@ -26,6 +26,7 @@ yarn android            # dev-сервер и запуск на подключе
 yarn typecheck          # tsc --noEmit
 yarn test               # тесты чистой логики на node:test (TZ=Europe/Berlin, чтобы ловить переход на летнее время)
 yarn lint               # expo lint
+yarn format             # prettier --write . (конфиг .prettierrc, .claude/ в .prettierignore)
 yarn doctor             # expo-doctor
 yarn audit              # уязвимости зависимостей
 npx expo install <pkg>  # добавлять пакеты только так: подбирает версию под SDK

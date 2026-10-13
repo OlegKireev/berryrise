@@ -6711,6 +6711,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"prettier@npm:^3.9.10":
+  version: 3.9.10
+  resolution: "prettier@npm:3.9.10"
+  bin:
+    prettier: bin/prettier.cjs
+  checksum: 10c0/0b3531593aa6fb36ac6baf629cb058bda472c59a6938774f931fe55283a07c62e6f56e621b043a82d8a3e21fc284c08c34f9e539fc70072635f79b7bae1a1067
+  languageName: node
+  linkType: hard
+
 "pretty-format@npm:^29.7.0":
   version: 29.7.0
   resolution: "pretty-format@npm:29.7.0"
@@ -7114,6 +7123,7 @@ __metadata:
     expo-router: "npm:~57.0.25"
     expo-sqlite: "npm:~57.0.4"
     expo-status-bar: "npm:~57.0.1"
+    prettier: "npm:^3.9.10"
     react: "npm:19.2.3"
     react-native: "npm:0.86.3"
     react-native-safe-area-context: "npm:~5.7.0"
