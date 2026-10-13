@@ -25,7 +25,8 @@
     "ios": "expo start --ios",
     "lint": "expo lint",
     "typecheck": "tsc --noEmit",
-    "doctor": "expo-doctor"
+    "doctor": "expo-doctor",
+    "audit": "yarn npm audit --all --recursive"
   },
   "private": true
 }
