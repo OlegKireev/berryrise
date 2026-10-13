@@ -37,6 +37,11 @@ export const en: typeof ru = {
   reasonsStepHint:
     "Pick one or more. We'll remind you of them on hard evenings.",
   skip: 'Skip',
+  spendingTitle: 'How much did you spend?',
+  spendingHint:
+    "Roughly, per week. We'll use it to count your savings. You can skip this and add it later in settings.",
+  weeklySpend: 'Per week',
+  drinksTitle: 'What you drank, drinks per week',
 
   since: 'since',
   bestStreak: 'Best streak',
@@ -46,6 +51,12 @@ export const en: typeof ru = {
   checkinTodayDone: "Today's check-in is done",
   checkinYesterdayDone: "Yesterday's check-in is done",
   checkinLater: 'Your first check-in opens today at 6 PM',
+  saved: 'Saved',
+  notDrunk: 'Not drunk',
+  kcal: 'kcal',
+  savingsEmpty: 'Add your spending to see your savings',
+
+  startAt: 'Start',
 
   forToday: 'For today',
   forYesterday: 'For yesterday',
@@ -109,4 +120,9 @@ export const en: typeof ru = {
   reason_clarity: 'Clear head',
   reason_control: 'Self-control',
   reason_fitness: 'Fitness',
+
+  drink_beer: 'Beer 0.5 l',
+  drink_wine: 'Glass of wine',
+  drink_shot: 'Shot',
+  drink_cocktail: 'Cocktail',
 };

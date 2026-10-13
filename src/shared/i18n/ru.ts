@@ -35,6 +35,11 @@ export const ru = {
   reasonsStepTitle: 'Ради чего ты бросаешь?',
   reasonsStepHint: 'Выбери одну или несколько. Напомним о них в трудный вечер.',
   skip: 'Пропустить',
+  spendingTitle: 'Сколько ты тратил?',
+  spendingHint:
+    'Примерно, в неделю. По этим цифрам посчитаем, сколько ты сэкономил. Можно пропустить и указать позже в настройках.',
+  weeklySpend: 'Сумма в неделю',
+  drinksTitle: 'Что пил, порций в неделю',
 
   // Сегодня
   since: 'с',
@@ -45,6 +50,13 @@ export const ru = {
   checkinTodayDone: 'Чек-ин за сегодня заполнен',
   checkinYesterdayDone: 'Чек-ин за вчера заполнен',
   checkinLater: 'Первый чек-ин можно заполнить сегодня с 18:00',
+  saved: 'Сэкономлено',
+  notDrunk: 'Не выпито',
+  kcal: 'ккал',
+  savingsEmpty: 'Укажи траты, чтобы видеть экономию',
+
+  // Настройки
+  startAt: 'Старт',
 
   // Чек-ин
   forToday: 'За сегодня',
@@ -114,4 +126,10 @@ export const ru = {
   reason_clarity: 'Ясная голова',
   reason_control: 'Контроль над собой',
   reason_fitness: 'Спорт и форма',
+
+  // Пресеты напитков из entities/habit
+  drink_beer: 'Пиво 0,5',
+  drink_wine: 'Бокал вина',
+  drink_shot: 'Шот',
+  drink_cocktail: 'Коктейль',
 };

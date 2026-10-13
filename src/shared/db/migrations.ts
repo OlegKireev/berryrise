@@ -13,10 +13,9 @@ const migrations: string[] = [
   CREATE TABLE habit (${row},
     type TEXT NOT NULL CHECK (type IN ('alcohol')),
     startAt INTEGER NOT NULL,
-    weeklySpendMinor INTEGER,
+    weeklySpend INTEGER,
     currency TEXT,
-    drinks TEXT NOT NULL DEFAULT '{}',
-    naCountsAsRelapse INTEGER NOT NULL DEFAULT 0
+    drinks TEXT NOT NULL DEFAULT '{}'
   );
   CREATE TABLE relapse (${row},
     habitId TEXT NOT NULL,

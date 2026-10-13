@@ -19,7 +19,7 @@ export function StartPage() {
     await createHabit(db, startAt?.getTime() ?? Date.now());
     // Онбординг пройден. Сбрасываем его стек, чтобы "назад" не вернул на старт
     router.dismissAll();
-    router.replace('/onboarding/reasons');
+    router.replace('/onboarding/spending');
   };
 
   return (

@@ -9,8 +9,7 @@ export type Drink = (typeof drinks)[number];
 export type Habit = Row & {
   type: 'alcohol';
   startAt: number;
-  weeklySpendMinor: number | null;
+  weeklySpend: number | null; // в неделю, целые единицы валюты
   currency: string | null;
   drinks: string; // Partial<Record<Drink, number>>, порций в неделю
-  naCountsAsRelapse: 0 | 1;
 };
