@@ -110,6 +110,7 @@ export function RelapsePage() {
         multiline
         style={{
           color: colors.text,
+          verticalAlign: 'top',
           borderWidth: 1,
           borderColor: colors.border,
           borderRadius: 8,

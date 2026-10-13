@@ -194,6 +194,7 @@ export function CheckInPage() {
         placeholderTextColor={colors.border}
         multiline
         style={{
+          verticalAlign: 'top',
           color: colors.text,
           borderWidth: 1,
           borderColor: colors.border,
