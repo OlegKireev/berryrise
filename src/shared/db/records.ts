@@ -10,6 +10,7 @@ export type Row = {
 };
 
 // Строка таблицы settings, value в JSON
+/** @public */
 export type Setting = { key: string; value: string };
 
 // Служебные поля новой записи

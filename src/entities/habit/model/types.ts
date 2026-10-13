@@ -1,7 +1,9 @@
 import type { Row } from '@/shared/db';
 
 // Что пил раньше: пресеты для экономии и калорий
+/** @public */
 export const drinks = ['beer', 'wine', 'shot', 'cocktail'] as const;
+/** @public */
 export type Drink = (typeof drinks)[number];
 
 export type Habit = Row & {

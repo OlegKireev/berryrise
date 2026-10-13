@@ -1,0 +1,9 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "ignore": [
+    "src/entities/contact/**",
+    "src/entities/party/**",
+    "src/entities/reply/**"
+  ],
+  "ignoreDependencies": ["expo-updates"]
+}

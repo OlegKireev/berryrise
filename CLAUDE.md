@@ -26,6 +26,8 @@ yarn android            # dev-сервер и запуск на подключе
 yarn typecheck          # tsc --noEmit
 yarn test               # тесты чистой логики на node:test (TZ=Europe/Berlin, чтобы ловить переход на летнее время)
 yarn lint               # expo lint
+yarn lint:unused        # knip: неиспользуемые файлы, экспорты, зависимости (knip.json)
+yarn lint:circular      # madge: циклические импорты в src/
 yarn format             # prettier --write . (конфиг .prettierrc, .claude/ в .prettierignore)
 yarn doctor             # expo-doctor
 yarn audit              # уязвимости зависимостей
@@ -33,6 +35,12 @@ npx expo install <pkg>  # добавлять пакеты только так: �
 ```
 
 В yarn включен `npmMinimalAgeGate` (24 часа): версии моложе суток в карантине. Если `expo install` падает с YN0016, ставь через `yarn add` предыдущий патч. Тогда expo-doctor будет ругаться на patch mismatch, это ожидаемо, через сутки поправит `npx expo install --fix`.
+
+Git-хуки через lefthook (`lefthook.yml`), ставятся сами на `yarn install` локальным плагином `.yarn/plugins/plugin-lefthook.cjs`. pre-commit: lint-staged (eslint --fix и prettier по застейдженным файлам, конфиг в `package.json`). pre-push: typecheck, knip, madge, тесты, audit.
+
+knip: заготовки под будущие разделы (слайсы `contact`, `party`, `reply`) лежат в `ignore` в `knip.json`. Отдельный неиспользуемый пока экспорт помечаем `/** @public */` и на объявлении, и на реэкспорте в `index.ts`. Остальное неиспользуемое удаляем.
+
+audit: уязвимости без исправленной версии игнорируем в `npmAuditIgnoreAdvisories` в `.yarnrc.yml`, с комментарием, почему. Устаревший eslint 9 не считаем (`--no-deprecations`): eslint-config-expo пока не работает с eslint 10.
 
 Перед тем как считать задачу сделанной, прогоняй `yarn test`, `yarn typecheck` и `yarn lint`.
 

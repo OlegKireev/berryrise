@@ -1,0 +1,24 @@
+colors: false
+output:
+  - execution_out
+
+pre-commit:
+  parallel: true
+  commands:
+    lint-staged:
+      run: yarn lint-staged --quiet
+      stage_fixed: true
+
+pre-push:
+  parallel: true
+  commands:
+    types:
+      run: yarn typecheck
+    unused:
+      run: yarn lint:unused
+    circular:
+      run: yarn lint:circular
+    test:
+      run: yarn test
+    audit:
+      run: yarn audit

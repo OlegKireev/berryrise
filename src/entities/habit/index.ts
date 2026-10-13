@@ -1,3 +1,6 @@
 export { createHabit, getHabit } from './api/habit';
-export { streak, type Streak } from './model/streak';
-export { drinks, type Drink, type Habit } from './model/types';
+export { streak } from './model/streak';
+export { type Habit } from './model/types';
+// Заготовка под онбординг с напитками
+/** @public */
+export { drinks, type Drink } from './model/types';
