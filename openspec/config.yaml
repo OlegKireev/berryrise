@@ -1,32 +1,19 @@
 schema: spec-driven
 
-# Project context (optional)
-# Add only constraints that should guide OpenSpec artifacts and workflows.
-# Include constraints an agent cannot infer by reading the code.
-# Keep general project documentation and discoverable codebase facts out.
-# Example:
-#   context: |
-#     Designs and tasks must cover Windows, macOS, and Linux
-#     Write all artifacts in Spanish
+# Стек, структура и конвенции описаны в CLAUDE.md, здесь только ограничения для артефактов
+context: |
+  Write all artifacts in Russian. Code identifiers, file paths and commit messages stay in English.
+  Product spec lives in docs/idea.md: check it before proposing a feature.
+  Android-first; iOS must not break, but iOS-only work is out of scope unless stated.
+  No network, analytics or accounts: user data never leaves the device (except Android Auto Backup and manual export).
+  Prefer what runs in Expo Go; a package with custom native code requires a development build, call it out in design.
 
-# Per-artifact rules (optional)
-# Add custom rules for specific artifacts.
-# Example:
-#   rules:
-#     proposal:
-#       - Keep proposals under 500 words
-#       - Always state what is out of scope
-#     tasks:
-#       - Break tasks into chunks of max 2 hours
-
-# Per-operation guidance (optional)
-# Add advisory guidance for how apply and archive work should be conducted.
-# This is separate from artifact rules above.
-# Example:
-#   operations:
-#     apply:
-#       guidance:
-#         - Keep test summaries concise
-#     archive:
-#       guidance:
-#         - Summarize the archive outcome before finishing
+rules:
+  proposal:
+    - State what is out of scope
+  design:
+    - For DB changes, describe the migration (PRAGMA user_version) and keep id/createdAt/updatedAt/deletedAt
+  tasks:
+    - Add user-facing strings to both ru and en in src/i18n.ts
+    - Tests only for pure logic (streak, money, calories, achievements)
+    - Last task is running yarn typecheck and yarn lint

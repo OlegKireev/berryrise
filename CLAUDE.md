@@ -40,12 +40,19 @@ npx expo install <pkg>  # добавлять пакеты только так: �
 - `src/i18n.ts` - словари ru/en и `t(key)`. Язык определяется через `Intl` при старте.
 - `src/components/` - общие компоненты.
 - `docs/` - спека и ресерч.
+- `openspec/` - спеки OpenSpec: `specs/` описывает текущее поведение, `changes/` - изменения в работе, `config.yaml` - контекст и правила для артефактов. Слэш-команды и скиллы OpenSpec лежат в `.claude/`, их генерирует `openspec init`/`openspec update`, руками не правим.
 - `android/` и `ios/` не коммитим, их генерирует `expo prebuild` (CNG). Нативные настройки задаются только через `app.json` и config plugins.
 
 ## Expo
 
 - API Expo меняется от SDK к SDK. Перед работой с API сверяйся с доками своей версии: https://docs.expo.dev/versions/v57.0.0/ и https://docs.expo.dev/llms.txt.
 - В Expo Go есть только встроенные нативные модули. Как только появится пакет со своим нативным кодом (виджет, например), нужен development build: `npx expo run:android` (нужны JDK и Android SDK, сейчас не установлены) или `eas build --profile development`.
+
+## Процесс (OpenSpec)
+
+Фичи и заметные изменения поведения идут через OpenSpec: `/opsx:explore` (по желанию обсудить идею) → `/opsx:propose <имя>` (proposal, delta-спеки, design, tasks в `openspec/changes/<имя>/`) → `/opsx:apply` → `/opsx:archive` (delta вливается в `openspec/specs/`). Мелкие правки, багфиксы и рефакторинг без изменения поведения делаем напрямую. Темы для изменений берем из `docs/idea.md`.
+
+CLI ставится глобально (`npm i -g @fission-ai/openspec`), телеметрия отключена через `openspec config set telemetry.enabled false` (настройка машины, не репозитория). После обновления CLI запускать `openspec update`, чтобы обновить файлы в `.claude/`.
 
 ## Конвенции
 
