@@ -4,6 +4,7 @@ import { SpendingForm } from '@/features/edit-spending';
 import { DateTimeField, Screen, Text } from '@/shared/ui';
 
 import { DevResetButton } from './DevResetButton';
+import { NotificationsSection } from './NotificationsSection';
 
 import { useSettings } from '../model/useSettings';
 
@@ -29,6 +30,7 @@ export function SettingsPage() {
         submitLabel={t('save')}
         onSaved={() => router.back()}
       />
+      <NotificationsSection />
       {__DEV__ && <DevResetButton />}
     </Screen>
   );
