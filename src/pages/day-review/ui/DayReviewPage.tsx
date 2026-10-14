@@ -3,7 +3,7 @@ import { useSQLiteContext } from 'expo-sqlite';
 import { useEffect, useState } from 'react';
 import { Button, TextInput, View } from 'react-native';
 
-import { checkinDay, getCheckin, saveCheckin } from '@/entities/checkin';
+import { reviewDay, getDayReview, saveDayReview } from '@/entities/day-review';
 import { getHabit } from '@/entities/habit';
 import { listReasons, reasonLabel, type ReasonRow } from '@/entities/reason';
 import {
@@ -66,13 +66,13 @@ function Group<K extends string | number>({
   );
 }
 
-export function CheckInPage() {
+export function DayReviewPage() {
   const db = useSQLiteContext();
   const { colors } = useTheme();
   // День считаем один раз при открытии: сохраняем ровно за тот, что в заголовке
   const [{ day, isToday }] = useState(() => {
     const now = Date.now();
-    const day = checkinDay(now);
+    const day = reviewDay(now);
     return { day, isToday: day === toDay(now) };
   });
   // null - еще грузим
@@ -93,7 +93,7 @@ export function CheckInPage() {
       const [habit, reasons, existing] = await Promise.all([
         getHabit(db),
         listReasons(db),
-        getCheckin(db, day),
+        getDayReview(db, day),
       ]);
       if (existing) {
         setMood(existing.mood);
@@ -114,14 +114,14 @@ export function CheckInPage() {
   if (state.beforeStart)
     return (
       <Screen>
-        <Text>{t('checkinLater')}</Text>
+        <Text>{t('dayReviewLater')}</Text>
       </Screen>
     );
 
   const save = async () => {
     if (mood === null || craving === null) return;
     setSaving(true);
-    await saveCheckin(db, {
+    await saveDayReview(db, {
       date: day,
       mood,
       craving,

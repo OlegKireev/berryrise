@@ -3,7 +3,7 @@ import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback, useState } from 'react';
 import { View } from 'react-native';
 
-import { listCheckinDates } from '@/entities/checkin';
+import { listDayReviewDates } from '@/entities/day-review';
 import {
   achievementKeys,
   achievements,
@@ -22,7 +22,7 @@ type Data = {
   startAt: number;
   now: number;
   relapses: Pick<Relapse, 'id' | 'at'>[];
-  checkinDates: string[];
+  reviewDates: string[];
 };
 
 export function ProgressPage() {
@@ -31,17 +31,17 @@ export function ProgressPage() {
 
   const load = useCallback(() => {
     (async () => {
-      const [habit, relapses, checkinDates] = await Promise.all([
+      const [habit, relapses, reviewDates] = await Promise.all([
         getHabit(db),
         listRelapses(db),
-        listCheckinDates(db),
+        listDayReviewDates(db),
       ]);
       if (!habit) return;
       setData({
         startAt: habit.startAt,
         now: Date.now(),
         relapses,
-        checkinDates,
+        reviewDates,
       });
     })();
   }, [db]);
@@ -49,13 +49,13 @@ export function ProgressPage() {
   useFocusEffect(load);
 
   if (!data) return null;
-  const { startAt, now, relapses, checkinDates } = data;
+  const { startAt, now, relapses, reviewDates } = data;
   const days = soberDays(
     startAt,
     relapses.map((r) => r.at),
     now,
   );
-  const got = achievements(days, checkinDates, toDay(now));
+  const got = achievements(days, reviewDates, toDay(now));
   const gotCount = achievementKeys.filter((k) => got[k]).length;
 
   return (
@@ -65,7 +65,7 @@ export function ProgressPage() {
         startAt={startAt}
         now={now}
         days={days}
-        checkinDates={new Set(checkinDates)}
+        reviewDates={new Set(reviewDates)}
       />
 
       <Text style={{ fontSize: 20, fontWeight: '600' }}>

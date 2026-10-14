@@ -4,7 +4,7 @@ export const ru = {
   reasons: 'Причины',
   settings: 'Настройки',
   company: 'Иду в компанию',
-  checkin: 'Чек-ин',
+  dayReview: 'Итоги дня',
   relapse: 'Срыв',
   soon: 'Скоро здесь будет экран',
   next: 'Дальше',
@@ -45,11 +45,11 @@ export const ru = {
   since: 'с',
   bestStreak: 'Лучший стрик',
   totalDays: 'Всего трезвых дней',
-  checkinToday: 'Чек-ин за сегодня',
-  checkinYesterday: 'Чек-ин за вчера',
-  checkinTodayDone: 'Чек-ин за сегодня заполнен',
-  checkinYesterdayDone: 'Чек-ин за вчера заполнен',
-  checkinLater: 'Первый чек-ин можно заполнить сегодня с 18:00',
+  dayReviewToday: 'Итоги за сегодня',
+  dayReviewYesterday: 'Итоги за вчера',
+  dayReviewTodayDone: 'Итоги за сегодня подведены',
+  dayReviewYesterdayDone: 'Итоги за вчера подведены',
+  dayReviewLater: 'Первые итоги дня можно подвести сегодня с 18:00',
   saved: 'Сэкономлено',
   notDrunk: 'Не выпито',
   kcal: 'ккал',
@@ -58,7 +58,7 @@ export const ru = {
   // Настройки
   startAt: 'Старт',
 
-  // Чек-ин
+  // Итоги дня
   forToday: 'За сегодня',
   forYesterday: 'За вчера',
   myReasons: 'Мои причины',
@@ -107,10 +107,10 @@ export const ru = {
   achievement_days365: 'Год',
   achievement_friday: 'Первая трезвая пятница',
   achievement_weekend: 'Первые трезвые выходные',
-  achievement_checkins7: '7 чек-инов подряд',
+  achievement_reviews7: 'Итоги дня 7 дней подряд',
   achievement_comeback7: 'Вернулся после срыва и продержался неделю',
 
-  // Подписи ключей из shared/config/options.ts, общие для срыва и чек-ина
+  // Подписи ключей из shared/config/options.ts, общие для срыва и итогов дня
   mood_1: 'Ужасно',
   mood_2: 'Плохо',
   mood_3: 'Нормально',

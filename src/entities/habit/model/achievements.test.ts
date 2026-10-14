@@ -16,9 +16,8 @@ const get = (
   startAt: number,
   relapseAts: number[],
   now: number,
-  checkinDates: string[] = [],
-) =>
-  achievements(soberDays(startAt, relapseAts, now), checkinDates, toDay(now));
+  reviewDates: string[] = [],
+) => achievements(soberDays(startAt, relapseAts, now), reviewDates, toDay(now));
 
 test('первый день в полночь', () => {
   assert.equal(get(oct(13, 23, 50), [], oct(14, 0)).days1, day(14));
@@ -55,19 +54,19 @@ test('старт в субботу: первые выходные не счит�
   assert.equal(a.friday, null);
 });
 
-test('7 чек-инов подряд', () => {
+test('итоги дня 7 дней подряд', () => {
   const dates = [3, 1, 2, 4, 5, 6, 7].map(day);
-  assert.equal(get(oct(1), [], oct(14), dates).checkins7, day(7));
+  assert.equal(get(oct(1), [], oct(14), dates).reviews7, day(7));
 });
 
-test('пропуск в чек-инах', () => {
+test('пропуск в итогах дня', () => {
   const dates = [1, 2, 3, 5, 6, 7, 8].map(day);
-  assert.equal(get(oct(1), [], oct(14), dates).checkins7, null);
+  assert.equal(get(oct(1), [], oct(14), dates).reviews7, null);
 });
 
-test('чек-ины подряд через переход на зимнее время', () => {
+test('итоги дня подряд через переход на зимнее время', () => {
   const dates = [22, 23, 24, 25, 26, 27, 28].map(day);
-  assert.equal(get(oct(1), [], oct(29), dates).checkins7, day(28));
+  assert.equal(get(oct(1), [], oct(29), dates).reviews7, day(28));
 });
 
 test('вернулся после срыва и продержался 7 дней', () => {

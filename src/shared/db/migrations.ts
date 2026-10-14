@@ -25,7 +25,7 @@ const migrations: string[] = [
     hardships TEXT,
     note TEXT
   );
-  CREATE TABLE checkin (${row},
+  CREATE TABLE dayReview (${row},
     date TEXT NOT NULL,
     mood INTEGER NOT NULL,
     craving TEXT NOT NULL,
@@ -34,7 +34,7 @@ const migrations: string[] = [
     helpers TEXT NOT NULL DEFAULT '[]',
     note TEXT
   );
-  CREATE UNIQUE INDEX checkin_date ON checkin(date) WHERE deletedAt IS NULL;
+  CREATE UNIQUE INDEX dayReview_date ON dayReview(date) WHERE deletedAt IS NULL;
   CREATE TABLE party (${row},
     startAt INTEGER NOT NULL,
     expectedEndAt INTEGER NOT NULL,

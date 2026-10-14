@@ -11,7 +11,7 @@ export const achievementKeys = [
   ...streakGoals.map((n) => `days${n}` as const),
   'friday',
   'weekend',
-  'checkins7',
+  'reviews7',
   'comeback7',
 ] as const;
 export type AchievementKey = (typeof achievementKeys)[number];
@@ -33,7 +33,7 @@ const SUNDAY = 0;
 
 export function achievements(
   days: Day[], // из soberDays: подряд, без пропусков
-  checkinDates: string[], // YYYY-MM-DD, любой порядок
+  reviewDates: string[], // YYYY-MM-DD, любой порядок
   today: string, // YYYY-MM-DD
 ): Record<AchievementKey, string | null> {
   const got = Object.fromEntries(
@@ -65,9 +65,9 @@ export function achievements(
 
   let row = 0;
   let prev: string | null = null;
-  for (const date of [...new Set(checkinDates)].sort()) {
+  for (const date of [...new Set(reviewDates)].sort()) {
     row = prev !== null && nextDay(prev) === date ? row + 1 : 1;
-    if (row === 7) give('checkins7', date);
+    if (row === 7) give('reviews7', date);
     prev = date;
   }
 

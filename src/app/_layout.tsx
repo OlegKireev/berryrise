@@ -32,8 +32,8 @@ export default function RootLayout() {
             options={{ title: t('company') }}
           />
           <Stack.Screen
-            name="check-in"
-            options={{ title: t('checkin'), presentation: 'modal' }}
+            name="day-review"
+            options={{ title: t('dayReview'), presentation: 'modal' }}
           />
           <Stack.Screen
             name="relapse"

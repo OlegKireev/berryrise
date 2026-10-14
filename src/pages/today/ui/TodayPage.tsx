@@ -3,7 +3,7 @@ import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback, useEffect, useState } from 'react';
 import { Button } from 'react-native';
 
-import { checkinDay, getCheckin } from '@/entities/checkin';
+import { reviewDay, getDayReview } from '@/entities/day-review';
 import { getHabit, savings, streak, type Habit } from '@/entities/habit';
 import { listRelapses } from '@/entities/relapse';
 import {
@@ -22,7 +22,7 @@ export function TodayPage() {
   const [data, setData] = useState<{
     habit: Habit;
     relapseAts: number[];
-    // день, за который чек-ин уже заполнен
+    // день, за который итоги уже подведены
     filledDay: string | null;
   } | null>(null);
   const [now, setNow] = useState(Date.now);
@@ -34,21 +34,21 @@ export function TodayPage() {
         const habit = await getHabit(db);
         if (!habit) return;
         const now = Date.now();
-        const [relapses, checkin] = await Promise.all([
+        const [relapses, review] = await Promise.all([
           listRelapses(db),
-          getCheckin(db, checkinDay(now)),
+          getDayReview(db, reviewDay(now)),
         ]);
         setData({
           habit,
           relapseAts: relapses.map((r) => r.at),
-          filledDay: checkin?.date ?? null,
+          filledDay: review?.date ?? null,
         });
         setNow(now);
       })();
     }, [db]),
   );
 
-  // В полночь прибавляется день, в 18:00 чек-ин переключается на сегодня
+  // В полночь прибавляется день, в 18:00 итоги переключаются на сегодня
   useEffect(() => {
     const next = new Date(now);
     next.setHours(next.getHours() < 18 ? 18 : 24, 0, 0, 0);
@@ -61,7 +61,7 @@ export function TodayPage() {
 
   if (!data) return null;
   const s = streak(data.habit.startAt, data.relapseAts, now);
-  const day = checkinDay(now);
+  const day = reviewDay(now);
   const isToday = day === toDay(now);
   const { weeklySpend, currency } = data.habit;
   const saved = savings(s.total, weeklySpend, JSON.parse(data.habit.drinks));
@@ -105,15 +105,15 @@ export function TodayPage() {
         onPress={() => router.push('/company')}
       />
       {day < toDay(data.habit.startAt) ? (
-        <Text style={{ opacity: 0.6 }}>{t('checkinLater')}</Text>
+        <Text style={{ opacity: 0.6 }}>{t('dayReviewLater')}</Text>
       ) : (
         <Button
           title={`${
             data.filledDay === day
-              ? t(isToday ? 'checkinTodayDone' : 'checkinYesterdayDone')
-              : t(isToday ? 'checkinToday' : 'checkinYesterday')
+              ? t(isToday ? 'dayReviewTodayDone' : 'dayReviewYesterdayDone')
+              : t(isToday ? 'dayReviewToday' : 'dayReviewYesterday')
           }, ${formatDay(day)}`}
-          onPress={() => router.push('/check-in')}
+          onPress={() => router.push('/day-review')}
         />
       )}
       <Button

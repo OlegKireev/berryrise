@@ -40,12 +40,12 @@ export function Calendar({
   startAt,
   now,
   days,
-  checkinDates,
+  reviewDates,
 }: {
   startAt: number;
   now: number;
   days: Day[];
-  checkinDates: Set<string>;
+  reviewDates: Set<string>;
 }) {
   const { colors } = useTheme();
   const [shown, setShown] = useState(() => monthIndex(now));
@@ -126,7 +126,7 @@ export function Calendar({
               }}
             >
               {date && <Text>{Number(date.slice(8))}</Text>}
-              {date && checkinDates.has(date) && <Dot color={colors.text} />}
+              {date && reviewDates.has(date) && <Dot color={colors.text} />}
             </View>
           ))}
         </View>
@@ -150,7 +150,7 @@ export function Calendar({
         ))}
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
           <Dot color={colors.text} />
-          <Text>{t('checkin')}</Text>
+          <Text>{t('dayReview')}</Text>
         </View>
       </View>
     </View>
