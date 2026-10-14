@@ -91,6 +91,19 @@ const dateTime = new Intl.DateTimeFormat(locale, {
 
 export const formatDateTime = (ms: number) => dateTime.format(ms);
 
+// 24 часа в любой локали: пикер времени открывается так же
+const timeOfDay = new Intl.DateTimeFormat(locale, {
+  hour: '2-digit',
+  minute: '2-digit',
+  hour12: false,
+});
+
+// "21:00" из минут от полуночи
+export const formatTime = (minutes: number) =>
+  timeOfDay.format(
+    new Date(2026, 0, 1, Math.floor(minutes / 60), minutes % 60),
+  );
+
 const shortDate = new Intl.DateTimeFormat(locale, {
   day: 'numeric',
   month: 'short',

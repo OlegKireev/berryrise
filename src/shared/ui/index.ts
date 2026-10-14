@@ -7,3 +7,4 @@ export { Input } from './Input';
 export { Row } from './Row';
 export { Screen } from './Screen';
 export { Text } from './Text';
+export { TimeField } from './TimeField';
