@@ -38,8 +38,8 @@ const migrations: string[] = [
   CREATE TABLE party (${row},
     startAt INTEGER NOT NULL,
     expectedEndAt INTEGER NOT NULL,
-    drinkKey TEXT,
-    drinkCustom TEXT,
+    drinkKeys TEXT NOT NULL DEFAULT '[]',
+    drinkCustoms TEXT NOT NULL DEFAULT '[]',
     result TEXT CHECK (result IN ('sober', 'drank')),
     relapseId TEXT
   );

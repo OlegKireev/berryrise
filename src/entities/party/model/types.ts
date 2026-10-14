@@ -13,8 +13,8 @@ export type PartyDrink = (typeof partyDrinks)[number];
 export type Party = Row & {
   startAt: number;
   expectedEndAt: number;
-  drinkKey: PartyDrink | null;
-  drinkCustom: string | null;
+  drinkKeys: string; // PartyDrink[]
+  drinkCustoms: string; // string[], свои напитки
   result: 'sober' | 'drank' | null;
   relapseId: string | null;
 };

@@ -21,7 +21,7 @@ type NewRelapse = {
   note: string;
 };
 
-// Пустой разбор пишем как NULL, а не как "[]" и ""
+// Пустой разбор пишем как NULL, а не как "[]" и "". Возвращает id срыва
 export async function insertRelapse(db: SQLiteDatabase, data: NewRelapse) {
   const r = newRow();
   await db.runAsync(
@@ -37,4 +37,5 @@ export async function insertRelapse(db: SQLiteDatabase, data: NewRelapse) {
     data.hardships.length ? JSON.stringify(data.hardships) : null,
     data.note.trim() || null,
   );
+  return r.id;
 }

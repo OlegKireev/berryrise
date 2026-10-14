@@ -1,1 +1,2 @@
-export { replies, type Reply, type ReplyRow } from './model/types';
+export { addReply, deleteReply, listReplies } from './api/reply';
+export { replies, type ReplyRow } from './model/types';
