@@ -1,0 +1,56 @@
+import { defineDict } from '@/shared/i18n';
+
+export const dict = defineDict({
+  ru: {
+    drinks: {
+      beer: 'Пиво 0,5',
+      wine: 'Бокал вина',
+      shot: 'Шот',
+      cocktail: 'Коктейль',
+    },
+    achievements: {
+      days1: '1 день',
+      days3: '3 дня',
+      days7: 'Неделя',
+      days14: '2 недели',
+      days30: '30 дней',
+      days60: '60 дней',
+      days90: '90 дней',
+      days180: 'Полгода',
+      days365: 'Год',
+      friday: 'Первая трезвая пятница',
+      weekend: 'Первые трезвые выходные',
+      reviews7: 'Итоги дня 7 дней подряд',
+      comeback7: 'Вернулся после срыва и продержался неделю',
+      company1: 'Выстоял в компании',
+      company5: 'Выстоял в компании 5 раз',
+      company10: 'Выстоял в компании 10 раз',
+    },
+  },
+  en: {
+    drinks: {
+      beer: 'Beer 0.5 l',
+      wine: 'Glass of wine',
+      shot: 'Shot',
+      cocktail: 'Cocktail',
+    },
+    achievements: {
+      days1: '1 day',
+      days3: '3 days',
+      days7: 'One week',
+      days14: 'Two weeks',
+      days30: '30 days',
+      days60: '60 days',
+      days90: '90 days',
+      days180: 'Half a year',
+      days365: 'One year',
+      friday: 'First sober Friday',
+      weekend: 'First sober weekend',
+      reviews7: '7 day reviews in a row',
+      comeback7: 'Came back after a relapse and held a week',
+      company1: 'Stayed sober in company',
+      company5: 'Stayed sober in company 5 times',
+      company10: 'Stayed sober in company 10 times',
+    },
+  },
+});

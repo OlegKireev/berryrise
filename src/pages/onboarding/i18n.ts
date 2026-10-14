@@ -1,0 +1,62 @@
+import { reasonDict } from '@/entities/reason';
+import { createT } from '@/shared/i18n';
+
+export const t = createT(
+  {
+    ru: {
+      introTitle: 'Решено',
+      introText:
+        'Приложение помогает не пить: считает трезвые дни и поддерживает в трудные вечера. Все данные остаются на телефоне.',
+      disclaimer:
+        'Приложение не заменяет врача. Если тебе плохо, обратись за медицинской помощью.',
+      screeningTitle: 'Пара вопросов',
+      screeningDaily: 'Пьешь почти каждый день?',
+      screeningHeavy: 'Бывает больше 5 порций в день?',
+      screeningWithdrawal:
+        'При перерывах бывают дрожь, потливость, тревога или бессонница?',
+      warningTitle: 'Будь осторожен',
+      warningText:
+        'При таком потреблении резкий отказ от алкоголя может быть опасен. Лучше посоветоваться с наркологом, он поможет бросить безопасно. Если станет плохо, вызывай скорую.',
+      warningNext: 'Понятно, дальше',
+      startTitle: 'Когда ты бросил?',
+      startHint: 'Можно указать момент в прошлом.',
+      startButton: 'Начать',
+      reasonsStepTitle: 'Ради чего ты бросаешь?',
+      reasonsStepHint:
+        'Выбери одну или несколько. Напомним о них в трудный вечер.',
+      spendingTitle: 'Сколько ты тратил?',
+      spendingHint:
+        'Примерно, в неделю. По этим цифрам посчитаем, сколько ты сэкономил. Можно пропустить и указать позже в настройках.',
+      next: 'Дальше',
+      skip: 'Пропустить',
+    },
+    en: {
+      introTitle: 'Welcome',
+      introText:
+        'This app helps you stay sober: it counts your sober days and supports you on hard evenings. All data stays on your phone.',
+      disclaimer:
+        'This app is not a substitute for a doctor. If you feel unwell, seek medical help.',
+      screeningTitle: 'A few questions',
+      screeningDaily: 'Do you drink almost every day?',
+      screeningHeavy: 'Do you sometimes have more than 5 drinks a day?',
+      screeningWithdrawal:
+        'When you take a break, do you get shakes, sweating, anxiety or insomnia?',
+      warningTitle: 'Be careful',
+      warningText:
+        'With this level of drinking, quitting abruptly can be dangerous. Talk to an addiction specialist, they can help you quit safely. If you feel very unwell, call emergency services.',
+      warningNext: 'Got it, next',
+      startTitle: 'When did you quit?',
+      startHint: 'You can pick a moment in the past.',
+      startButton: 'Start',
+      reasonsStepTitle: 'Why are you quitting?',
+      reasonsStepHint:
+        "Pick one or more. We'll remind you of them on hard evenings.",
+      spendingTitle: 'How much did you spend?',
+      spendingHint:
+        "Roughly, per week. We'll use it to count your savings. You can skip this and add it later in settings.",
+      next: 'Next',
+      skip: 'Skip',
+    },
+  },
+  { reason: reasonDict },
+);

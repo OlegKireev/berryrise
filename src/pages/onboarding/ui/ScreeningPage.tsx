@@ -3,7 +3,8 @@ import { useState } from 'react';
 import { Button, Switch, View } from 'react-native';
 
 import { Screen, Text } from '@/shared/ui';
-import { t } from '@/shared/i18n';
+
+import { t } from '../i18n';
 
 const questions = [
   'screeningDaily',

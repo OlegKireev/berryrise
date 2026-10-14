@@ -1,0 +1,46 @@
+import { dayReviewDict } from '@/entities/day-review';
+import { createT } from '@/shared/i18n';
+
+export const t = createT(
+  {
+    ru: {
+      since: 'с',
+      bestStreak: 'Лучший стрик',
+      totalDays: 'Всего трезвых дней',
+      dayReviewToday: 'Итоги за сегодня',
+      dayReviewYesterday: 'Итоги за вчера',
+      dayReviewTodayDone: 'Итоги за сегодня подведены',
+      dayReviewYesterdayDone: 'Итоги за вчера подведены',
+      saved: 'Сэкономлено',
+      notDrunk: 'Не выпито',
+      kcal: 'ккал',
+      savingsEmpty: 'Укажи траты, чтобы видеть экономию',
+      partyCardTitle: 'Как прошло?',
+      partyCardUntil: 'Вечер до',
+      partySober: 'Без алкоголя',
+      partyDrank: 'Выпил',
+      partyCancel: 'Не пошел',
+      partyOpen: 'Открыть режим',
+    },
+    en: {
+      since: 'since',
+      bestStreak: 'Best streak',
+      totalDays: 'Total sober days',
+      dayReviewToday: "Today's review",
+      dayReviewYesterday: "Yesterday's review",
+      dayReviewTodayDone: "Today's review is done",
+      dayReviewYesterdayDone: "Yesterday's review is done",
+      saved: 'Saved',
+      notDrunk: 'Not drunk',
+      kcal: 'kcal',
+      savingsEmpty: 'Add your spending to see your savings',
+      partyCardTitle: 'How did it go?',
+      partyCardUntil: 'Evening until',
+      partySober: 'No alcohol',
+      partyDrank: 'I drank',
+      partyCancel: "Didn't go",
+      partyOpen: 'Open going-out mode',
+    },
+  },
+  { review: dayReviewDict },
+);

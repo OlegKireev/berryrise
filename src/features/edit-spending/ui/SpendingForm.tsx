@@ -9,9 +9,11 @@ import {
   type Drink,
   type Habit,
 } from '@/entities/habit';
-import { currencySymbol, t } from '@/shared/i18n';
+import { currencySymbol } from '@/shared/i18n';
 import { getLocale } from '@/shared/lib';
 import { Chip, Text } from '@/shared/ui';
+
+import { t } from '../i18n';
 
 // ponytail: короткий список частых валют, расширим по запросу
 const currencies = [
@@ -104,7 +106,7 @@ export function SpendingForm({ habit, submitLabel, onSaved }: Props) {
           key={d}
           style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}
         >
-          <Text style={{ flex: 1 }}>{t(`drink_${d}`)}</Text>
+          <Text style={{ flex: 1 }}>{t(`habit.drinks.${d}`)}</Text>
           <TextInput
             value={counts[d] ?? ''}
             onChangeText={(s) => setCounts({ ...counts, [d]: digits(s) })}

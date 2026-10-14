@@ -22,8 +22,9 @@ import {
   replies,
   type ReplyRow,
 } from '@/entities/reply';
-import { t } from '@/shared/i18n';
 import { Chip, DateTimeField, Screen, Text } from '@/shared/ui';
+
+import { t } from '../i18n';
 
 const DAY = 24 * 60 * 60 * 1000;
 
@@ -112,7 +113,7 @@ export function CompanyPage() {
     <Screen>
       {reasons.length > 0 && (
         <View style={{ gap: 4 }}>
-          <Text style={{ fontWeight: '600' }}>{t('myReasons')}</Text>
+          <Text style={{ fontWeight: '600' }}>{t('reason.myReasons')}</Text>
           {reasons.map((r) => (
             <Text
               key={r.id}
@@ -137,7 +138,7 @@ export function CompanyPage() {
         {partyDrinks.map((k) => (
           <Chip
             key={k}
-            label={t(`partyDrink_${k}`)}
+            label={t(`party.drinks.${k}`)}
             selected={drinkKeys.includes(k)}
             onPress={() => changeDrinks(toggle(drinkKeys, k), drinkCustoms)}
           />
@@ -170,7 +171,7 @@ export function CompanyPage() {
 
       <Text style={{ fontWeight: '600' }}>{t('repliesTitle')}</Text>
       {replies.map((k) => (
-        <Text key={k}>• {t(`reply_${k}`)}</Text>
+        <Text key={k}>• {t(`reply.${k}`)}</Text>
       ))}
       {myReplies.map((r) => (
         <View

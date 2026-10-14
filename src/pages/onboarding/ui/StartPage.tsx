@@ -4,8 +4,9 @@ import { useState } from 'react';
 import { Button } from 'react-native';
 
 import { createHabit } from '@/entities/habit';
-import { t } from '@/shared/i18n';
 import { DateTimeField, Screen, Text } from '@/shared/ui';
+
+import { t } from '../i18n';
 
 // Привычка создается только здесь, ее наличие и значит "онбординг пройден". Дальше только необязательные шаги
 export function StartPage() {

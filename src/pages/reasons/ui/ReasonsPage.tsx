@@ -12,8 +12,9 @@ import {
   type NewReason,
   type ReasonRow,
 } from '@/entities/reason';
-import { t } from '@/shared/i18n';
 import { Chip, Screen, Text } from '@/shared/ui';
+
+import { t } from '../i18n';
 
 export function ReasonsPage() {
   const db = useSQLiteContext();
@@ -62,7 +63,7 @@ export function ReasonsPage() {
         {presets.map((k) => (
           <Chip
             key={k}
-            label={t(`reason_${k}`)}
+            label={t(`reason.labels.${k}`)}
             selected={false}
             onPress={() => add({ key: k })}
           />
@@ -71,7 +72,7 @@ export function ReasonsPage() {
       <TextInput
         value={custom}
         onChangeText={setCustom}
-        placeholder={t('customReason')}
+        placeholder={t('reason.customReason')}
         placeholderTextColor={colors.border}
         style={{
           color: colors.text,

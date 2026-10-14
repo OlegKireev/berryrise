@@ -2,7 +2,8 @@ import { router } from 'expo-router';
 import { Button } from 'react-native';
 
 import { Screen, Text } from '@/shared/ui';
-import { t } from '@/shared/i18n';
+
+import { t } from '../i18n';
 
 export function IntroPage() {
   return (

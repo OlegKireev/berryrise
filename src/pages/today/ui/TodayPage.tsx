@@ -18,10 +18,11 @@ import {
   formatDay,
   formatMoney,
   portions,
-  t,
 } from '@/shared/i18n';
 import { toDay } from '@/shared/lib';
 import { Screen, Text } from '@/shared/ui';
+
+import { t } from '../i18n';
 
 // ponytail: цвета кнопок константами, пока нет токенов дизайна
 const SOBER = '#2e7d32';
@@ -125,7 +126,7 @@ export function TodayPage() {
         />
       )}
       {day < toDay(data.habit.startAt) ? (
-        <Text style={{ opacity: 0.6 }}>{t('dayReviewLater')}</Text>
+        <Text style={{ opacity: 0.6 }}>{t('review.later')}</Text>
       ) : (
         <Button
           title={`${

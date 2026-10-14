@@ -15,8 +15,9 @@ import {
   type Mood,
   type Place,
 } from '@/shared/config';
-import { t } from '@/shared/i18n';
 import { Chip, DateTimeField, Screen, Text } from '@/shared/ui';
+
+import { t } from '../i18n';
 
 const toggle = <K,>(list: K[], key: K) =>
   list.includes(key) ? list.filter((k) => k !== key) : [...list, key];
@@ -79,36 +80,36 @@ export function RelapsePage() {
         {t('relapseReview')}
       </Text>
 
-      <Text style={{ fontWeight: '600' }}>{t('moodTitle')}</Text>
+      <Text style={{ fontWeight: '600' }}>{t('option.titles.mood')}</Text>
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
         {moods.map((m) => (
           <Chip
             key={m}
-            label={t(`mood_${m}`)}
+            label={t(`option.mood.${m}`)}
             selected={mood === m}
             onPress={() => setMood(mood === m ? null : m)}
           />
         ))}
       </View>
 
-      <Text style={{ fontWeight: '600' }}>{t('placesTitle')}</Text>
+      <Text style={{ fontWeight: '600' }}>{t('option.titles.place')}</Text>
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
         {places.map((p) => (
           <Chip
             key={p}
-            label={t(`place_${p}`)}
+            label={t(`option.place.${p}`)}
             selected={placeKeys.includes(p)}
             onPress={() => setPlaceKeys(toggle(placeKeys, p))}
           />
         ))}
       </View>
 
-      <Text style={{ fontWeight: '600' }}>{t('hardshipsTitle')}</Text>
+      <Text style={{ fontWeight: '600' }}>{t('option.titles.hardship')}</Text>
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
         {hardships.map((h) => (
           <Chip
             key={h}
-            label={t(`hardship_${h}`)}
+            label={t(`option.hardship.${h}`)}
             selected={hardshipKeys.includes(h)}
             onPress={() => setHardshipKeys(toggle(hardshipKeys, h))}
           />

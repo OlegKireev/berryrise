@@ -5,8 +5,9 @@ import { Button } from 'react-native';
 
 import { getHabit, type Habit } from '@/entities/habit';
 import { SpendingForm } from '@/features/edit-spending';
-import { t } from '@/shared/i18n';
 import { Screen, Text } from '@/shared/ui';
+
+import { t } from '../i18n';
 
 const next = () => router.replace('/onboarding/reasons');
 

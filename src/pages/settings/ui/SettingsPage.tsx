@@ -7,8 +7,9 @@ import { getHabit, updateHabitStart, type Habit } from '@/entities/habit';
 import { listRelapses } from '@/entities/relapse';
 import { SpendingForm } from '@/features/edit-spending';
 import { resetDatabase } from '@/shared/db';
-import { t } from '@/shared/i18n';
 import { DateTimeField, Screen, Text } from '@/shared/ui';
+
+import { t } from '../i18n';
 
 // ponytail: dev-кнопка без i18n, в релизную сборку не попадает
 function DevResetButton() {

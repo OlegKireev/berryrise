@@ -19,9 +19,11 @@ import {
   type Mood,
   type Place,
 } from '@/shared/config';
-import { formatDay, t } from '@/shared/i18n';
+import { formatDay } from '@/shared/i18n';
 import { toDay } from '@/shared/lib';
 import { Chip, Screen, Text } from '@/shared/ui';
+
+import { t } from '../i18n';
 
 const toggle = <K,>(list: K[], key: K) =>
   list.includes(key) ? list.filter((k) => k !== key) : [...list, key];
@@ -125,7 +127,7 @@ export function DayReviewPage() {
   if (state.beforeStart)
     return (
       <Screen>
-        <Text>{t('dayReviewLater')}</Text>
+        <Text>{t('review.later')}</Text>
       </Screen>
     );
 
@@ -152,7 +154,7 @@ export function DayReviewPage() {
 
       {state.reasons.length > 0 && (
         <View style={{ gap: 4 }}>
-          <Text style={{ fontWeight: '600' }}>{t('myReasons')}</Text>
+          <Text style={{ fontWeight: '600' }}>{t('reason.myReasons')}</Text>
           {state.reasons.map((r) => (
             <Text key={r.id}>• {reasonLabel(r)}</Text>
           ))}
@@ -160,39 +162,39 @@ export function DayReviewPage() {
       )}
 
       <Group
-        title={t('moodTitle')}
+        title={t('option.titles.mood')}
         keys={moods}
-        label={(m) => t(`mood_${m}`)}
+        label={(m) => t(`option.mood.${m}`)}
         isSelected={(m) => mood === m}
         onPress={setMood}
       />
       <Group
-        title={t('cravingTitle')}
+        title={t('option.titles.craving')}
         keys={cravings}
-        label={(c) => t(`craving_${c}`)}
+        label={(c) => t(`option.craving.${c}`)}
         isSelected={(c) => craving === c}
         onPress={setCraving}
       />
       <Group
-        title={t('placesTitle')}
+        title={t('option.titles.place')}
         keys={places}
-        label={(p) => t(`place_${p}`)}
+        label={(p) => t(`option.place.${p}`)}
         isSelected={(p) => placeKeys.includes(p)}
         onPress={(p) => setPlaceKeys(toggle(placeKeys, p))}
       />
       <Group
-        title={t('hardshipsTitle')}
+        title={t('option.titles.hardship')}
         keys={hardships}
-        label={(h) => t(`hardship_${h}`)}
+        label={(h) => t(`option.hardship.${h}`)}
         isSelected={(h) => hardshipKeys.includes(h)}
         onPress={(h) =>
           setHardshipKeys(toggleExclusive(hardshipKeys, h, 'nothing'))
         }
       />
       <Group
-        title={t('helpersTitle')}
+        title={t('option.titles.helper')}
         keys={helpers}
-        label={(h) => t(`helper_${h}`)}
+        label={(h) => t(`option.helper.${h}`)}
         isSelected={(h) => helperKeys.includes(h)}
         onPress={(h) =>
           setHelperKeys(toggleExclusive(helperKeys, h, 'notNeeded'))

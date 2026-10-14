@@ -9,8 +9,9 @@ import {
   type NewReason,
   type Reason,
 } from '@/entities/reason';
-import { t } from '@/shared/i18n';
 import { Chip, Screen, Text } from '@/shared/ui';
+
+import { t } from '../i18n';
 
 // Шаг после старта: привычка уже есть, поэтому шаг необязательный и назад не ведет
 export function ReasonsStepPage() {
@@ -44,7 +45,7 @@ export function ReasonsStepPage() {
         {reasons.map((k) => (
           <Chip
             key={k}
-            label={t(`reason_${k}`)}
+            label={t(`reason.labels.${k}`)}
             selected={keys.includes(k)}
             onPress={() => toggle(k)}
           />
@@ -53,7 +54,7 @@ export function ReasonsStepPage() {
       <TextInput
         value={custom}
         onChangeText={setCustom}
-        placeholder={t('customReason')}
+        placeholder={t('reason.customReason')}
         placeholderTextColor={colors.border}
         style={{
           color: colors.text,

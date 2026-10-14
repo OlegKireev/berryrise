@@ -1,9 +1,9 @@
 import { useSQLiteContext } from 'expo-sqlite';
 import { Alert, Button } from 'react-native';
 
-import { t } from '@/shared/i18n';
-
 import { deleteRelapse } from '../model/deleteRelapse';
+
+import { t } from '../i18n';
 
 type Props = { id: string; onDeleted: () => void };
 

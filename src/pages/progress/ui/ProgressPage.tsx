@@ -13,11 +13,13 @@ import {
 import { listSoberPartyStarts } from '@/entities/party';
 import { listRelapses, type Relapse } from '@/entities/relapse';
 import { DeleteRelapseButton } from '@/features/delete-relapse';
-import { formatDateTime, formatDay, t } from '@/shared/i18n';
+import { formatDateTime, formatDay } from '@/shared/i18n';
 import { toDay } from '@/shared/lib';
 import { Screen, Text } from '@/shared/ui';
 
 import { Calendar } from './Calendar';
+
+import { t } from '../i18n';
 
 type Data = {
   startAt: number;
@@ -95,7 +97,7 @@ export function ProgressPage() {
             opacity: got[k] ? 1 : 0.35,
           }}
         >
-          <Text>{t(`achievement_${k}`)}</Text>
+          <Text>{t(`habit.achievements.${k}`)}</Text>
           {got[k] && <Text>{formatDay(got[k])}</Text>}
         </View>
       ))}

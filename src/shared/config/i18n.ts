@@ -1,0 +1,101 @@
+import { defineDict } from '@/shared/i18n';
+
+// Заголовки и подписи готовых вариантов из options.ts
+export const dict = defineDict({
+  ru: {
+    titles: {
+      mood: 'Настроение',
+      place: 'Где был',
+      hardship: 'Что было сложным',
+      craving: 'Тянуло выпить',
+      helper: 'Что помогло',
+    },
+    mood: {
+      1: 'Ужасно',
+      2: 'Плохо',
+      3: 'Нормально',
+      4: 'Хорошо',
+      5: 'Отлично',
+    },
+    craving: {
+      none: 'Нет',
+      slight: 'Слегка',
+      noticeable: 'Заметно',
+      strong: 'Сильно',
+    },
+    place: {
+      home: 'Дома',
+      work: 'На работе',
+      company: 'В компании',
+      bar: 'В баре или ресторане',
+      family: 'С семьей',
+      road: 'В дороге',
+    },
+    hardship: {
+      stress: 'Стресс',
+      fatigue: 'Усталость',
+      boredom: 'Скука',
+      loneliness: 'Одиночество',
+      holiday: 'Праздник',
+      othersDrinking: 'Рядом пили',
+      nothing: 'Ничего',
+    },
+    helper: {
+      naDrink: 'Б/а напиток',
+      sport: 'Спорт',
+      food: 'Еда',
+      talk: 'Разговор',
+      sleep: 'Сон',
+      activity: 'Занятие',
+      notNeeded: 'Ничего не понадобилось',
+    },
+  },
+  en: {
+    titles: {
+      mood: 'Mood',
+      place: 'Where were you',
+      hardship: 'What was hard',
+      craving: 'Craving',
+      helper: 'What helped',
+    },
+    mood: {
+      1: 'Awful',
+      2: 'Bad',
+      3: 'Okay',
+      4: 'Good',
+      5: 'Great',
+    },
+    craving: {
+      none: 'None',
+      slight: 'Slight',
+      noticeable: 'Noticeable',
+      strong: 'Strong',
+    },
+    place: {
+      home: 'Home',
+      work: 'Work',
+      company: 'With friends',
+      bar: 'Bar or restaurant',
+      family: 'With family',
+      road: 'On the road',
+    },
+    hardship: {
+      stress: 'Stress',
+      fatigue: 'Fatigue',
+      boredom: 'Boredom',
+      loneliness: 'Loneliness',
+      holiday: 'Holiday',
+      othersDrinking: 'Others were drinking',
+      nothing: 'Nothing',
+    },
+    helper: {
+      naDrink: 'Alcohol-free drink',
+      sport: 'Sport',
+      food: 'Food',
+      talk: 'Talking to someone',
+      sleep: 'Sleep',
+      activity: 'Something to do',
+      notNeeded: 'Nothing needed',
+    },
+  },
+});

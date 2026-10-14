@@ -1,12 +1,77 @@
-import { getLocale, pluralize, type PluralForms } from '@/shared/lib';
+import {
+  getLocale,
+  pluralize,
+  type Locale,
+  type PluralForms,
+} from '@/shared/lib';
 
-import { en } from './en';
-import { ru } from './ru';
+import { common } from './common';
 
 const locale = getLocale();
-const lang = locale === 'ru' ? ru : en;
 
-export const t = (key: keyof typeof ru) => lang[key];
+type Tree = { [key: string]: string | Tree };
+type CommonKey = keyof typeof common.ru;
+
+// Ключи дерева через точку: { drinks: { beer } } -> 'drinks.beer'
+type Path<T> = {
+  [K in keyof T & (string | number)]: T[K] extends string
+    ? `${K}`
+    : `${K}.${Path<T[K]>}`;
+}[keyof T & (string | number)];
+
+const flatten = (tree: Tree, prefix = '', out: Record<string, string> = {}) => {
+  for (const [k, v] of Object.entries(tree)) {
+    if (typeof v === 'string') out[prefix + k] = v;
+    else flatten(v, `${prefix}${k}.`, out);
+  }
+  return out;
+};
+
+type Dict<T extends Tree = Tree> = Record<Locale, T>;
+
+const commonLang: Record<string, string> = common[locale];
+
+// Словарь слайса. NoInfer: тип задает ru, en обязан совпасть с ним по ключам
+export const defineDict = <T extends Tree>(dict: { ru: T; en: NoInfer<T> }) =>
+  dict;
+
+// Коллизии ключей запрещаем типами, с текстом ошибки прямо в сообщении tsc.
+// Неймспейс: тип значения становится строкой с текстом, словарь в нее не подходит
+type Clash<K, Taken, Msg extends string> = {
+  [P in K & Taken & string]: `i18n: "${P}" ${Msg}`;
+};
+// Ключ слайса: значение-литерал в пересечении дало бы never, поэтому требуем
+// фантомное поле i18nError, которого в словаре нет
+type OwnClash<D> = [keyof D & CommonKey] extends [never]
+  ? unknown
+  : {
+      i18nError: `i18n: "${keyof D & CommonKey & string}" уже есть в common.ts, переименуй ключ`;
+    };
+
+// t слайса: его строки, общие слова и словари нижних слоев под неймспейсами,
+// createT(dict, { habit: habitDict }) -> t('habit.drinks.beer')
+export const createT = <
+  D extends Tree,
+  N extends Record<string, Dict> = Record<never, never>,
+>(
+  dict: { ru: D; en: NoInfer<D> } & NoInfer<OwnClash<D>>,
+  deps?: N &
+    Clash<
+      keyof N,
+      keyof D | CommonKey,
+      'уже занят ключом, выбери другой неймспейс'
+    >,
+) => {
+  const lang = flatten(dict[locale]);
+  for (const [ns, d] of Object.entries((deps ?? {}) as Record<string, Dict>))
+    flatten(d[locale], `${ns}.`, lang);
+  // Ключ без строки (например, устаревший ключ из базы) показываем как есть, а не undefined
+  return (key: Path<D & { [K in keyof N]: N[K]['ru'] }> | CommonKey): string =>
+    lang[key] ?? commonLang[key] ?? key;
+};
+
+// Только общие слова, для app и shared/ui
+export const t = createT({ ru: {}, en: {} });
 
 const dayForms: PluralForms =
   locale === 'ru'

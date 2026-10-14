@@ -3,9 +3,11 @@ import { useState } from 'react';
 import { Button, View, type ColorValue } from 'react-native';
 
 import type { Day } from '@/entities/habit';
-import { formatMonth, t, weekdays } from '@/shared/i18n';
+import { formatMonth, weekdays } from '@/shared/i18n';
 import { toDay } from '@/shared/lib';
 import { Text } from '@/shared/ui';
+
+import { t } from '../i18n';
 
 // ponytail: цвета наугад, подберем вместе со стилизацией
 const SOBER = '#30a46c';
