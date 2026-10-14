@@ -6,7 +6,6 @@ export const ru = {
   company: 'Иду в компанию',
   dayReview: 'Итоги дня',
   relapse: 'Срыв',
-  soon: 'Скоро здесь будет экран',
   next: 'Дальше',
   cancel: 'Отмена',
   save: 'Сохранить',
@@ -65,6 +64,23 @@ export const ru = {
   cravingTitle: 'Тянуло выпить',
   helpersTitle: 'Что помогло',
 
+  // Режим компании
+  partyEnd: 'Примерно до',
+  partyDrinkTitle: 'Что пью вместо алкоголя',
+  partyDrinkCustom: 'Свой напиток',
+  deleteDrinkTitle: 'Убрать напиток из списка?',
+  deleteDrinkHint: 'Свой напиток можно убрать долгим нажатием.',
+  repliesTitle: 'Если спросят, почему не пьешь',
+  customReply: 'Свой ответ',
+  leaveEarly:
+    'Можно просто уйти, это нормально. Никто не обязан сидеть до конца.',
+  partyCardTitle: 'Как прошло?',
+  partyCardUntil: 'Вечер до',
+  partySober: 'Без алкоголя',
+  partyDrank: 'Выпил',
+  partyCancel: 'Не пошел',
+  partyOpen: 'Открыть режим',
+
   // Причины
   noReasons: 'Пока нет причин. Добавь то, ради чего бросаешь.',
   addReasonTitle: 'Добавить причину',
@@ -109,6 +125,9 @@ export const ru = {
   achievement_weekend: 'Первые трезвые выходные',
   achievement_reviews7: 'Итоги дня 7 дней подряд',
   achievement_comeback7: 'Вернулся после срыва и продержался неделю',
+  achievement_company1: 'Выстоял в компании',
+  achievement_company5: 'Выстоял в компании 5 раз',
+  achievement_company10: 'Выстоял в компании 10 раз',
 
   // Подписи ключей из shared/config/options.ts, общие для срыва и итогов дня
   mood_1: 'Ужасно',
@@ -155,4 +174,17 @@ export const ru = {
   drink_wine: 'Бокал вина',
   drink_shot: 'Шот',
   drink_cocktail: 'Коктейль',
+
+  // Напитки на вечер из entities/party
+  partyDrink_naBeer: 'Б/а пиво',
+  partyDrink_naCocktails: 'Б/а коктейли',
+  partyDrink_tea: 'Чай',
+  partyDrink_juice: 'Сок',
+  partyDrink_water: 'Вода',
+
+  // Готовые ответы из entities/reply
+  reply_driving: 'Я за рулем',
+  reply_sport: 'Я на спорте',
+  reply_dontWant: 'Просто не хочу',
+  reply_quit: 'Я бросил',
 };

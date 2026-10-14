@@ -8,7 +8,6 @@ export const en: typeof ru = {
   company: 'Going out',
   dayReview: 'Day review',
   relapse: 'Relapse',
-  soon: 'This screen is coming soon',
   next: 'Next',
   cancel: 'Cancel',
   save: 'Save',
@@ -64,6 +63,22 @@ export const en: typeof ru = {
   cravingTitle: 'Craving',
   helpersTitle: 'What helped',
 
+  partyEnd: 'Until about',
+  partyDrinkTitle: "What I'm drinking instead",
+  partyDrinkCustom: 'Other drink',
+  deleteDrinkTitle: 'Remove this drink from the list?',
+  deleteDrinkHint: 'Long-press your own drink to remove it.',
+  repliesTitle: "If they ask why you're not drinking",
+  customReply: 'Your own answer',
+  leaveEarly:
+    "You can just leave, that's okay. Nobody has to stay till the end.",
+  partyCardTitle: 'How did it go?',
+  partyCardUntil: 'Evening until',
+  partySober: 'No alcohol',
+  partyDrank: 'I drank',
+  partyCancel: "Didn't go",
+  partyOpen: 'Open going-out mode',
+
   noReasons: "No reasons yet. Add what you're quitting for.",
   addReasonTitle: 'Add a reason',
   customReason: 'Your own reason',
@@ -105,6 +120,9 @@ export const en: typeof ru = {
   achievement_weekend: 'First sober weekend',
   achievement_reviews7: '7 day reviews in a row',
   achievement_comeback7: 'Came back after a relapse and held a week',
+  achievement_company1: 'Stayed sober in company',
+  achievement_company5: 'Stayed sober in company 5 times',
+  achievement_company10: 'Stayed sober in company 10 times',
 
   mood_1: 'Awful',
   mood_2: 'Bad',
@@ -148,4 +166,15 @@ export const en: typeof ru = {
   drink_wine: 'Glass of wine',
   drink_shot: 'Shot',
   drink_cocktail: 'Cocktail',
+
+  partyDrink_naBeer: 'Alcohol-free beer',
+  partyDrink_naCocktails: 'Mocktails',
+  partyDrink_tea: 'Tea',
+  partyDrink_juice: 'Juice',
+  partyDrink_water: 'Water',
+
+  reply_driving: "I'm driving",
+  reply_sport: "I'm training",
+  reply_dontWant: "Just don't feel like it",
+  reply_quit: 'I quit',
 };

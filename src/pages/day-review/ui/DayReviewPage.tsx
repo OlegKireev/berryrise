@@ -5,6 +5,7 @@ import { Button, TextInput, View } from 'react-native';
 
 import { reviewDay, getDayReview, saveDayReview } from '@/entities/day-review';
 import { getHabit } from '@/entities/habit';
+import { hasPartyOn } from '@/entities/party';
 import { listReasons, reasonLabel, type ReasonRow } from '@/entities/reason';
 import {
   cravings,
@@ -102,6 +103,16 @@ export function DayReviewPage() {
         setHardshipKeys(JSON.parse(existing.hardships));
         setHelperKeys(JSON.parse(existing.helpers));
         setNote(existing.note ?? '');
+      } else {
+        // Была вечеринка в этот день - заранее выбираем место "в компании"
+        const [y, m, d] = day.split('-').map(Number) as [
+          number,
+          number,
+          number,
+        ];
+        const from = new Date(y, m - 1, d).getTime();
+        const to = new Date(y, m - 1, d + 1).getTime();
+        if (await hasPartyOn(db, from, to)) setPlaceKeys(['company']);
       }
       setState({
         beforeStart: !habit || day < toDay(habit.startAt),

@@ -7,15 +7,18 @@ export function Chip({
   label,
   selected,
   onPress,
+  onLongPress,
 }: {
   label: string;
   selected: boolean;
   onPress: () => void;
+  onLongPress?: () => void;
 }) {
   const { colors } = useTheme();
   return (
     <Pressable
       onPress={onPress}
+      onLongPress={onLongPress}
       accessibilityRole="checkbox"
       accessibilityState={{ checked: selected }}
       style={{

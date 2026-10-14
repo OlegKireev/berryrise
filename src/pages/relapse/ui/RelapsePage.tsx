@@ -1,10 +1,12 @@
-import { router, useTheme } from 'expo-router';
+import { router, useLocalSearchParams, useTheme } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useEffect, useState } from 'react';
 import { Button, TextInput, View } from 'react-native';
 
 import { getHabit, type Habit } from '@/entities/habit';
+import { getParty } from '@/entities/party';
 import { insertRelapse } from '@/entities/relapse';
+import { logPartyRelapse } from '@/features/log-party-relapse';
 import {
   hardships,
   moods,
@@ -22,6 +24,8 @@ const toggle = <K,>(list: K[], key: K) =>
 export function RelapsePage() {
   const db = useSQLiteContext();
   const { colors } = useTheme();
+  // Открыта кнопкой "выпил" из карточки вечеринки
+  const { partyId } = useLocalSearchParams<{ partyId?: string }>();
   const [habit, setHabit] = useState<Habit | null>(null);
   // null - не трогали, срыв в момент сохранения
   const [at, setAt] = useState<Date | null>(null);
@@ -33,20 +37,29 @@ export function RelapsePage() {
 
   useEffect(() => {
     getHabit(db).then(setHabit);
-  }, [db]);
+    // Вечеринка уже кончилась - по умолчанию срыв в ее конце
+    if (partyId)
+      getParty(db, partyId).then(
+        (p) =>
+          p && p.expectedEndAt < Date.now() && setAt(new Date(p.expectedEndAt)),
+      );
+  }, [db, partyId]);
 
   if (!habit) return null;
 
   const save = async () => {
     setSaving(true);
-    await insertRelapse(db, {
+    const data = {
       habitId: habit.id,
       at: at?.getTime() ?? Date.now(),
       mood,
       places: placeKeys,
       hardships: hardshipKeys,
       note,
-    });
+    };
+    await (partyId
+      ? logPartyRelapse(db, partyId, data)
+      : insertRelapse(db, data));
     router.back();
   };
 

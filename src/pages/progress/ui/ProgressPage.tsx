@@ -3,13 +3,14 @@ import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback, useState } from 'react';
 import { View } from 'react-native';
 
-import { listDayReviewDates } from '@/entities/day-review';
+import { listDayReviewDates, listCompanyDates } from '@/entities/day-review';
 import {
   achievementKeys,
   achievements,
   getHabit,
   soberDays,
 } from '@/entities/habit';
+import { listSoberPartyStarts } from '@/entities/party';
 import { listRelapses, type Relapse } from '@/entities/relapse';
 import { DeleteRelapseButton } from '@/features/delete-relapse';
 import { formatDateTime, formatDay, t } from '@/shared/i18n';
@@ -23,6 +24,8 @@ type Data = {
   now: number;
   relapses: Pick<Relapse, 'id' | 'at'>[];
   reviewDates: string[];
+  soberParties: number[];
+  companyDates: string[];
 };
 
 export function ProgressPage() {
@@ -31,17 +34,22 @@ export function ProgressPage() {
 
   const load = useCallback(() => {
     (async () => {
-      const [habit, relapses, reviewDates] = await Promise.all([
-        getHabit(db),
-        listRelapses(db),
-        listDayReviewDates(db),
-      ]);
+      const [habit, relapses, reviewDates, soberParties, companyDates] =
+        await Promise.all([
+          getHabit(db),
+          listRelapses(db),
+          listDayReviewDates(db),
+          listSoberPartyStarts(db),
+          listCompanyDates(db),
+        ]);
       if (!habit) return;
       setData({
         startAt: habit.startAt,
         now: Date.now(),
         relapses,
         reviewDates,
+        soberParties,
+        companyDates,
       });
     })();
   }, [db]);
@@ -49,13 +57,17 @@ export function ProgressPage() {
   useFocusEffect(load);
 
   if (!data) return null;
-  const { startAt, now, relapses, reviewDates } = data;
+  const { startAt, now, relapses, reviewDates, soberParties, companyDates } =
+    data;
   const days = soberDays(
     startAt,
     relapses.map((r) => r.at),
     now,
   );
-  const got = achievements(days, reviewDates, toDay(now));
+  const got = achievements(days, reviewDates, toDay(now), {
+    soberParties,
+    companyDates,
+  });
   const gotCount = achievementKeys.filter((k) => got[k]).length;
 
   return (
