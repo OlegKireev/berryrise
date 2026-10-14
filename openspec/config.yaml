@@ -6,7 +6,7 @@ context: |
   Product spec lives in docs/idea.md: check it before proposing a feature.
   Android-first; iOS must not break, but iOS-only work is out of scope unless stated.
   No network, analytics or accounts: user data never leaves the device (except Android Auto Backup and manual export).
-  Prefer what runs in Expo Go; a package with custom native code requires a development build, call it out in design.
+  Development happens in a development build (expo-dev-client), not Expo Go; a new package with native code or a config plugin requires rebuilding it, call it out in design.
 
 rules:
   proposal:
