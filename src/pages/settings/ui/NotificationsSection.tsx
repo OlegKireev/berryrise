@@ -2,6 +2,7 @@ import { Button, Linking } from 'react-native';
 
 import {
   AutostartHint,
+  DevNotificationDebug,
   NotificationForm,
   needsAutostartHint,
 } from '@/features/notifications';
@@ -35,6 +36,7 @@ export function NotificationsSection() {
         onChange={settings.change}
       />
       {needsAutostartHint && <AutostartHint />}
+      {__DEV__ && <DevNotificationDebug />}
     </>
   );
 }
