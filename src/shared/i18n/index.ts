@@ -37,6 +37,23 @@ export const formatDay = (date: string) => {
   return shortDate.format(new Date(y, m - 1, d));
 };
 
+const monthYear = new Intl.DateTimeFormat(locale, {
+  month: 'long',
+  year: 'numeric',
+});
+
+// "Октябрь 2026 г." / "October 2026", month с нуля, как в Date
+export const formatMonth = (year: number, month: number) => {
+  const s = monthYear.format(new Date(year, month, 1));
+  return s.charAt(0).toUpperCase() + s.slice(1);
+};
+
+// Короткие дни недели с понедельника: 12.10.2026 - понедельник
+const weekday = new Intl.DateTimeFormat(locale, { weekday: 'short' });
+export const weekdays = Array.from({ length: 7 }, (_, i) =>
+  weekday.format(new Date(2026, 9, 12 + i)),
+);
+
 const portionForms: PluralForms =
   locale === 'ru'
     ? { one: 'порция', few: 'порции', many: 'порций' }

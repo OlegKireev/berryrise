@@ -12,6 +12,14 @@ export const getCheckin = (db: SQLiteDatabase, date: string) =>
     date,
   );
 
+// Даты всех неудаленных чек-инов, для ачивок
+export const listCheckinDates = async (db: SQLiteDatabase) =>
+  (
+    await db.getAllAsync<Pick<Checkin, 'date'>>(
+      'SELECT date FROM checkin WHERE deletedAt IS NULL',
+    )
+  ).map((r) => r.date);
+
 type CheckinData = {
   date: string;
   mood: Mood;
