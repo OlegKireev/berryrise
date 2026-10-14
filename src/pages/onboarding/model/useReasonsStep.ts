@@ -20,7 +20,7 @@ export function useReasonsStep() {
     const items: NewReason[] = keys.map((key) => ({ key }));
     if (text) items.push({ customText: text });
     await addReasons(db, items);
-    router.replace('/');
+    router.replace('/onboarding/notifications');
   };
 
   return {

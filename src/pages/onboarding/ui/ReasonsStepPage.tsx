@@ -35,7 +35,7 @@ export function ReasonsStepPage() {
       <Button
         title={t('skip')}
         disabled={form.saving}
-        onPress={() => router.replace('/')}
+        onPress={() => router.replace('/onboarding/notifications')}
       />
     </Screen>
   );

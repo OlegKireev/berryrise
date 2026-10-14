@@ -27,6 +27,10 @@ export const t = createT(
       spendingTitle: 'Сколько ты тратил?',
       spendingHint:
         'Примерно, в неделю. По этим цифрам посчитаем, сколько ты сэкономил. Можно пропустить и указать позже в настройках.',
+      notificationsTitle: 'Напоминания',
+      notificationsHint:
+        'Только то, что ты включишь сам. Время и дни можно поменять в настройках.',
+      done: 'Готово',
       next: 'Дальше',
       skip: 'Пропустить',
     },
@@ -54,6 +58,10 @@ export const t = createT(
       spendingTitle: 'How much did you spend?',
       spendingHint:
         "Roughly, per week. We'll use it to count your savings. You can skip this and add it later in settings.",
+      notificationsTitle: 'Reminders',
+      notificationsHint:
+        'Only what you turn on yourself. You can change times and days in settings.',
+      done: 'Done',
       next: 'Next',
       skip: 'Skip',
     },
