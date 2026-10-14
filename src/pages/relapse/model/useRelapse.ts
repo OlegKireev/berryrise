@@ -6,6 +6,7 @@ import { getHabit, type Habit } from '@/entities/habit';
 import { getParty } from '@/entities/party';
 import { insertRelapse } from '@/entities/relapse';
 import { logPartyRelapse } from '@/features/log-party-relapse';
+import { syncNotifications } from '@/features/notifications';
 import type { Hardship, Mood, Place } from '@/shared/config';
 import { toggle } from '@/shared/lib';
 
@@ -49,6 +50,7 @@ export function useRelapse() {
     await (partyId
       ? logPartyRelapse(db, partyId, data)
       : insertRelapse(db, data));
+    if (partyId) syncNotifications(db);
     router.back();
   };
 

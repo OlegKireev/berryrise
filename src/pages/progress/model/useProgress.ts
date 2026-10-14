@@ -11,6 +11,7 @@ import {
 } from '@/entities/habit';
 import { listSoberPartyStarts } from '@/entities/party';
 import { listRelapses, type Relapse } from '@/entities/relapse';
+import { syncNotifications } from '@/features/notifications';
 import { toDay } from '@/shared/lib';
 
 type Data = {
@@ -75,6 +76,10 @@ export function useProgress() {
     got,
     gotCount: achievementKeys.filter((k) => got[k]).length,
     relapses,
-    reload: load,
+    // удаление срыва из вечеринки снова делает ее идущей: нужен "как прошло?"
+    reload: () => {
+      syncNotifications(db);
+      load();
+    },
   };
 }

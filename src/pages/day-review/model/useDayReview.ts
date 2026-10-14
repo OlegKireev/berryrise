@@ -1,4 +1,4 @@
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useEffect, useState } from 'react';
 
@@ -6,6 +6,7 @@ import { reviewDay, getDayReview, saveDayReview } from '@/entities/day-review';
 import { getHabit } from '@/entities/habit';
 import { hasPartyOn } from '@/entities/party';
 import { listReasons, type ReasonRow } from '@/entities/reason';
+import { syncNotifications } from '@/features/notifications';
 import type { Craving, Hardship, Helper, Mood, Place } from '@/shared/config';
 import { toDay, toggle, toggleExclusive } from '@/shared/lib';
 
@@ -13,10 +14,12 @@ import { toDay, toggle, toggleExclusive } from '@/shared/lib';
 export function useDayReview() {
   const db = useSQLiteContext();
 
-  // День считаем один раз при открытии: сохраняем ровно за тот, что в заголовке
+  // День из уведомления, иначе по текущему времени. Считаем один раз при открытии:
+  // сохраняем ровно за тот, что в заголовке
+  const params = useLocalSearchParams<{ day?: string }>();
   const [{ day, isToday }] = useState(() => {
     const now = Date.now();
-    const day = reviewDay(now);
+    const day = params.day ?? reviewDay(now);
     return { day, isToday: day === toDay(now) };
   });
   const [state, setState] = useState<{
@@ -79,6 +82,7 @@ export function useDayReview() {
       helpers,
       note,
     });
+    syncNotifications(db);
     router.back();
   };
 

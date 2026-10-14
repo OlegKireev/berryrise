@@ -12,6 +12,7 @@ import {
   type PartyDrink,
 } from '@/entities/party';
 import { listReasons, type ReasonRow } from '@/entities/reason';
+import { syncNotifications } from '@/features/notifications';
 import { toggle } from '@/shared/lib';
 
 // Режим "иду в компанию". null - еще грузим
@@ -33,6 +34,8 @@ export function useCompany() {
       ]);
       setParty(p);
       setCustomDrinks(drinks);
+      // новая вечеринка: "как прошло?" на конец, день риска сегодня уже не нужен
+      syncNotifications(db);
       setReasons(r);
     })();
   }, [db]);
@@ -59,7 +62,7 @@ export function useCompany() {
     reasons,
     changeEnd: (d: Date) => {
       setParty({ ...party, expectedEndAt: d.getTime() });
-      setPartyEnd(db, party.id, d.getTime());
+      setPartyEnd(db, party.id, d.getTime()).then(() => syncNotifications(db));
     },
     drinks: {
       keys: drinkKeys,

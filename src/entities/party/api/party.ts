@@ -117,6 +117,15 @@ export const listSoberPartyStarts = async (db: SQLiteDatabase) =>
     )
   ).map((p) => p.startAt);
 
+// Начала неудаленных вечеринок с from, для расписания уведомлений
+export const listPartyStartsSince = async (db: SQLiteDatabase, from: number) =>
+  (
+    await db.getAllAsync<Pick<Party, 'startAt'>>(
+      'SELECT startAt FROM party WHERE deletedAt IS NULL AND startAt >= ?',
+      from,
+    )
+  ).map((p) => p.startAt);
+
 // Свои напитки - общий список для всех вечеринок, в settings одним JSON-массивом.
 // ponytail: список целиком в одной строке, отдельная таблица понадобится, если появится синхронизация
 const CUSTOM_DRINKS = 'customPartyDrinks';

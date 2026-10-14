@@ -11,6 +11,7 @@ import {
   type Party,
 } from '@/entities/party';
 import { listRelapses } from '@/entities/relapse';
+import { syncNotifications } from '@/features/notifications';
 import { toDay } from '@/shared/lib';
 
 // Данные экрана "Сегодня". null - еще грузим
@@ -64,6 +65,12 @@ export function useToday() {
     return null;
   }
 
+  // ответ на вечеринку снимает ее "как прошло?"
+  const afterParty = () => {
+    syncNotifications(db);
+    load();
+  };
+
   const { habit, party } = data;
   const s = streak(habit.startAt, data.relapseAts, now);
   const day = reviewDay(now);
@@ -79,7 +86,8 @@ export function useToday() {
     isToday: day === toDay(now),
     reviewDone: data.filledDay === day,
     beforeStart: day < toDay(habit.startAt),
-    markPartySober: (id: string) => setPartyResult(db, id, 'sober').then(load),
-    cancelParty: (id: string) => cancelParty(db, id).then(load),
+    markPartySober: (id: string) =>
+      setPartyResult(db, id, 'sober').then(afterParty),
+    cancelParty: (id: string) => cancelParty(db, id).then(afterParty),
   };
 }

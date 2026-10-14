@@ -3,8 +3,15 @@ import { SQLiteProvider } from 'expo-sqlite';
 import { StatusBar } from 'expo-status-bar';
 import { useColorScheme } from 'react-native';
 
+import { useNotifications } from '@/features/notifications';
 import { migrate } from '@/shared/db';
 import { t } from '@/shared/i18n';
+
+// Хуку нужна база, поэтому он внутри SQLiteProvider
+function Notifications() {
+  useNotifications();
+  return null;
+}
 
 export default function RootLayout() {
   const scheme = useColorScheme();
@@ -13,6 +20,7 @@ export default function RootLayout() {
       databaseName="resheno.db"
       onInit={migrate}
     >
+      <Notifications />
       <ThemeProvider value={scheme === 'light' ? DefaultTheme : DarkTheme}>
         <Stack>
           <Stack.Screen
