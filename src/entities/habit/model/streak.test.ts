@@ -2,7 +2,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
-import { streak } from './streak.ts';
+import { soberDays, streak } from './streak.ts';
 
 // Месяц с нуля, как в Date: oct(13, 9) = 13 октября, 09:00 по местному времени
 const oct = (d: number, h = 12, min = 0) =>
@@ -54,5 +54,20 @@ test('переход на зимнее время не сбивает счет',
       new Date(2026, 2, 31, 12).getTime(),
     ).current,
     3,
+  );
+});
+
+test('soberDays: без дня старта, с сегодня, срыв не трезвый', () => {
+  assert.deepEqual(soberDays(oct(12, 23), [oct(14, 22)], oct(15, 8)), [
+    { date: '2026-10-13', sober: true },
+    { date: '2026-10-14', sober: false },
+    { date: '2026-10-15', sober: true },
+  ]);
+});
+
+test('soberDays: даты подряд через переход на зимнее время', () => {
+  assert.deepEqual(
+    soberDays(oct(24), [], oct(27)).map((d) => d.date),
+    ['2026-10-25', '2026-10-26', '2026-10-27'],
   );
 });
