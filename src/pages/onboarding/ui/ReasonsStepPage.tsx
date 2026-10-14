@@ -1,39 +1,17 @@
 import { router, useTheme } from 'expo-router';
-import { useSQLiteContext } from 'expo-sqlite';
-import { useState } from 'react';
 import { Button, TextInput, View } from 'react-native';
 
-import {
-  addReasons,
-  reasons,
-  type NewReason,
-  type Reason,
-} from '@/entities/reason';
+import { reasons } from '@/entities/reason';
 import { Chip, Screen, Text } from '@/shared/ui';
+
+import { useReasonsStep } from '../model/useReasonsStep';
 
 import { t } from '../i18n';
 
 // Шаг после старта: привычка уже есть, поэтому шаг необязательный и назад не ведет
 export function ReasonsStepPage() {
-  const db = useSQLiteContext();
   const { colors } = useTheme();
-  // Готовые в порядке выбора
-  const [keys, setKeys] = useState<Reason[]>([]);
-  const [custom, setCustom] = useState('');
-  const [saving, setSaving] = useState(false);
-
-  const text = custom.trim();
-
-  const toggle = (k: Reason) =>
-    setKeys(keys.includes(k) ? keys.filter((x) => x !== k) : [...keys, k]);
-
-  const next = async () => {
-    setSaving(true);
-    const items: NewReason[] = keys.map((key) => ({ key }));
-    if (text) items.push({ customText: text });
-    await addReasons(db, items);
-    router.replace('/');
-  };
+  const form = useReasonsStep();
 
   return (
     <Screen>
@@ -46,14 +24,14 @@ export function ReasonsStepPage() {
           <Chip
             key={k}
             label={t(`reason.labels.${k}`)}
-            selected={keys.includes(k)}
-            onPress={() => toggle(k)}
+            selected={form.keys.includes(k)}
+            onPress={() => form.toggleKey(k)}
           />
         ))}
       </View>
       <TextInput
-        value={custom}
-        onChangeText={setCustom}
+        value={form.custom}
+        onChangeText={form.setCustom}
         placeholder={t('reason.customReason')}
         placeholderTextColor={colors.border}
         style={{
@@ -66,12 +44,12 @@ export function ReasonsStepPage() {
       />
       <Button
         title={t('next')}
-        disabled={saving || (keys.length === 0 && !text)}
-        onPress={next}
+        disabled={!form.canSubmit}
+        onPress={form.submit}
       />
       <Button
         title={t('skip')}
-        disabled={saving}
+        disabled={form.saving}
         onPress={() => router.replace('/')}
       />
     </Screen>

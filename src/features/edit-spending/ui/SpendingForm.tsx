@@ -1,36 +1,13 @@
 import { useTheme } from 'expo-router';
-import { useSQLiteContext } from 'expo-sqlite';
-import { useState } from 'react';
 import { Button, TextInput, View } from 'react-native';
 
-import {
-  drinks,
-  updateSpending,
-  type Drink,
-  type Habit,
-} from '@/entities/habit';
+import { drinks, type Habit } from '@/entities/habit';
 import { currencySymbol } from '@/shared/i18n';
-import { getLocale } from '@/shared/lib';
 import { Chip, Text } from '@/shared/ui';
 
+import { currencies, useSpendingForm } from '../model/useSpendingForm';
+
 import { t } from '../i18n';
-
-// ponytail: короткий список частых валют, расширим по запросу
-const currencies = [
-  'RUB',
-  'USD',
-  'EUR',
-  'GEL',
-  'KZT',
-  'UAH',
-  'BYN',
-  'GBP',
-  'TRY',
-  'AMD',
-];
-
-const digits = (s: string) => s.replace(/\D/g, '');
-const toInt = (s: string) => (s === '' ? null : Number(s));
 
 type Props = {
   habit: Habit;
@@ -40,20 +17,8 @@ type Props = {
 
 // Траты и пресеты напитков: одна форма для онбординга и настроек
 export function SpendingForm({ habit, submitLabel, onSaved }: Props) {
-  const db = useSQLiteContext();
   const { colors } = useTheme();
-  const [amount, setAmount] = useState(habit.weeklySpend?.toString() ?? '');
-  const [currency, setCurrency] = useState(
-    habit.currency ?? (getLocale() === 'ru' ? 'RUB' : 'USD'),
-  );
-  const [counts, setCounts] = useState<Partial<Record<Drink, string>>>(() =>
-    Object.fromEntries(
-      Object.entries(JSON.parse(habit.drinks) as Record<Drink, number>).map(
-        ([k, n]) => [k, String(n)],
-      ),
-    ),
-  );
-  const [saving, setSaving] = useState(false);
+  const form = useSpendingForm(habit, onSaved);
 
   const input = {
     color: colors.text,
@@ -63,25 +28,12 @@ export function SpendingForm({ habit, submitLabel, onSaved }: Props) {
     padding: 8,
   };
 
-  const save = async () => {
-    setSaving(true);
-    await updateSpending(db, habit.id, {
-      weeklySpend: toInt(amount),
-      currency,
-      drinks: Object.fromEntries(
-        drinks.map((d) => [d, toInt(counts[d] ?? '') ?? 0]),
-      ),
-    });
-    setSaving(false);
-    onSaved();
-  };
-
   return (
     <>
       <Text style={{ fontWeight: '600' }}>{t('weeklySpend')}</Text>
       <TextInput
-        value={amount}
-        onChangeText={(s) => setAmount(digits(s))}
+        value={form.amount}
+        onChangeText={form.setAmount}
         keyboardType="number-pad"
         maxLength={9}
         style={input}
@@ -93,8 +45,8 @@ export function SpendingForm({ habit, submitLabel, onSaved }: Props) {
             <Chip
               key={c}
               label={symbol === c ? c : `${c} ${symbol}`}
-              selected={currency === c}
-              onPress={() => setCurrency(c)}
+              selected={form.currency === c}
+              onPress={() => form.setCurrency(c)}
             />
           );
         })}
@@ -108,8 +60,8 @@ export function SpendingForm({ habit, submitLabel, onSaved }: Props) {
         >
           <Text style={{ flex: 1 }}>{t(`habit.drinks.${d}`)}</Text>
           <TextInput
-            value={counts[d] ?? ''}
-            onChangeText={(s) => setCounts({ ...counts, [d]: digits(s) })}
+            value={form.counts[d] ?? ''}
+            onChangeText={(s) => form.setCount(d, s)}
             keyboardType="number-pad"
             maxLength={3}
             placeholder="0"
@@ -121,8 +73,8 @@ export function SpendingForm({ habit, submitLabel, onSaved }: Props) {
 
       <Button
         title={submitLabel}
-        disabled={saving}
-        onPress={save}
+        disabled={form.saving}
+        onPress={form.save}
       />
     </>
   );

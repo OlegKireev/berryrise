@@ -1,92 +1,41 @@
-import { useFocusEffect } from 'expo-router';
-import { useSQLiteContext } from 'expo-sqlite';
-import { useCallback, useState } from 'react';
 import { View } from 'react-native';
 
-import { listDayReviewDates, listCompanyDates } from '@/entities/day-review';
-import {
-  achievementKeys,
-  achievements,
-  getHabit,
-  soberDays,
-} from '@/entities/habit';
-import { listSoberPartyStarts } from '@/entities/party';
-import { listRelapses, type Relapse } from '@/entities/relapse';
+import { achievementKeys } from '@/entities/habit';
 import { DeleteRelapseButton } from '@/features/delete-relapse';
 import { formatDateTime, formatDay } from '@/shared/i18n';
-import { toDay } from '@/shared/lib';
 import { Screen, Text } from '@/shared/ui';
 
 import { Calendar } from './Calendar';
 
+import { useProgress } from '../model/useProgress';
+
 import { t } from '../i18n';
 
-type Data = {
-  startAt: number;
-  now: number;
-  relapses: Pick<Relapse, 'id' | 'at'>[];
-  reviewDates: string[];
-  soberParties: number[];
-  companyDates: string[];
-};
-
 export function ProgressPage() {
-  const db = useSQLiteContext();
-  const [data, setData] = useState<Data | null>(null);
+  const data = useProgress();
 
-  const load = useCallback(() => {
-    (async () => {
-      const [habit, relapses, reviewDates, soberParties, companyDates] =
-        await Promise.all([
-          getHabit(db),
-          listRelapses(db),
-          listDayReviewDates(db),
-          listSoberPartyStarts(db),
-          listCompanyDates(db),
-        ]);
-      if (!habit) return;
-      setData({
-        startAt: habit.startAt,
-        now: Date.now(),
-        relapses,
-        reviewDates,
-        soberParties,
-        companyDates,
-      });
-    })();
-  }, [db]);
+  if (!data) {
+    return null;
+  }
 
-  useFocusEffect(load);
-
-  if (!data) return null;
-  const { startAt, now, relapses, reviewDates, soberParties, companyDates } =
-    data;
-  const days = soberDays(
-    startAt,
-    relapses.map((r) => r.at),
-    now,
-  );
-  const got = achievements(days, reviewDates, toDay(now), {
-    soberParties,
-    companyDates,
-  });
-  const gotCount = achievementKeys.filter((k) => got[k]).length;
+  const { got, relapses } = data;
 
   return (
     <Screen>
       <Text style={{ fontSize: 20, fontWeight: '600' }}>{t('calendar')}</Text>
       <Calendar
-        startAt={startAt}
-        now={now}
-        days={days}
-        reviewDates={new Set(reviewDates)}
+        startAt={data.startAt}
+        now={data.now}
+        days={data.days}
+        reviewDates={data.reviewDates}
       />
 
       <Text style={{ fontSize: 20, fontWeight: '600' }}>
         {t('achievementsTitle')}
       </Text>
       <Text style={{ opacity: 0.6 }}>
-        {t('achievementsGot')} {gotCount} {t('of')} {achievementKeys.length}
+        {t('achievementsGot')} {data.gotCount} {t('of')}{' '}
+        {achievementKeys.length}
       </Text>
       {achievementKeys.map((k) => (
         <View
@@ -118,7 +67,7 @@ export function ProgressPage() {
           <Text>{formatDateTime(r.at)}</Text>
           <DeleteRelapseButton
             id={r.id}
-            onDeleted={load}
+            onDeleted={data.reload}
           />
         </View>
       ))}

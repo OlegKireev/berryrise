@@ -1,36 +1,17 @@
 import { useTheme } from 'expo-router';
-import { useState } from 'react';
 import { Button, View, type ColorValue } from 'react-native';
 
 import type { Day } from '@/entities/habit';
 import { formatMonth, weekdays } from '@/shared/i18n';
-import { toDay } from '@/shared/lib';
 import { Text } from '@/shared/ui';
+
+import { useCalendar, type Status } from '../model/useCalendar';
 
 import { t } from '../i18n';
 
 // ponytail: цвета наугад, подберем вместе со стилизацией
 const SOBER = '#30a46c';
 const RELAPSE = '#e5484d';
-
-type Status = 'sober' | 'relapse' | null; // null - нейтральный день
-
-const monthIndex = (ms: number) => {
-  const d = new Date(ms);
-  return d.getFullYear() * 12 + d.getMonth();
-};
-
-// Ячейки месяца с понедельника, null - добивка до полной недели
-function monthCells(year: number, month: number): (string | null)[] {
-  const first = new Date(year, month, 1);
-  const length = new Date(year, month + 1, 0).getDate();
-  const cells: (string | null)[] = Array((first.getDay() + 6) % 7).fill(null);
-  for (let d = 1; d <= length; d++) {
-    cells.push(toDay(new Date(year, month, d).getTime()));
-  }
-  while (cells.length % 7) cells.push(null);
-  return cells;
-}
 
 const Dot = ({ color }: { color: ColorValue }) => (
   <View
@@ -50,27 +31,10 @@ export function Calendar({
   reviewDates: Set<string>;
 }) {
   const { colors } = useTheme();
-  const [shown, setShown] = useState(() => monthIndex(now));
-  // если экран вернулся из фона в новый месяц, не даем уйти за границы
-  const first = monthIndex(startAt);
-  const last = monthIndex(now);
-  const index = Math.min(Math.max(shown, first), last);
-  const year = Math.floor(index / 12);
-  const month = index % 12;
-
-  const sober = new Map(days.map((d) => [d.date, d.sober]));
-  const status = (date: string): Status => {
-    const s = sober.get(date);
-    if (s === undefined) return null;
-    return s ? 'sober' : 'relapse';
-  };
+  const { year, month, weeks, status, canPrev, canNext, prev, next } =
+    useCalendar(startAt, now, days);
   const color = (s: Status) =>
     s === null ? colors.border : s === 'sober' ? SOBER : RELAPSE;
-
-  const cells = monthCells(year, month);
-  const weeks = Array.from({ length: cells.length / 7 }, (_, i) =>
-    cells.slice(i * 7, i * 7 + 7),
-  );
 
   const legend: [Status, string][] = [
     ['sober', t('legendSober')],
@@ -89,15 +53,15 @@ export function Calendar({
         <Button
           title="<"
           accessibilityLabel={t('prevMonth')}
-          disabled={index <= first}
-          onPress={() => setShown(index - 1)}
+          disabled={!canPrev}
+          onPress={prev}
         />
         <Text style={{ fontWeight: '600' }}>{formatMonth(year, month)}</Text>
         <Button
           title=">"
           accessibilityLabel={t('nextMonth')}
-          disabled={index >= last}
-          onPress={() => setShown(index + 1)}
+          disabled={!canNext}
+          onPress={next}
         />
       </View>
       <View style={{ flexDirection: 'row', gap: 4 }}>

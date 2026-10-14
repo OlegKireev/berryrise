@@ -1,68 +1,20 @@
-import { router, useLocalSearchParams, useTheme } from 'expo-router';
-import { useSQLiteContext } from 'expo-sqlite';
-import { useEffect, useState } from 'react';
+import { useTheme } from 'expo-router';
 import { Button, TextInput, View } from 'react-native';
 
-import { getHabit, type Habit } from '@/entities/habit';
-import { getParty } from '@/entities/party';
-import { insertRelapse } from '@/entities/relapse';
-import { logPartyRelapse } from '@/features/log-party-relapse';
-import {
-  hardships,
-  moods,
-  places,
-  type Hardship,
-  type Mood,
-  type Place,
-} from '@/shared/config';
+import { hardships, moods, places } from '@/shared/config';
 import { Chip, DateTimeField, Screen, Text } from '@/shared/ui';
+
+import { useRelapse } from '../model/useRelapse';
 
 import { t } from '../i18n';
 
-const toggle = <K,>(list: K[], key: K) =>
-  list.includes(key) ? list.filter((k) => k !== key) : [...list, key];
-
 export function RelapsePage() {
-  const db = useSQLiteContext();
   const { colors } = useTheme();
-  // Открыта кнопкой "выпил" из карточки вечеринки
-  const { partyId } = useLocalSearchParams<{ partyId?: string }>();
-  const [habit, setHabit] = useState<Habit | null>(null);
-  // null - не трогали, срыв в момент сохранения
-  const [at, setAt] = useState<Date | null>(null);
-  const [mood, setMood] = useState<Mood | null>(null);
-  const [placeKeys, setPlaceKeys] = useState<Place[]>([]);
-  const [hardshipKeys, setHardshipKeys] = useState<Hardship[]>([]);
-  const [note, setNote] = useState('');
-  const [saving, setSaving] = useState(false);
+  const form = useRelapse();
 
-  useEffect(() => {
-    getHabit(db).then(setHabit);
-    // Вечеринка уже кончилась - по умолчанию срыв в ее конце
-    if (partyId)
-      getParty(db, partyId).then(
-        (p) =>
-          p && p.expectedEndAt < Date.now() && setAt(new Date(p.expectedEndAt)),
-      );
-  }, [db, partyId]);
-
-  if (!habit) return null;
-
-  const save = async () => {
-    setSaving(true);
-    const data = {
-      habitId: habit.id,
-      at: at?.getTime() ?? Date.now(),
-      mood,
-      places: placeKeys,
-      hardships: hardshipKeys,
-      note,
-    };
-    await (partyId
-      ? logPartyRelapse(db, partyId, data)
-      : insertRelapse(db, data));
-    router.back();
-  };
+  if (!form) {
+    return null;
+  }
 
   return (
     <Screen>
@@ -70,9 +22,9 @@ export function RelapsePage() {
 
       <Text style={{ fontWeight: '600' }}>{t('relapseWhen')}</Text>
       <DateTimeField
-        value={at ?? new Date()}
-        onChange={setAt}
-        min={new Date(habit.startAt)}
+        value={form.at ?? new Date()}
+        onChange={form.setAt}
+        min={new Date(form.startAt)}
         max={new Date()}
       />
 
@@ -86,8 +38,8 @@ export function RelapsePage() {
           <Chip
             key={m}
             label={t(`option.mood.${m}`)}
-            selected={mood === m}
-            onPress={() => setMood(mood === m ? null : m)}
+            selected={form.mood === m}
+            onPress={() => form.toggleMood(m)}
           />
         ))}
       </View>
@@ -98,8 +50,8 @@ export function RelapsePage() {
           <Chip
             key={p}
             label={t(`option.place.${p}`)}
-            selected={placeKeys.includes(p)}
-            onPress={() => setPlaceKeys(toggle(placeKeys, p))}
+            selected={form.places.includes(p)}
+            onPress={() => form.togglePlace(p)}
           />
         ))}
       </View>
@@ -110,15 +62,15 @@ export function RelapsePage() {
           <Chip
             key={h}
             label={t(`option.hardship.${h}`)}
-            selected={hardshipKeys.includes(h)}
-            onPress={() => setHardshipKeys(toggle(hardshipKeys, h))}
+            selected={form.hardships.includes(h)}
+            onPress={() => form.toggleHardship(h)}
           />
         ))}
       </View>
 
       <TextInput
-        value={note}
-        onChangeText={setNote}
+        value={form.note}
+        onChangeText={form.setNote}
         placeholder={t('note')}
         placeholderTextColor={colors.border}
         multiline
@@ -135,8 +87,8 @@ export function RelapsePage() {
 
       <Button
         title={t('save')}
-        disabled={saving}
-        onPress={save}
+        disabled={form.saving}
+        onPress={form.save}
       />
     </Screen>
   );

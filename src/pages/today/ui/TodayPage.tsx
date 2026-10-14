@@ -1,17 +1,7 @@
-import { router, useFocusEffect, useTheme } from 'expo-router';
-import { useSQLiteContext } from 'expo-sqlite';
-import { useCallback, useEffect, useState } from 'react';
+import { router, useTheme } from 'expo-router';
 import { Button, View } from 'react-native';
 
-import { reviewDay, getDayReview } from '@/entities/day-review';
-import { getHabit, savings, streak, type Habit } from '@/entities/habit';
-import {
-  cancelParty,
-  getActiveParty,
-  setPartyResult,
-  type Party,
-} from '@/entities/party';
-import { listRelapses } from '@/entities/relapse';
+import type { Party } from '@/entities/party';
 import {
   days,
   formatDateTime,
@@ -19,8 +9,9 @@ import {
   formatMoney,
   portions,
 } from '@/shared/i18n';
-import { toDay } from '@/shared/lib';
 import { Screen, Text } from '@/shared/ui';
+
+import { useToday } from '../model/useToday';
 
 import { t } from '../i18n';
 
@@ -29,68 +20,27 @@ const SOBER = '#2e7d32';
 const SECONDARY = '#8e8e93';
 
 export function TodayPage() {
-  const db = useSQLiteContext();
-  const [data, setData] = useState<{
-    habit: Habit;
-    relapseAts: number[];
-    // день, за который итоги уже подведены
-    filledDay: string | null;
-    party: Party | null; // идущая вечеринка
-  } | null>(null);
-  const [now, setNow] = useState(Date.now);
+  const today = useToday();
 
-  // Перечитываем при каждом фокусе, в том числе после закрытия модалки срыва
-  const load = useCallback(() => {
-    (async () => {
-      const habit = await getHabit(db);
-      if (!habit) return;
-      const now = Date.now();
-      const [relapses, review, party] = await Promise.all([
-        listRelapses(db),
-        getDayReview(db, reviewDay(now)),
-        getActiveParty(db),
-      ]);
-      setData({
-        habit,
-        relapseAts: relapses.map((r) => r.at),
-        filledDay: review?.date ?? null,
-        party,
-      });
-      setNow(now);
-    })();
-  }, [db]);
-  useFocusEffect(load);
+  if (!today) {
+    return null;
+  }
 
-  // В полночь прибавляется день, в 18:00 итоги переключаются на сегодня
-  useEffect(() => {
-    const next = new Date(now);
-    next.setHours(next.getHours() < 18 ? 18 : 24, 0, 0, 0);
-    const id = setTimeout(
-      () => setNow(Date.now()),
-      next.getTime() - Date.now(),
-    );
-    return () => clearTimeout(id);
-  }, [now]);
-
-  if (!data) return null;
-  const s = streak(data.habit.startAt, data.relapseAts, now);
-  const day = reviewDay(now);
-  const isToday = day === toDay(now);
-  const { weeklySpend, currency } = data.habit;
-  const saved = savings(s.total, weeklySpend, JSON.parse(data.habit.drinks));
-  const hasDrinks = data.habit.drinks !== '{}';
+  const { streak, saved, currency, hasDrinks, party } = today;
 
   return (
     <Screen>
-      <Text style={{ fontSize: 48, fontWeight: '700' }}>{days(s.current)}</Text>
+      <Text style={{ fontSize: 48, fontWeight: '700' }}>
+        {days(streak.current)}
+      </Text>
       <Text style={{ opacity: 0.6 }}>
-        {t('since')} {formatDateTime(s.since)}
+        {t('since')} {formatDateTime(streak.since)}
       </Text>
       <Text>
-        {t('bestStreak')}: {days(s.best)}
+        {t('bestStreak')}: {days(streak.best)}
       </Text>
       <Text>
-        {t('totalDays')}: {s.total}
+        {t('totalDays')}: {streak.total}
       </Text>
       {saved.money === null && !hasDrinks ? (
         <Button
@@ -113,11 +63,11 @@ export function TodayPage() {
           )}
         </>
       )}
-      {data.party ? (
+      {party ? (
         <PartyCard
-          party={data.party}
-          onSober={() => setPartyResult(db, data.party!.id, 'sober').then(load)}
-          onCancel={() => cancelParty(db, data.party!.id).then(load)}
+          party={party}
+          onSober={() => today.markPartySober(party.id)}
+          onCancel={() => today.cancelParty(party.id)}
         />
       ) : (
         <Button
@@ -125,15 +75,19 @@ export function TodayPage() {
           onPress={() => router.push('/company')}
         />
       )}
-      {day < toDay(data.habit.startAt) ? (
+      {today.beforeStart ? (
         <Text style={{ opacity: 0.6 }}>{t('review.later')}</Text>
       ) : (
         <Button
           title={`${
-            data.filledDay === day
-              ? t(isToday ? 'dayReviewTodayDone' : 'dayReviewYesterdayDone')
-              : t(isToday ? 'dayReviewToday' : 'dayReviewYesterday')
-          }, ${formatDay(day)}`}
+            today.reviewDone
+              ? t(
+                  today.isToday
+                    ? 'dayReviewTodayDone'
+                    : 'dayReviewYesterdayDone',
+                )
+              : t(today.isToday ? 'dayReviewToday' : 'dayReviewYesterday')
+          }, ${formatDay(today.reviewDay)}`}
           onPress={() => router.push('/day-review')}
         />
       )}

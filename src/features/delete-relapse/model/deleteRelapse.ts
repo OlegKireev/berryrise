@@ -1,8 +1,8 @@
-import type { SQLiteDatabase } from 'expo-sqlite';
+import { useSQLiteContext, type SQLiteDatabase } from 'expo-sqlite';
 
 // Срыв удаляется мягко, вечеринка, из которой он появился, снова становится "без ответа".
 // Трогает две сущности (relapse и party), поэтому это фича, а не api сущности.
-export async function deleteRelapse(db: SQLiteDatabase, id: string) {
+async function deleteRelapse(db: SQLiteDatabase, id: string) {
   const now = Date.now();
   await db.withExclusiveTransactionAsync(async (tx) => {
     await tx.runAsync(
@@ -17,4 +17,9 @@ export async function deleteRelapse(db: SQLiteDatabase, id: string) {
       id,
     );
   });
+}
+
+export function useDeleteRelapse() {
+  const db = useSQLiteContext();
+  return (id: string) => deleteRelapse(db, id);
 }

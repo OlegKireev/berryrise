@@ -1,27 +1,13 @@
-import { router } from 'expo-router';
-import { useSQLiteContext } from 'expo-sqlite';
-import { useState } from 'react';
 import { Button } from 'react-native';
 
-import { createHabit } from '@/entities/habit';
 import { DateTimeField, Screen, Text } from '@/shared/ui';
+
+import { useStart } from '../model/useStart';
 
 import { t } from '../i18n';
 
-// Привычка создается только здесь, ее наличие и значит "онбординг пройден". Дальше только необязательные шаги
 export function StartPage() {
-  const db = useSQLiteContext();
-  // null - не трогали, старт в момент подтверждения
-  const [startAt, setStartAt] = useState<Date | null>(null);
-  const [saving, setSaving] = useState(false);
-
-  const start = async () => {
-    setSaving(true);
-    await createHabit(db, startAt?.getTime() ?? Date.now());
-    // Онбординг пройден. Сбрасываем его стек, чтобы "назад" не вернул на старт
-    router.dismissAll();
-    router.replace('/onboarding/spending');
-  };
+  const { startAt, setStartAt, saving, start } = useStart();
 
   return (
     <Screen>

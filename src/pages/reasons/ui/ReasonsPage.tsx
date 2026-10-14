@@ -1,57 +1,33 @@
-import { useFocusEffect, useTheme } from 'expo-router';
-import { useSQLiteContext } from 'expo-sqlite';
-import { useCallback, useState } from 'react';
+import { useTheme } from 'expo-router';
 import { Button, TextInput, View } from 'react-native';
 
-import {
-  addReason,
-  deleteReason,
-  listReasons,
-  reasonLabel,
-  reasons,
-  type NewReason,
-  type ReasonRow,
-} from '@/entities/reason';
+import { reasonLabel } from '@/entities/reason';
 import { Chip, Screen, Text } from '@/shared/ui';
+
+import { useReasons } from '../model/useReasons';
 
 import { t } from '../i18n';
 
 export function ReasonsPage() {
-  const db = useSQLiteContext();
   const { colors } = useTheme();
-  const [list, setList] = useState<ReasonRow[] | null>(null);
-  const [custom, setCustom] = useState('');
+  const reasons = useReasons();
 
-  const load = useCallback(() => {
-    listReasons(db).then(setList);
-  }, [db]);
-  useFocusEffect(load);
-
-  if (!list) return null;
-
-  const add = async (item: NewReason) => {
-    await addReason(db, item);
-    load();
-  };
-  const remove = async (id: string) => {
-    // Без подтверждения: причину легко вернуть
-    await deleteReason(db, id);
-    load();
-  };
-  const presets = reasons.filter((k) => !list.some((r) => r.key === k));
+  if (!reasons) {
+    return null;
+  }
 
   return (
     <Screen>
-      {list.length === 0 && <Text>{t('noReasons')}</Text>}
-      {list.map((r) => (
+      {reasons.list.length === 0 && <Text>{t('noReasons')}</Text>}
+      {reasons.list.map((item) => (
         <View
-          key={r.id}
+          key={item.id}
           style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}
         >
-          <Text style={{ flex: 1, fontSize: 18 }}>{reasonLabel(r)}</Text>
+          <Text style={{ flex: 1, fontSize: 18 }}>{reasonLabel(item)}</Text>
           <Button
             title={t('delete')}
-            onPress={() => remove(r.id)}
+            onPress={() => reasons.remove(item.id)}
           />
         </View>
       ))}
@@ -60,18 +36,18 @@ export function ReasonsPage() {
         {t('addReasonTitle')}
       </Text>
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
-        {presets.map((k) => (
+        {reasons.presets.map((k) => (
           <Chip
             key={k}
             label={t(`reason.labels.${k}`)}
             selected={false}
-            onPress={() => add({ key: k })}
+            onPress={() => reasons.addPreset(k)}
           />
         ))}
       </View>
       <TextInput
-        value={custom}
-        onChangeText={setCustom}
+        value={reasons.custom}
+        onChangeText={reasons.setCustom}
         placeholder={t('reason.customReason')}
         placeholderTextColor={colors.border}
         style={{
@@ -84,11 +60,8 @@ export function ReasonsPage() {
       />
       <Button
         title={t('add')}
-        disabled={!custom.trim()}
-        onPress={async () => {
-          await add({ customText: custom.trim() });
-          setCustom('');
-        }}
+        disabled={!reasons.canAddCustom}
+        onPress={reasons.addCustom}
       />
     </Screen>
   );

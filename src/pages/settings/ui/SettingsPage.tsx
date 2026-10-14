@@ -1,31 +1,21 @@
-import { router, useFocusEffect } from 'expo-router';
-import { useSQLiteContext } from 'expo-sqlite';
-import { useCallback, useState } from 'react';
-import { Alert, Button, DevSettings } from 'react-native';
+import { router } from 'expo-router';
+import { Alert, Button } from 'react-native';
 
-import { getHabit, updateHabitStart, type Habit } from '@/entities/habit';
-import { listRelapses } from '@/entities/relapse';
 import { SpendingForm } from '@/features/edit-spending';
-import { resetDatabase } from '@/shared/db';
 import { DateTimeField, Screen, Text } from '@/shared/ui';
+
+import { useResetData } from '../model/useResetData';
+import { useSettings } from '../model/useSettings';
 
 import { t } from '../i18n';
 
 // ponytail: dev-кнопка без i18n, в релизную сборку не попадает
 function DevResetButton() {
-  const db = useSQLiteContext();
+  const reset = useResetData();
   const confirm = () =>
     Alert.alert('Сбросить все данные?', 'База удалится, начнется онбординг.', [
       { text: t('cancel'), style: 'cancel' },
-      {
-        text: 'Сбросить',
-        style: 'destructive',
-        onPress: async () => {
-          await resetDatabase(db);
-          // Перезагрузка JS: migrate создаст схему заново, табы уведут на онбординг
-          DevSettings.reload();
-        },
-      },
+      { text: 'Сбросить', style: 'destructive', onPress: reset },
     ]);
   return (
     <Button
@@ -37,42 +27,22 @@ function DevResetButton() {
 }
 
 export function SettingsPage() {
-  const db = useSQLiteContext();
-  const [habit, setHabit] = useState<Habit | null>(null);
-  // Старт не позже текущего момента и самого раннего срыва
-  const [maxStart, setMaxStart] = useState(0);
+  const settings = useSettings();
 
-  useFocusEffect(
-    useCallback(() => {
-      (async () => {
-        const [h, relapses] = await Promise.all([
-          getHabit(db),
-          listRelapses(db),
-        ]);
-        setHabit(h);
-        setMaxStart(Math.min(Date.now(), relapses.at(-1)?.at ?? Infinity));
-      })();
-    }, [db]),
-  );
-
-  if (!habit) return null;
-
-  // Сохраняем сразу: поле одно, отдельная кнопка не нужна
-  const changeStart = async (d: Date) => {
-    await updateHabitStart(db, habit.id, d.getTime());
-    setHabit({ ...habit, startAt: d.getTime() });
-  };
+  if (!settings) {
+    return null;
+  }
 
   return (
     <Screen>
       <Text style={{ fontWeight: '600' }}>{t('startAt')}</Text>
       <DateTimeField
-        value={new Date(habit.startAt)}
-        onChange={changeStart}
-        max={new Date(maxStart)}
+        value={new Date(settings.habit.startAt)}
+        onChange={settings.changeStart}
+        max={new Date(settings.maxStart)}
       />
       <SpendingForm
-        habit={habit}
+        habit={settings.habit}
         submitLabel={t('save')}
         onSaved={() => router.back()}
       />
