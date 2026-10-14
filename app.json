@@ -18,9 +18,26 @@
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
       "predictiveBackGestureEnabled": false,
-      "package": "dev.olegkireev.quit"
+      "package": "dev.olegkireev.quit",
+      "permissions": [
+        "android.permission.SCHEDULE_EXACT_ALARM",
+        "android.permission.USE_EXACT_ALARM",
+        "android.permission.READ_CONTACTS"
+      ]
     },
     "scheme": "resheno",
-    "plugins": ["expo-sqlite", "@react-native-community/datetimepicker"]
+    "plugins": [
+      "expo-sqlite",
+      "@react-native-community/datetimepicker",
+      "expo-notifications",
+      "expo-router",
+      "expo-sharing"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "d4cc0ee2-0e12-4084-8a87-8f1d0dd6ea57"
+      }
+    },
+    "owner": "flucky"
   }
 }

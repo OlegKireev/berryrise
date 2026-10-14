@@ -1,5 +1,5 @@
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
   "ignore": ["src/entities/contact/**"],
-  "ignoreDependencies": ["expo-updates"]
+  "ignoreDependencies": ["expo-updates", "expo-contacts", "expo-haptics"]
 }
