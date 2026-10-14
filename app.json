@@ -19,11 +19,7 @@
       },
       "predictiveBackGestureEnabled": false,
       "package": "dev.olegkireev.quit",
-      "permissions": [
-        "android.permission.SCHEDULE_EXACT_ALARM",
-        "android.permission.USE_EXACT_ALARM",
-        "android.permission.READ_CONTACTS"
-      ]
+      "permissions": ["android.permission.READ_CONTACTS"]
     },
     "scheme": "resheno",
     "plugins": [
