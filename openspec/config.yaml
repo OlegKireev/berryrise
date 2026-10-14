@@ -14,6 +14,6 @@ rules:
   design:
     - For DB changes, describe the migration (PRAGMA user_version) and keep id/createdAt/updatedAt/deletedAt
   tasks:
-    - Add user-facing strings to both ru and en in src/i18n.ts
+    - Add user-facing strings to both ru and en in src/shared/i18n
     - Tests only for pure logic (streak, money, calories, achievements)
     - Last task is running yarn typecheck and yarn lint
