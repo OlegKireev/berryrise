@@ -5,6 +5,7 @@ import { toDay } from '../../../shared/lib/utils/toDay.ts';
 import type { Day } from './streak.ts';
 
 const streakGoals = [1, 3, 7, 14, 30, 60, 90, 180, 365] as const;
+const companyGoals = [1, 5, 10] as const;
 
 // Порядок в массиве = порядок на экране
 export const achievementKeys = [
@@ -13,6 +14,7 @@ export const achievementKeys = [
   'weekend',
   'reviews7',
   'comeback7',
+  ...companyGoals.map((n) => `company${n}` as const),
 ] as const;
 export type AchievementKey = (typeof achievementKeys)[number];
 
@@ -35,6 +37,10 @@ export function achievements(
   days: Day[], // из soberDays: подряд, без пропусков
   reviewDates: string[], // YYYY-MM-DD, любой порядок
   today: string, // YYYY-MM-DD
+  company: {
+    soberParties: number[]; // начала вечеринок с ответом "без алкоголя"
+    companyDates: string[]; // итоги дня с местом "компания" или "бар"
+  } = { soberParties: [], companyDates: [] },
 ): Record<AchievementKey, string | null> {
   const got = Object.fromEntries(
     achievementKeys.map((k) => [k, null]),
@@ -70,6 +76,18 @@ export function achievements(
     if (row === 7) give('reviews7', date);
     prev = date;
   }
+
+  // Вечер в компании - календарный день. Трезвой вечеринке верим на слово,
+  // а место из итогов засчитываем, только если день трезвый: "был в баре" не значит "не пил"
+  const soberDates = new Set(days.filter((d) => d.sober).map((d) => d.date));
+  const evenings = [
+    ...new Set([
+      ...company.soberParties.map(toDay),
+      ...company.companyDates.filter((d) => soberDates.has(d)),
+    ]),
+  ].sort();
+  for (const n of companyGoals)
+    if (evenings.length >= n) give(`company${n}`, evenings[n - 1]!);
 
   return got;
 }

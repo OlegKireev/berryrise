@@ -17,7 +17,13 @@ const get = (
   relapseAts: number[],
   now: number,
   reviewDates: string[] = [],
-) => achievements(soberDays(startAt, relapseAts, now), reviewDates, toDay(now));
+  soberParties: number[] = [],
+  companyDates: string[] = [],
+) =>
+  achievements(soberDays(startAt, relapseAts, now), reviewDates, toDay(now), {
+    soberParties,
+    companyDates,
+  });
 
 test('первый день в полночь', () => {
   assert.equal(get(oct(13, 23, 50), [], oct(14, 0)).days1, day(14));
@@ -78,7 +84,7 @@ test('без срывов восстановления нет', () => {
   assert.equal(get(oct(1), [], oct(31)).comeback7, null);
 });
 
-test('сводный пример со спеки: 5 из 13', () => {
+test('сводный пример со спеки: 5 из 16', () => {
   const a = get(oct(1), [], oct(9));
   const done = Object.entries(a).filter(([, d]) => d !== null);
   assert.deepEqual(Object.fromEntries(done), {
@@ -88,5 +94,37 @@ test('сводный пример со спеки: 5 из 13', () => {
     friday: day(2),
     weekend: day(4),
   });
-  assert.equal(Object.keys(a).length, 13);
+  assert.equal(Object.keys(a).length, 16);
+});
+
+test('первая трезвая вечеринка', () => {
+  assert.equal(get(oct(1), [], oct(20), [], [oct(16, 19)]).company1, day(16));
+});
+
+test('вечеринка и место в один день - один вечер', () => {
+  const a = get(oct(1), [], oct(31), [], [oct(16, 19)], [day(16), day(17)]);
+  assert.equal(a.company1, day(16));
+  assert.equal(a.company5, null);
+});
+
+test('5 вечеров только по местам в итогах', () => {
+  const dates = [3, 10, 17, 24, 31].map(day);
+  const a = get(oct(1), [], new Date(2026, 10, 2).getTime(), [], [], dates);
+  assert.equal(a.company1, day(3));
+  assert.equal(a.company5, day(31));
+  assert.equal(a.company10, null);
+});
+
+test('место в день срыва не засчитывается', () => {
+  assert.equal(
+    get(oct(1), [oct(16)], oct(20), [], [], [day(16)]).company1,
+    null,
+  );
+});
+
+test('вечеринка в день старта засчитывается по ответу', () => {
+  assert.equal(
+    get(oct(16, 10), [], oct(17), [], [oct(16, 19)]).company1,
+    day(16),
+  );
 });

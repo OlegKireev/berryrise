@@ -20,6 +20,15 @@ export const listDayReviewDates = async (db: SQLiteDatabase) =>
     )
   ).map((r) => r.date);
 
+// Даты итогов, где в местах есть компания или бар: там обычно пьют. Для ачивок
+export const listCompanyDates = async (db: SQLiteDatabase) =>
+  (
+    await db.getAllAsync<Pick<DayReview, 'date'>>(
+      `SELECT date FROM dayReview WHERE deletedAt IS NULL
+       AND EXISTS (SELECT 1 FROM json_each(places) WHERE value IN ('company', 'bar'))`,
+    )
+  ).map((r) => r.date);
+
 type DayReviewData = {
   date: string;
   mood: Mood;
