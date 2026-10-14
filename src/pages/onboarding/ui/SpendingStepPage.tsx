@@ -20,9 +20,7 @@ export function SpendingStepPage() {
 
   return (
     <Screen>
-      <Text style={{ fontSize: 24, fontWeight: '600' }}>
-        {t('spendingTitle')}
-      </Text>
+      <Text variant="title">{t('spendingTitle')}</Text>
       <Text>{t('spendingHint')}</Text>
       <SpendingForm
         habit={habit}

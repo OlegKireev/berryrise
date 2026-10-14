@@ -12,12 +12,6 @@ import {
   type PartyDrink,
 } from '@/entities/party';
 import { listReasons, type ReasonRow } from '@/entities/reason';
-import {
-  addReply,
-  deleteReply,
-  listReplies,
-  type ReplyRow,
-} from '@/entities/reply';
 import { toggle } from '@/shared/lib';
 
 // Режим "иду в компанию". null - еще грузим
@@ -26,24 +20,20 @@ export function useCompany() {
 
   const [party, setParty] = useState<Party | null>(null);
   const [reasons, setReasons] = useState<ReasonRow[]>([]);
-  const [myReplies, setMyReplies] = useState<ReplyRow[]>([]);
   const [customDrinks, setCustomDrinks] = useState<string[]>([]);
   const [drinkText, setDrinkText] = useState('');
-  const [replyText, setReplyText] = useState('');
 
   // Открытие режима начинает вечеринку или подхватывает идущую
   useEffect(() => {
     (async () => {
-      const [p, r, my, drinks] = await Promise.all([
+      const [p, r, drinks] = await Promise.all([
         startParty(db),
         listReasons(db),
-        listReplies(db),
         listCustomDrinks(db),
       ]);
       setParty(p);
       setCustomDrinks(drinks);
       setReasons(r);
-      setMyReplies(my);
     })();
   }, [db]);
 
@@ -64,8 +54,6 @@ export function useCompany() {
     setPartyDrinks(db, party.id, keys, customs);
   };
 
-  const reloadReplies = () => listReplies(db).then(setMyReplies);
-
   return {
     party,
     reasons,
@@ -73,39 +61,32 @@ export function useCompany() {
       setParty({ ...party, expectedEndAt: d.getTime() });
       setPartyEnd(db, party.id, d.getTime());
     },
-
-    drinkKeys,
-    drinkCustoms,
-    customDrinks,
-    toggleDrink: (k: PartyDrink) =>
-      changeDrinks(toggle(drinkKeys, k), drinkCustoms),
-    toggleCustomDrink: (d: string) =>
-      changeDrinks(drinkKeys, toggle(drinkCustoms, d)),
-    drinkText,
-    setDrinkText,
-    canAddDrink: drinkText.trim() !== '',
-    addDrink: async () => {
-      const custom = drinkText.trim();
-      await addCustomDrink(db, custom);
-      setCustomDrinks(await listCustomDrinks(db));
-      changeDrinks(drinkKeys, toggle(drinkCustoms, custom, true));
-      setDrinkText('');
+    drinks: {
+      keys: drinkKeys,
+      customs: drinkCustoms,
+      // все свои напитки, выбранные на этот вечер - в customs
+      myDrinks: customDrinks,
+      toggleKey: (k: PartyDrink) =>
+        changeDrinks(toggle(drinkKeys, k), drinkCustoms),
+      toggleCustom: (d: string) =>
+        changeDrinks(drinkKeys, toggle(drinkCustoms, d)),
+      text: drinkText,
+      setText: setDrinkText,
+      canAdd: drinkText.trim() !== '',
+      add: async () => {
+        const custom = drinkText.trim();
+        await addCustomDrink(db, custom);
+        setCustomDrinks(await listCustomDrinks(db));
+        changeDrinks(drinkKeys, toggle(drinkCustoms, custom, true));
+        setDrinkText('');
+      },
+      remove: async (name: string) => {
+        await deleteCustomDrink(db, name);
+        setCustomDrinks(await listCustomDrinks(db));
+        changeDrinks(drinkKeys, toggle(drinkCustoms, name, false));
+      },
     },
-    deleteDrink: async (name: string) => {
-      await deleteCustomDrink(db, name);
-      setCustomDrinks(await listCustomDrinks(db));
-      changeDrinks(drinkKeys, toggle(drinkCustoms, name, false));
-    },
-
-    myReplies,
-    replyText,
-    setReplyText,
-    canAddReply: replyText.trim() !== '',
-    addReply: async () => {
-      await addReply(db, replyText.trim());
-      setReplyText('');
-      reloadReplies();
-    },
-    deleteReply: (id: string) => deleteReply(db, id).then(reloadReplies),
   };
 }
+
+export type Drinks = NonNullable<ReturnType<typeof useCompany>>['drinks'];

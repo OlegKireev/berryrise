@@ -1,6 +1,6 @@
-import { Button, Switch, View } from 'react-native';
+import { Button, Switch } from 'react-native';
 
-import { Screen, Text } from '@/shared/ui';
+import { Row, Screen, Text } from '@/shared/ui';
 
 import { questions, useScreening } from '../model/useScreening';
 
@@ -11,20 +11,17 @@ export function ScreeningPage() {
 
   return (
     <Screen>
-      <Text style={{ fontSize: 24, fontWeight: '600' }}>
-        {t('screeningTitle')}
-      </Text>
+      <Text variant="title">{t('screeningTitle')}</Text>
       {questions.map((q, i) => (
-        <View
+        <Row
           key={q}
-          style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}
+          label={t(q)}
         >
-          <Text style={{ flex: 1 }}>{t(q)}</Text>
           <Switch
             value={answers[i]}
             onValueChange={(v) => setAnswer(i, v)}
           />
-        </View>
+        </Row>
       ))}
       <Button
         title={t('next')}

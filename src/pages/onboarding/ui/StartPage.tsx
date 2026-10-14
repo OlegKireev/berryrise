@@ -11,7 +11,7 @@ export function StartPage() {
 
   return (
     <Screen>
-      <Text style={{ fontSize: 24, fontWeight: '600' }}>{t('startTitle')}</Text>
+      <Text variant="title">{t('startTitle')}</Text>
       <Text>{t('startHint')}</Text>
       <DateTimeField
         value={startAt ?? new Date()}

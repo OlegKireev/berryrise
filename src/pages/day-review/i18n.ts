@@ -1,4 +1,3 @@
-import { reasonDict } from '@/entities/reason';
 import { dayReviewDict } from '@/entities/day-review';
 import { optionDict } from '@/shared/config';
 import { createT } from '@/shared/i18n';
@@ -14,5 +13,5 @@ export const t = createT(
       forYesterday: 'For yesterday',
     },
   },
-  { reason: reasonDict, review: dayReviewDict, option: optionDict },
+  { review: dayReviewDict, option: optionDict },
 );

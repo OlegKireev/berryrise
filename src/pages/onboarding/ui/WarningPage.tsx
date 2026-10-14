@@ -8,9 +8,7 @@ import { t } from '../i18n';
 export function WarningPage() {
   return (
     <Screen>
-      <Text style={{ fontSize: 24, fontWeight: '600' }}>
-        {t('warningTitle')}
-      </Text>
+      <Text variant="title">{t('warningTitle')}</Text>
       <Text>{t('warningText')}</Text>
       <Button
         title={t('warningNext')}

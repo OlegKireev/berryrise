@@ -1,6 +1,5 @@
 import { partyDict } from '@/entities/party';
 import { replyDict } from '@/entities/reply';
-import { reasonDict } from '@/entities/reason';
 import { createT } from '@/shared/i18n';
 
 export const t = createT(
@@ -28,5 +27,5 @@ export const t = createT(
         "You can just leave, that's okay. Nobody has to stay till the end.",
     },
   },
-  { party: partyDict, reply: replyDict, reason: reasonDict },
+  { party: partyDict, reply: replyDict },
 );
