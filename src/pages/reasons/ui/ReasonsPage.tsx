@@ -1,7 +1,5 @@
-import { Button } from 'react-native';
-
 import { reasonLabel } from '@/entities/reason';
-import { AddField, Choices, Row, Screen, Text } from '@/shared/ui';
+import { AddField, Button, Choices, Row, Screen, Text } from '@/shared/ui';
 
 import { useReasons } from '../model/useReasons';
 
@@ -23,6 +21,7 @@ export function ReasonsPage() {
           label={reasonLabel(item)}
         >
           <Button
+            variant="quiet"
             title={t('delete')}
             onPress={() => reasons.remove(item.id)}
           />

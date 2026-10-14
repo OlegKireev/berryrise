@@ -1,16 +1,17 @@
-import { useTheme } from 'expo-router';
 import { View } from 'react-native';
 
+import { useColors } from '@/shared/ui';
+
 // Отметка "итоги дня подведены"
-export function ReviewDot() {
-  const { colors } = useTheme();
+export function ReviewDot({ color }: { color?: string }) {
+  const colors = useColors();
   return (
     <View
       style={{
         width: 4,
         height: 4,
         borderRadius: 2,
-        backgroundColor: colors.text,
+        backgroundColor: color ?? colors.text,
       }}
     />
   );

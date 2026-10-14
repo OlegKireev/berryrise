@@ -1,9 +1,11 @@
 import DateTimePicker, {
   DateTimePickerAndroid,
 } from '@react-native-community/datetimepicker';
-import { Button, Platform } from 'react-native';
+import { Platform } from 'react-native';
 
 import { formatTime } from '@/shared/i18n';
+
+import { Button } from './Button';
 
 type Props = {
   // минуты от полуночи

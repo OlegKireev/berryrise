@@ -1,12 +1,10 @@
-import { router, useTheme } from 'expo-router';
+import { router } from 'expo-router';
 import type { ReactNode } from 'react';
-import { Button, View, type ColorValue } from 'react-native';
+import { View } from 'react-native';
 
 import type { Party } from '@/entities/party';
 import { formatDateTime } from '@/shared/i18n';
-import { Text } from '@/shared/ui';
-
-import { SECONDARY, SOBER } from './colors';
+import { Button, Card, Text } from '@/shared/ui';
 
 import { t } from '../i18n';
 
@@ -18,62 +16,45 @@ type Props = {
 
 // Идущая вечеринка: ответить "как прошло?" можно в любой момент
 export function PartyCard({ party, onSober, onCancel }: Props) {
-  const { colors } = useTheme();
   return (
-    <View
-      style={{
-        gap: 8,
-        padding: 12,
-        borderWidth: 1,
-        borderColor: colors.border,
-        borderRadius: 12,
-      }}
-    >
+    <Card>
       <Text variant="heading">{t('partyCardTitle')}</Text>
       <Text variant="hint">
         {t('partyCardUntil')} {formatDateTime(party.expectedEndAt)}
       </Text>
-      {/* Главный вопрос: два ответа рядом и разными цветами */}
+      {/* Главный вопрос: два ответа рядом, трезвый ответ главный */}
       <ButtonPair>
-        <HalfButton
+        <Button
+          variant="primary"
           title={t('partySober')}
-          color={SOBER}
           onPress={onSober}
+          style={{ flex: 1 }}
         />
-        <HalfButton
+        <Button
           title={t('partyDrank')}
-          color={colors.notification}
           onPress={() =>
             router.push({ pathname: '/relapse', params: { partyId: party.id } })
           }
+          style={{ flex: 1 }}
         />
       </ButtonPair>
       <ButtonPair>
-        <HalfButton
+        <Button
           title={t('partyOpen')}
-          color={SECONDARY}
           onPress={() => router.push('/company')}
+          style={{ flex: 1 }}
         />
-        <HalfButton
+        <Button
+          variant="quiet"
           title={t('partyCancel')}
-          color={SECONDARY}
           onPress={onCancel}
+          style={{ flex: 1 }}
         />
       </ButtonPair>
-    </View>
+    </Card>
   );
 }
 
 const ButtonPair = ({ children }: { children: ReactNode }) => (
   <View style={{ flexDirection: 'row', gap: 8 }}>{children}</View>
-);
-
-const HalfButton = (props: {
-  title: string;
-  color: ColorValue;
-  onPress: () => void;
-}) => (
-  <View style={{ flex: 1 }}>
-    <Button {...props} />
-  </View>
 );

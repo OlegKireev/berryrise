@@ -1,6 +1,5 @@
-import { Button } from 'react-native';
-
 import type { Habit } from '@/entities/habit';
+import { Button } from '@/shared/ui';
 
 import { DrinkCounts } from './DrinkCounts';
 import { WeeklySpend } from './WeeklySpend';
@@ -30,6 +29,7 @@ export function SpendingForm({ habit, submitLabel, onSaved }: Props) {
         setCount={form.setCount}
       />
       <Button
+        variant="primary"
         title={submitLabel}
         disabled={form.saving}
         onPress={form.save}

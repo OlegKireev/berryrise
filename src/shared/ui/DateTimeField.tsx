@@ -1,9 +1,10 @@
 import DateTimePicker, {
   DateTimePickerAndroid,
 } from '@react-native-community/datetimepicker';
-import { Button, Platform, View } from 'react-native';
+import { Platform, View } from 'react-native';
 
 import { formatDateTime, t } from '@/shared/i18n';
+import { Button } from './Button';
 import { Text } from './Text';
 
 type Props = {

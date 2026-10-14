@@ -1,8 +1,7 @@
 import * as Notifications from 'expo-notifications';
 import { useState } from 'react';
-import { Button } from 'react-native';
 
-import { Text } from '@/shared/ui';
+import { Button, Text } from '@/shared/ui';
 
 import { CHANNEL } from '../model/setup';
 
@@ -79,14 +78,17 @@ export function DevNotificationDebug() {
     <>
       <Text variant="hint">{info}</Text>
       <Button
+        variant="quiet"
         title="DEV: обновить"
         onPress={refresh}
       />
       <Button
+        variant="quiet"
         title="DEV: уведомление сразу"
         onPress={now}
       />
       <Button
+        variant="quiet"
         title="DEV: уведомление через 10 с"
         onPress={test}
       />

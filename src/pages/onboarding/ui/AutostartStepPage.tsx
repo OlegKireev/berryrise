@@ -1,8 +1,7 @@
 import { router } from 'expo-router';
-import { Button } from 'react-native';
 
 import { AutostartHint } from '@/features/notifications';
-import { Screen } from '@/shared/ui';
+import { Button, Screen } from '@/shared/ui';
 
 import { t } from '../i18n';
 
@@ -12,6 +11,7 @@ export function AutostartStepPage() {
     <Screen>
       <AutostartHint />
       <Button
+        variant="primary"
         title={t('done')}
         onPress={() => router.replace('/')}
       />

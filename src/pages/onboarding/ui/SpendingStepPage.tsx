@@ -1,8 +1,7 @@
 import { router } from 'expo-router';
-import { Button } from 'react-native';
 
 import { SpendingForm } from '@/features/edit-spending';
-import { Screen, Text } from '@/shared/ui';
+import { Button, Screen, Text } from '@/shared/ui';
 
 import { useHabit } from '../model/useHabit';
 
@@ -28,6 +27,7 @@ export function SpendingStepPage() {
         onSaved={next}
       />
       <Button
+        variant="quiet"
         title={t('skip')}
         onPress={next}
       />

@@ -1,4 +1,4 @@
-import { Button, Linking } from 'react-native';
+import { Linking } from 'react-native';
 
 import {
   AutostartHint,
@@ -6,7 +6,7 @@ import {
   NotificationForm,
   needsAutostartHint,
 } from '@/features/notifications';
-import { Text } from '@/shared/ui';
+import { Button, Text } from '@/shared/ui';
 
 import { useNotificationSettings } from '../model/useNotificationSettings';
 

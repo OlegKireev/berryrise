@@ -1,4 +1,6 @@
-import { Alert, Button } from 'react-native';
+import { Alert } from 'react-native';
+
+import { Button } from '@/shared/ui';
 
 import { useResetData } from '../model/useResetData';
 
@@ -14,8 +16,8 @@ export function DevResetButton() {
     ]);
   return (
     <Button
+      variant="quiet"
       title="DEV: сбросить данные"
-      color="red"
       onPress={confirm}
     />
   );

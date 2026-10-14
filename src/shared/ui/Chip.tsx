@@ -1,6 +1,6 @@
-import { useTheme } from 'expo-router';
 import { Pressable } from 'react-native';
 import { Text } from './Text';
+import { useColors } from './theme';
 
 // Вариант выбора: выбранный подсвечен цветом темы
 export function Chip({
@@ -14,7 +14,7 @@ export function Chip({
   onPress: () => void;
   onLongPress?: () => void;
 }) {
-  const { colors } = useTheme();
+  const colors = useColors();
   return (
     <Pressable
       onPress={onPress}
@@ -27,10 +27,10 @@ export function Chip({
         borderRadius: 16,
         borderWidth: 1,
         borderColor: selected ? colors.primary : colors.border,
-        backgroundColor: selected ? colors.primary : 'transparent',
+        backgroundColor: selected ? colors.primary : colors.card,
       }}
     >
-      <Text style={{ color: selected ? colors.background : colors.text }}>
+      <Text style={{ color: selected ? colors.onPrimary : colors.text }}>
         {label}
       </Text>
     </Pressable>

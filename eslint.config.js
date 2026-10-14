@@ -7,4 +7,22 @@ module.exports = defineConfig([
   {
     ignores: ['dist/*'],
   },
+  {
+    // нативные Button и Switch не стилизуются, берем свои из shared/ui
+    ignores: ['src/shared/ui/Switch.tsx'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          paths: [
+            {
+              name: 'react-native',
+              importNames: ['Button', 'Switch'],
+              message: 'Используй Button и Switch из @/shared/ui',
+            },
+          ],
+        },
+      ],
+    },
+  },
 ]);

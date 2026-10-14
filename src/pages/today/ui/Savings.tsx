@@ -1,9 +1,8 @@
 import { router } from 'expo-router';
-import { Button } from 'react-native';
 
 import type { Savings as SavingsData } from '@/entities/habit';
 import { formatMoney, portions } from '@/shared/i18n';
-import { Text } from '@/shared/ui';
+import { Button, Text } from '@/shared/ui';
 
 import { t } from '../i18n';
 

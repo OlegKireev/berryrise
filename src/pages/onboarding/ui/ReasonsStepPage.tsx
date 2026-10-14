@@ -1,8 +1,7 @@
 import { router } from 'expo-router';
-import { Button } from 'react-native';
 
 import { reasons } from '@/entities/reason';
-import { Choices, Input, Screen, Text } from '@/shared/ui';
+import { Button, Choices, Input, Screen, Text } from '@/shared/ui';
 
 import { useReasonsStep } from '../model/useReasonsStep';
 
@@ -28,11 +27,13 @@ export function ReasonsStepPage() {
         placeholder={t('reason.customReason')}
       />
       <Button
+        variant="primary"
         title={t('next')}
         disabled={!form.canSubmit}
         onPress={form.submit}
       />
       <Button
+        variant="quiet"
         title={t('skip')}
         disabled={form.saving}
         onPress={() => router.replace('/onboarding/notifications')}

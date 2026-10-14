@@ -1,6 +1,4 @@
-import { Button } from 'react-native';
-
-import { DateTimeField, Screen, Text } from '@/shared/ui';
+import { Button, DateTimeField, Screen, Text } from '@/shared/ui';
 
 import { useStart } from '../model/useStart';
 
@@ -19,6 +17,7 @@ export function StartPage() {
         max={new Date()}
       />
       <Button
+        variant="primary"
         title={t('startButton')}
         disabled={saving}
         onPress={start}

@@ -7,7 +7,10 @@ import { t } from '../i18n';
 export function StreakSummary({ streak }: { streak: Streak }) {
   return (
     <>
-      <Text style={{ fontSize: 48, fontWeight: '700' }}>
+      <Text
+        weight="bold"
+        style={{ fontSize: 48 }}
+      >
         {days(streak.current)}
       </Text>
       <Text variant="hint">

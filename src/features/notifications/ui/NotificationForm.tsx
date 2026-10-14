@@ -1,7 +1,5 @@
-import { Switch } from 'react-native';
-
 import { weekdays } from '@/shared/i18n';
-import { Chip, ChipRow, Row, Text, TimeField } from '@/shared/ui';
+import { Chip, ChipRow, Row, Switch, Text, TimeField } from '@/shared/ui';
 
 import { RISK_TIME, type NotificationPrefs } from '../model/types';
 

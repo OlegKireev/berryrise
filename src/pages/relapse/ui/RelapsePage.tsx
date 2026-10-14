@@ -1,7 +1,12 @@
-import { Button } from 'react-native';
-
 import { hardships, moods, places } from '@/shared/config';
-import { Choices, DateTimeField, Input, Screen, Text } from '@/shared/ui';
+import {
+  Button,
+  Choices,
+  DateTimeField,
+  Input,
+  Screen,
+  Text,
+} from '@/shared/ui';
 
 import { useRelapse } from '../model/useRelapse';
 
@@ -62,6 +67,7 @@ export function RelapsePage() {
       />
 
       <Button
+        variant="primary"
         title={t('save')}
         disabled={form.saving}
         onPress={form.save}

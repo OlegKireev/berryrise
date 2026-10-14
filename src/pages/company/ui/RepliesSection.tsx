@@ -1,7 +1,5 @@
-import { Button } from 'react-native';
-
 import { replies } from '@/entities/reply';
-import { AddField, Row, Text } from '@/shared/ui';
+import { AddField, Button, Row, Text } from '@/shared/ui';
 
 import { useReplies } from '../model/useReplies';
 
@@ -23,6 +21,7 @@ export function RepliesSection() {
           label={`• ${r.customText ?? ''}`}
         >
           <Button
+            variant="quiet"
             title={t('delete')}
             onPress={() => my.remove(r.id)}
           />

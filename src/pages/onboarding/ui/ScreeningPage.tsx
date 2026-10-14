@@ -1,6 +1,4 @@
-import { Button, Switch } from 'react-native';
-
-import { Row, Screen, Text } from '@/shared/ui';
+import { Button, Row, Screen, Switch, Text } from '@/shared/ui';
 
 import { questions, useScreening } from '../model/useScreening';
 
@@ -24,6 +22,7 @@ export function ScreeningPage() {
         </Row>
       ))}
       <Button
+        variant="primary"
         title={t('next')}
         onPress={next}
       />

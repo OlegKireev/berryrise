@@ -1,7 +1,6 @@
 import { router } from 'expo-router';
-import { Button } from 'react-native';
 
-import { Screen, Text } from '@/shared/ui';
+import { Button, Screen, Text } from '@/shared/ui';
 
 import { t } from '../i18n';
 
@@ -12,6 +11,7 @@ export function IntroPage() {
       <Text>{t('introText')}</Text>
       <Text variant="label">{t('disclaimer')}</Text>
       <Button
+        variant="primary"
         title={t('next')}
         onPress={() => router.push('/onboarding/screening')}
       />

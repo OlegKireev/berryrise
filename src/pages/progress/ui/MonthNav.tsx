@@ -1,7 +1,7 @@
-import { Button, View } from 'react-native';
+import { View } from 'react-native';
 
 import { formatMonth } from '@/shared/i18n';
-import { Text } from '@/shared/ui';
+import { Button, Text } from '@/shared/ui';
 
 import { t } from '../i18n';
 
@@ -25,14 +25,14 @@ export function MonthNav({ year, month, canPrev, canNext, prev, next }: Props) {
       }}
     >
       <Button
-        title="<"
+        title="‹"
         accessibilityLabel={t('prevMonth')}
         disabled={!canPrev}
         onPress={prev}
       />
       <Text variant="label">{formatMonth(year, month)}</Text>
       <Button
-        title=">"
+        title="›"
         accessibilityLabel={t('nextMonth')}
         disabled={!canNext}
         onPress={next}

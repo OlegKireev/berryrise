@@ -1,9 +1,7 @@
-import { Button } from 'react-native';
-
 import { ReasonList } from '@/entities/reason';
 import { cravings, hardships, helpers, moods, places } from '@/shared/config';
 import { formatDay } from '@/shared/i18n';
-import { Choices, Input, Screen, Text } from '@/shared/ui';
+import { Button, Choices, Input, Screen, Text } from '@/shared/ui';
 
 import { useDayReview } from '../model/useDayReview';
 
@@ -77,6 +75,7 @@ export function DayReviewPage() {
       />
 
       <Button
+        variant="primary"
         title={t('save')}
         disabled={!form.canSave}
         onPress={form.save}

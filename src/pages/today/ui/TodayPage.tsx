@@ -1,9 +1,8 @@
 import { router } from 'expo-router';
-import { Button, View } from 'react-native';
+import { View } from 'react-native';
 
-import { Screen } from '@/shared/ui';
+import { Button, Screen } from '@/shared/ui';
 
-import { SECONDARY } from './colors';
 import { DayReviewButton } from './DayReviewButton';
 import { PartyCard } from './PartyCard';
 import { Savings } from './Savings';
@@ -38,6 +37,7 @@ export function TodayPage() {
         />
       ) : (
         <Button
+          variant="primary"
           title={t('company')}
           onPress={() => router.push('/company')}
         />
@@ -51,8 +51,8 @@ export function TodayPage() {
       {/* Срыв отдельно и внизу, чтобы не путать с остальными действиями */}
       <View style={{ marginTop: 24 }}>
         <Button
+          variant="quiet"
           title={t('relapse')}
-          color={SECONDARY}
           onPress={() => router.push('/relapse')}
         />
       </View>

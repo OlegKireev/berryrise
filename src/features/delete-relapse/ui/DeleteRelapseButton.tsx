@@ -1,4 +1,6 @@
-import { Alert, Button } from 'react-native';
+import { Alert } from 'react-native';
+
+import { Button } from '@/shared/ui';
 
 import { useDeleteRelapse } from '../model/deleteRelapse';
 
@@ -22,6 +24,7 @@ export function DeleteRelapseButton({ id, onDeleted }: Props) {
 
   return (
     <Button
+      variant="quiet"
       title={t('delete')}
       onPress={confirm}
     />

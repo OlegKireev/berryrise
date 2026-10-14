@@ -1,7 +1,5 @@
-import { Button } from 'react-native';
-
 import { NotificationForm } from '@/features/notifications';
-import { Screen, Text } from '@/shared/ui';
+import { Button, Screen, Text } from '@/shared/ui';
 
 import { useNotificationsStep } from '../model/useNotificationsStep';
 
@@ -19,11 +17,13 @@ export function NotificationsStepPage() {
         onChange={step.setPrefs}
       />
       <Button
+        variant="primary"
         title={t('next')}
         disabled={step.saving}
         onPress={step.submit}
       />
       <Button
+        variant="quiet"
         title={t('skip')}
         disabled={step.saving}
         onPress={step.skip}

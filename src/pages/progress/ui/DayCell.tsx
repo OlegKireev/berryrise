@@ -1,6 +1,6 @@
 import { View } from 'react-native';
 
-import { Text } from '@/shared/ui';
+import { Text, useColors } from '@/shared/ui';
 
 import { ReviewDot } from './ReviewDot';
 import { useStatusColor } from './statusColor';
@@ -15,6 +15,9 @@ type Props = {
 
 export function DayCell({ date, status, reviewed }: Props) {
   const color = useStatusColor();
+  const colors = useColors();
+  // на закрашенной клетке цифра цветом фона, иначе в темной теме сливается
+  const fg = status ? colors.background : colors.text;
   return (
     <View
       style={{
@@ -26,8 +29,8 @@ export function DayCell({ date, status, reviewed }: Props) {
         backgroundColor: date ? color(status) : 'transparent',
       }}
     >
-      {date && <Text>{Number(date.slice(8))}</Text>}
-      {date && reviewed && <ReviewDot />}
+      {date && <Text style={{ color: fg }}>{Number(date.slice(8))}</Text>}
+      {date && reviewed && <ReviewDot color={fg} />}
     </View>
   );
 }

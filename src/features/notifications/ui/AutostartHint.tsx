@@ -1,6 +1,4 @@
-import { Button } from 'react-native';
-
-import { Text } from '@/shared/ui';
+import { Button, Text } from '@/shared/ui';
 
 import { openAutostartSettings } from '../model/autostart';
 

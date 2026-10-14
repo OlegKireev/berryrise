@@ -1,7 +1,6 @@
-import { Button } from 'react-native';
-
 import { t } from '@/shared/i18n';
 
+import { Button } from './Button';
 import { Input } from './Input';
 
 type Props = {
