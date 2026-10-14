@@ -3,7 +3,7 @@ import { useSQLiteContext } from 'expo-sqlite';
 import { useEffect, useState } from 'react';
 import { Button, TextInput, View } from 'react-native';
 
-import { checkinDay, getCheckin, saveCheckin, toDay } from '@/entities/checkin';
+import { checkinDay, getCheckin, saveCheckin } from '@/entities/checkin';
 import { getHabit } from '@/entities/habit';
 import { listReasons, reasonLabel, type ReasonRow } from '@/entities/reason';
 import {
@@ -19,6 +19,7 @@ import {
   type Place,
 } from '@/shared/config';
 import { formatDay, t } from '@/shared/i18n';
+import { toDay } from '@/shared/lib';
 import { Chip, Screen, Text } from '@/shared/ui';
 
 const toggle = <K,>(list: K[], key: K) =>

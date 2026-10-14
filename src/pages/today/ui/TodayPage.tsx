@@ -3,7 +3,7 @@ import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback, useEffect, useState } from 'react';
 import { Button } from 'react-native';
 
-import { checkinDay, getCheckin, toDay } from '@/entities/checkin';
+import { checkinDay, getCheckin } from '@/entities/checkin';
 import { getHabit, savings, streak, type Habit } from '@/entities/habit';
 import { listRelapses } from '@/entities/relapse';
 import {
@@ -14,6 +14,7 @@ import {
   portions,
   t,
 } from '@/shared/i18n';
+import { toDay } from '@/shared/lib';
 import { Screen, Text } from '@/shared/ui';
 
 export function TodayPage() {
