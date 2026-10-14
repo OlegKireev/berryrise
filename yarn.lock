@@ -938,6 +938,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@expo-google-fonts/manrope@npm:^0.4.2":
+  version: 0.4.2
+  resolution: "@expo-google-fonts/manrope@npm:0.4.2"
+  checksum: 10c0/84985ce8a64c584147a702e3e6f0dd11eb3d53180192e50669a814de9d555e778d37f974ca434a7785c3580df8fb594ff6985f82537a8d6934f528feb5aeddc8
+  languageName: node
+  linkType: hard
+
 "@expo-google-fonts/material-symbols@npm:^0.4.1":
   version: 0.4.49
   resolution: "@expo-google-fonts/material-symbols@npm:0.4.49"
@@ -8584,6 +8591,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "resheno@workspace:."
   dependencies:
+    "@expo-google-fonts/manrope": "npm:^0.4.2"
     "@react-native-community/datetimepicker": "npm:9.1.0"
     "@types/node": "npm:^24"
     "@types/react": "npm:~19.2.2"
