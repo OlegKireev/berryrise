@@ -16,11 +16,11 @@ type Props = {
   start: string; // день старта
   today: string;
   got: Record<AchievementKey, string | null>;
-  // срыв удален: календарь, стрик и ачивки пора пересчитать
+  // срыв удален: календарь, стрик и достижения пора пересчитать
   onChanged: () => void;
 };
 
-// Содержимое карточки дня: статус, срывы, вечеринка, итоги и ачивки. Данные грузит сама
+// Содержимое карточки дня: статус, срывы, вечеринка, итоги и достижения. Данные грузит сама
 export function DayCard({ date, start, today, got, onChanged }: Props) {
   const { data, reload } = useDayCard(date);
 

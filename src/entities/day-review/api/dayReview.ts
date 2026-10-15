@@ -12,7 +12,7 @@ export const getDayReview = (db: SQLiteDatabase, date: string) =>
     date,
   );
 
-// Даты всех неудаленных итогов дня, для ачивок
+// Даты всех неудаленных итогов дня, для достижений
 export const listDayReviewDates = async (db: SQLiteDatabase) =>
   (
     await db.getAllAsync<Pick<DayReview, 'date'>>(
@@ -20,7 +20,7 @@ export const listDayReviewDates = async (db: SQLiteDatabase) =>
     )
   ).map((r) => r.date);
 
-// Даты итогов, где в местах есть компания или бар: там обычно пьют. Для ачивок
+// Даты итогов, где в местах есть компания или бар: там обычно пьют. Для достижений
 export const listCompanyDates = async (db: SQLiteDatabase) =>
   (
     await db.getAllAsync<Pick<DayReview, 'date'>>(

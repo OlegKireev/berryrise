@@ -10,7 +10,7 @@ const ru = {
   company: 'Иду в компанию',
   dayReview: 'Итоги дня',
   day: 'День',
-  achievementsTitle: 'Ачивки',
+  achievementsTitle: 'Достижения',
   relapse: 'Срыв',
   cancel: 'Отмена',
   save: 'Сохранить',

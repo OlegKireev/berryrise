@@ -93,7 +93,7 @@ export const setPartyResult = (
   relapseId: string | null = null,
 ) => update(db, id, 'result = ?, relapseId = ?', result, relapseId);
 
-// "Не пошел": вечеринку удаляем, в ачивки она не идет
+// "Не пошел": вечеринку удаляем, в достижения она не идет
 export const cancelParty = (db: SQLiteDatabase, id: string) =>
   update(db, id, 'deletedAt = ?', Date.now());
 
@@ -117,7 +117,7 @@ export const getPartyOn = (db: SQLiteDatabase, from: number, to: number) =>
     to,
   );
 
-// Начала вечеринок с ответом "без алкоголя", для ачивок
+// Начала вечеринок с ответом "без алкоголя", для достижений
 export const listSoberPartyStarts = async (db: SQLiteDatabase) =>
   (
     await db.getAllAsync<Pick<Party, 'startAt'>>(

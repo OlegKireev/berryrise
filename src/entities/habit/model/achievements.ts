@@ -1,5 +1,5 @@
-// Чистая логика ачивок, без React Native: ее гоняет node:test.
-// Ачивки не храним, а вычисляем из истории. Дата получения - YYYY-MM-DD.
+// Чистая логика достижений, без React Native: ее гоняет node:test.
+// Достижения не храним, а вычисляем из истории. Дата получения - YYYY-MM-DD.
 
 import { toDay } from '../../../shared/lib/utils/toDay.ts';
 import type { Day } from './streak.ts';

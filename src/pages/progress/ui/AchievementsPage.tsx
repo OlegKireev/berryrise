@@ -9,7 +9,7 @@ import { useProgress } from '../model/useProgress';
 
 import { t } from '../i18n';
 
-// Все ачивки сеткой по три, в общем порядке
+// Все достижения сеткой по три, в общем порядке
 export function AchievementsPage() {
   const data = useProgress();
 
