@@ -8,6 +8,7 @@ import {
   achievements,
   getHabit,
   soberDays,
+  streak,
 } from '@/entities/habit';
 import { listSoberPartyStarts } from '@/entities/party';
 import { listRelapses, type Relapse } from '@/entities/relapse';
@@ -58,11 +59,9 @@ export function useProgress() {
 
   const { startAt, now, relapses, reviewDates, soberParties, companyDates } =
     data;
-  const days = soberDays(
-    startAt,
-    relapses.map((r) => r.at),
-    now,
-  );
+  const relapseAts = relapses.map((r) => r.at);
+  const days = soberDays(startAt, relapseAts, now);
+  const { best, total } = streak(startAt, relapseAts, now);
   const got = achievements(days, reviewDates, toDay(now), {
     soberParties,
     companyDates,
@@ -72,6 +71,8 @@ export function useProgress() {
     startAt,
     now,
     days,
+    best,
+    total,
     reviewDates: new Set(reviewDates),
     got,
     gotCount: achievementKeys.filter((k) => got[k]).length,

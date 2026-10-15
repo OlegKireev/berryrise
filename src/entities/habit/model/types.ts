@@ -13,3 +13,6 @@ export type Habit = Row & {
   currency: string | null;
   drinks: string; // Partial<Record<Drink, number>>, порций в неделю
 };
+
+// Статус дня для цвета: null - нейтральный (до старта или вне истории)
+export type DayStatus = 'sober' | 'relapse' | null;

@@ -1,11 +1,41 @@
 import { Link, Redirect } from 'expo-router';
+import { View } from 'react-native';
 import { Tabs } from 'expo-router/tabs';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useEffect, useState } from 'react';
 
 import { getHabit } from '@/entities/habit';
 import { t } from '@/shared/i18n';
-import { Text, useColors, useScreenColors } from '@/shared/ui';
+import { Text, fonts, useColors, useScreenColors } from '@/shared/ui';
+
+// Подпись таба: у активного полоска сверху и жирнее
+function TabLabel({
+  focused,
+  children,
+}: {
+  focused: boolean;
+  children: string;
+}) {
+  const colors = useColors();
+  return (
+    <View style={{ alignItems: 'center', gap: 6 }}>
+      <View
+        style={{
+          width: 32,
+          height: 3,
+          borderRadius: 2,
+          backgroundColor: focused ? colors.text : 'transparent',
+        }}
+      />
+      <Text
+        weight={focused ? 'bold' : 'regular'}
+        style={{ fontSize: 15, color: focused ? colors.text : colors.muted }}
+      >
+        {children}
+      </Text>
+    </View>
+  );
+}
 
 function SettingsButton() {
   const colors = useColors();
@@ -15,7 +45,7 @@ function SettingsButton() {
       accessibilityLabel={t('settings')}
       style={{ padding: 16 }}
     >
-      <Text style={{ color: colors.muted, fontSize: 22 }}>⚙︎</Text>
+      <Text style={{ color: colors.text, fontSize: 28 }}>⚙︎</Text>
     </Link>
   );
 }
@@ -37,7 +67,15 @@ export default function TabsLayout() {
     <Tabs
       screenOptions={{
         ...screenColors,
+        // крупный заголовок слева, как в макете
+        headerTitleAlign: 'left',
+        headerTitleStyle: {
+          color: colors.text,
+          fontFamily: fonts.bold,
+          fontSize: 28,
+        },
         headerRight: SettingsButton,
+        tabBarLabel: TabLabel,
         tabBarStyle: {
           backgroundColor: colors.card,
           borderTopColor: colors.border,
@@ -48,10 +86,7 @@ export default function TabsLayout() {
         tabBarInactiveTintColor: colors.muted,
         // ponytail: табы без иконок, добавим вместе с иконочным пакетом
         tabBarIconStyle: { display: 'none' },
-        tabBarItemStyle: {
-          justifyContent: 'center',
-        },
-        tabBarLabelStyle: { fontSize: 15 },
+        tabBarItemStyle: { justifyContent: 'flex-start' },
       }}
     >
       <Tabs.Screen

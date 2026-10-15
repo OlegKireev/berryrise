@@ -5,8 +5,10 @@ import { Button, Screen } from '@/shared/ui';
 
 import { DayReviewButton } from './DayReviewButton';
 import { PartyCard } from './PartyCard';
+import { ReasonOfDay } from './ReasonOfDay';
 import { Savings } from './Savings';
 import { StreakSummary } from './StreakSummary';
+import { WeekStrip } from './WeekStrip';
 
 import { useToday } from '../model/useToday';
 
@@ -24,10 +26,18 @@ export function TodayPage() {
   return (
     <Screen>
       <StreakSummary streak={today.streak} />
+      <WeekStrip week={today.week} />
       <Savings
         saved={today.saved}
         currency={today.currency}
         hasDrinks={today.hasDrinks}
+      />
+      <ReasonOfDay reason={today.reason} />
+      <DayReviewButton
+        day={today.reviewDay}
+        isToday={today.isToday}
+        done={today.reviewDone}
+        beforeStart={today.beforeStart}
       />
       {party ? (
         <PartyCard
@@ -42,17 +52,11 @@ export function TodayPage() {
           onPress={() => router.push('/company')}
         />
       )}
-      <DayReviewButton
-        day={today.reviewDay}
-        isToday={today.isToday}
-        done={today.reviewDone}
-        beforeStart={today.beforeStart}
-      />
       {/* Срыв отдельно и внизу, чтобы не путать с остальными действиями */}
       <View style={{ marginTop: 24 }}>
         <Button
           variant="quiet"
-          title={t('relapse')}
+          title={t('hadRelapse')}
           onPress={() => router.push('/relapse')}
         />
       </View>

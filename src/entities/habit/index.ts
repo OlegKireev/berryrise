@@ -6,7 +6,9 @@ export {
 } from './api/habit';
 export { savings, type Savings } from './model/savings';
 export { soberDays, streak, type Day, type Streak } from './model/streak';
-export { drinks, type Drink, type Habit } from './model/types';
+export { drinks, type DayStatus, type Drink, type Habit } from './model/types';
+export { DayCircle } from './ui/DayCircle';
+export { useDayColor } from './ui/dayColor';
 export {
   achievementKeys,
   achievements,

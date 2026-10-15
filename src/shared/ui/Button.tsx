@@ -39,7 +39,7 @@ export function Button({
       android_ripple={{ color: fg, foreground: true }}
       style={[
         {
-          paddingVertical: filled ? 13 : 8,
+          paddingVertical: filled ? 16 : 8,
           paddingHorizontal: 16,
           borderRadius: 10,
           overflow: 'hidden',
@@ -59,7 +59,7 @@ export function Button({
         weight={filled ? 'semibold' : 'medium'}
         style={{
           color: fg,
-          fontSize: 15,
+          fontSize: filled ? 17 : 16,
           textAlign: 'center',
           textDecorationLine: filled ? 'none' : 'underline',
         }}

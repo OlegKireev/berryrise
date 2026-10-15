@@ -2,6 +2,7 @@ import { View } from 'react-native';
 
 import type { Day } from '@/entities/habit';
 import { weekdays } from '@/shared/i18n';
+import { toDay } from '@/shared/lib';
 import { Text } from '@/shared/ui';
 
 import { DayCell } from './DayCell';
@@ -21,6 +22,7 @@ const week = { flexDirection: 'row', gap: 4 } as const;
 
 export function Calendar({ startAt, now, days, reviewDates }: Props) {
   const { weeks, status, ...nav } = useCalendar(startAt, now, days);
+  const today = toDay(now);
 
   return (
     <View style={{ gap: 8 }}>
@@ -46,6 +48,7 @@ export function Calendar({ startAt, now, days, reviewDates }: Props) {
               key={date ?? `empty-${j}`}
               date={date}
               status={date ? status(date) : null}
+              today={date === today}
               reviewed={date !== null && reviewDates.has(date)}
             />
           ))}

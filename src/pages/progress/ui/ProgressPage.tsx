@@ -3,6 +3,7 @@ import { Screen, Text } from '@/shared/ui';
 import { Achievements } from './Achievements';
 import { Calendar } from './Calendar';
 import { Relapses } from './Relapses';
+import { StreakStats } from './StreakStats';
 
 import { useProgress } from '../model/useProgress';
 
@@ -17,6 +18,10 @@ export function ProgressPage() {
 
   return (
     <Screen>
+      <StreakStats
+        best={data.best}
+        total={data.total}
+      />
       <Text variant="heading">{t('calendar')}</Text>
       <Calendar
         startAt={data.startAt}

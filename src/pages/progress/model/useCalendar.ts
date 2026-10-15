@@ -1,10 +1,8 @@
 import { useState } from 'react';
 
-import type { Day } from '@/entities/habit';
+import type { Day, DayStatus } from '@/entities/habit';
 
 import { monthIndex, monthWeeks } from './calendar';
-
-export type Status = 'sober' | 'relapse' | null; // null - нейтральный день
 
 // Листание календаря от месяца старта до текущего
 export function useCalendar(startAt: number, now: number, days: Day[]) {
@@ -17,7 +15,7 @@ export function useCalendar(startAt: number, now: number, days: Day[]) {
   const month = index % 12;
 
   const sober = new Map(days.map((d) => [d.date, d.sober]));
-  const status = (date: string): Status => {
+  const status = (date: string): DayStatus => {
     const s = sober.get(date);
     if (s === undefined) return null;
     return s ? 'sober' : 'relapse';

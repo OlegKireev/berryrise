@@ -1,12 +1,10 @@
 import type { ReactNode } from 'react';
 import { View } from 'react-native';
 
+import { useDayColor, type DayStatus } from '@/entities/habit';
 import { Text } from '@/shared/ui';
 
 import { ReviewDot } from './ReviewDot';
-import { useStatusColor } from './statusColor';
-
-import type { Status } from '../model/useCalendar';
 
 import { t } from '../i18n';
 
@@ -40,14 +38,14 @@ const LegendItem = ({
   </View>
 );
 
-function Swatch({ status }: { status: Status }) {
-  const color = useStatusColor();
+function Swatch({ status }: { status: DayStatus }) {
+  const color = useDayColor();
   return (
     <View
       style={{
         width: 12,
         height: 12,
-        borderRadius: 3,
+        borderRadius: 6,
         backgroundColor: color(status),
       }}
     />

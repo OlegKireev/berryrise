@@ -3,16 +3,25 @@ import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback, useEffect, useState } from 'react';
 
 import { reviewDay, getDayReview } from '@/entities/day-review';
-import { getHabit, savings, streak, type Habit } from '@/entities/habit';
+import {
+  getHabit,
+  savings,
+  soberDays,
+  streak,
+  type Habit,
+} from '@/entities/habit';
 import {
   cancelParty,
   getActiveParty,
   setPartyResult,
   type Party,
 } from '@/entities/party';
+import { listReasons, reasonOfDay, type ReasonRow } from '@/entities/reason';
 import { listRelapses } from '@/entities/relapse';
 import { syncNotifications } from '@/features/notifications';
 import { toDay } from '@/shared/lib';
+
+import { lastWeek } from './week';
 
 // Данные экрана "Сегодня". null - еще грузим
 export function useToday() {
@@ -24,6 +33,7 @@ export function useToday() {
     // день, за который итоги уже подведены
     filledDay: string | null;
     party: Party | null; // идущая вечеринка
+    reasons: ReasonRow[];
   } | null>(null);
   const [now, setNow] = useState(Date.now);
 
@@ -33,16 +43,18 @@ export function useToday() {
       const habit = await getHabit(db);
       if (!habit) return;
       const now = Date.now();
-      const [relapses, review, party] = await Promise.all([
+      const [relapses, review, party, reasons] = await Promise.all([
         listRelapses(db),
         getDayReview(db, reviewDay(now)),
         getActiveParty(db),
+        listReasons(db),
       ]);
       setData({
         habit,
         relapseAts: relapses.map((r) => r.at),
         filledDay: review?.date ?? null,
         party,
+        reasons,
       });
       setNow(now);
     })();
@@ -77,6 +89,9 @@ export function useToday() {
 
   return {
     streak: s,
+    // null - причин нет
+    reason: reasonOfDay(data.reasons, toDay(now)),
+    week: lastWeek(soberDays(habit.startAt, data.relapseAts, now), now),
     saved: savings(s.total, habit.weeklySpend, JSON.parse(habit.drinks)),
     currency: habit.currency,
     hasDrinks: habit.drinks !== '{}',

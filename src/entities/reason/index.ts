@@ -6,6 +6,7 @@ export {
   type NewReason,
 } from './api/reason';
 export { reasonLabel } from './model/reasonLabel';
+export { reasonOfDay } from './model/reasonOfDay';
 export { ReasonList } from './ui/ReasonList';
 export { reasons, type Reason, type ReasonRow } from './model/types';
 export { dict as reasonDict } from './i18n';

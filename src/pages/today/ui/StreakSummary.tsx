@@ -1,27 +1,30 @@
+import { View } from 'react-native';
+
 import type { Streak } from '@/entities/habit';
-import { days, formatDateTime } from '@/shared/i18n';
+import { dayWord, formatDate } from '@/shared/i18n';
 import { Text } from '@/shared/ui';
 
 import { t } from '../i18n';
 
+// Крупное число дней, лучший и всего живут на "Прогрессе"
 export function StreakSummary({ streak }: { streak: Streak }) {
   return (
-    <>
+    <View>
       <Text
         weight="bold"
-        style={{ fontSize: 48 }}
+        style={{ fontSize: 80, lineHeight: 88, letterSpacing: -2 }}
       >
-        {days(streak.current)}
+        {streak.current}
+      </Text>
+      <Text
+        weight="semibold"
+        style={{ fontSize: 22 }}
+      >
+        {dayWord(streak.current)} {t('withoutAlcohol')}
       </Text>
       <Text variant="hint">
-        {t('since')} {formatDateTime(streak.since)}
+        {t('since')} {formatDate(streak.since)}
       </Text>
-      <Text>
-        {t('bestStreak')}: {days(streak.best)}
-      </Text>
-      <Text>
-        {t('totalDays')}: {streak.total}
-      </Text>
-    </>
+    </View>
   );
 }

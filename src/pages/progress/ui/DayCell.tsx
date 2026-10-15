@@ -1,36 +1,25 @@
 import { View } from 'react-native';
 
-import { Text, useColors } from '@/shared/ui';
-
-import { ReviewDot } from './ReviewDot';
-import { useStatusColor } from './statusColor';
-
-import type { Status } from '../model/useCalendar';
+import { DayCircle, type DayStatus } from '@/entities/habit';
 
 type Props = {
   date: string | null; // null - пустая клетка до начала или после конца месяца
-  status: Status;
+  status: DayStatus;
+  today: boolean;
   reviewed: boolean;
 };
 
-export function DayCell({ date, status, reviewed }: Props) {
-  const color = useStatusColor();
-  const colors = useColors();
-  // на закрашенной клетке цифра цветом фона, иначе в темной теме сливается
-  const fg = status ? colors.background : colors.text;
+export function DayCell({ date, status, today, reviewed }: Props) {
   return (
-    <View
-      style={{
-        flex: 1,
-        aspectRatio: 1,
-        borderRadius: 6,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: date ? color(status) : 'transparent',
-      }}
-    >
-      {date && <Text style={{ color: fg }}>{Number(date.slice(8))}</Text>}
-      {date && reviewed && <ReviewDot color={fg} />}
+    <View style={{ flex: 1 }}>
+      {date && (
+        <DayCircle
+          label={String(Number(date.slice(8)))}
+          status={status}
+          today={today}
+          dot={reviewed}
+        />
+      )}
     </View>
   );
 }

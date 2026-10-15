@@ -1,8 +1,9 @@
 import { router } from 'expo-router';
+import { View } from 'react-native';
 
 import type { Savings as SavingsData } from '@/entities/habit';
-import { formatMoney, portions } from '@/shared/i18n';
-import { Button, Text } from '@/shared/ui';
+import { formatMoney, formatNumber, portions } from '@/shared/i18n';
+import { Button, Card, Text } from '@/shared/ui';
 
 import { t } from '../i18n';
 
@@ -24,18 +25,24 @@ export function Savings({ saved, currency, hasDrinks }: Props) {
   }
 
   return (
-    <>
-      <Text variant="label">{t('saved')}</Text>
+    <Card>
+      <Text variant="hint">{t('saved')}</Text>
       {saved.money !== null && currency && (
-        <Text style={{ fontSize: 24 }}>
+        <Text
+          weight="bold"
+          style={{ fontSize: 32 }}
+        >
           {formatMoney(saved.money, currency)}
         </Text>
       )}
       {hasDrinks && (
-        <Text>
-          {t('notDrunk')}: {portions(saved.portions)}, ~{saved.kcal} {t('kcal')}
-        </Text>
+        <View style={{ flexDirection: 'row', gap: 16 }}>
+          <Text variant="hint">{portions(saved.portions)}</Text>
+          <Text variant="hint">
+            {formatNumber(saved.kcal)} {t('kcal')}
+          </Text>
+        </View>
       )}
-    </>
+    </Card>
   );
 }
