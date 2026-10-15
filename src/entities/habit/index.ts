@@ -9,6 +9,7 @@ export { soberDays, streak, type Day, type Streak } from './model/streak';
 export { drinks, type DayStatus, type Drink, type Habit } from './model/types';
 export { DayCircle } from './ui/DayCircle';
 export { Medal } from './ui/Medal';
+export { MedalMagic } from './ui/MedalMagic';
 export { useDayColor } from './ui/dayColor';
 export {
   achievementKeys,

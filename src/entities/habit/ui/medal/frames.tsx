@@ -12,6 +12,7 @@ import {
 } from 'react-native-svg';
 
 import { ink, mix, type Metal } from './palette';
+import { Shine } from './shine';
 
 // Все медали в одном viewBox 100x108: рамка сверху, тень снизу
 export const VIEW_W = 100;
@@ -161,9 +162,10 @@ type Props = {
   metal: Metal;
   scene: ReactNode; // обрезается по внутреннему контуру
   over?: ReactNode; // то, что выходит за рамку
+  shine?: boolean; // бегущий блик полученной медали в карточке
 };
 
-export function Frame({ shape, metal, scene, over }: Props) {
+export function Frame({ shape, metal, scene, over, shine }: Props) {
   const inner = toPoints(outline(shape, 'inner'));
   return (
     <G>
@@ -202,6 +204,7 @@ export function Frame({ shape, metal, scene, over }: Props) {
         strokeWidth={1.2}
       />
       {over}
+      {shine && <Shine outer={toPoints(outline(shape, 'outer'))} />}
       {shape === 'hex' && <Ribbon metal={metal} />}
     </G>
   );

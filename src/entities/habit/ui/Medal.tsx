@@ -22,6 +22,7 @@ type Props = {
   achievement: AchievementKey;
   state: MedalState['state'];
   size?: number;
+  shine?: boolean; // бегущий блик, только у полученной
 };
 
 // Медаль достижения: рамка по уровню и сцена (матрица в medal/medals.tsx).
@@ -31,6 +32,7 @@ export const Medal = memo(function Medal({
   achievement,
   state,
   size = 64,
+  shine,
 }: Props) {
   const m = medals[achievement];
   const height = (size * VIEW_H) / VIEW_W;
@@ -51,6 +53,7 @@ export const Medal = memo(function Medal({
             metal={metals[m.metal]}
             scene={<m.Scene />}
             over={m.Over && <m.Over />}
+            shine={shine && state === 'got'}
           />
         </Silhouette.Provider>
       </Svg>

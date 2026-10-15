@@ -2,5 +2,5 @@
   "$schema": "https://unpkg.com/knip@6/schema.json",
   "ignore": ["src/entities/contact/**"],
   "ignoreBinaries": ["adb"],
-  "ignoreDependencies": ["expo-updates", "expo-contacts", "expo-haptics"]
+  "ignoreDependencies": ["expo-updates", "expo-contacts"]
 }
