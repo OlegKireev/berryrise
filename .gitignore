@@ -47,3 +47,6 @@ yarn-error.*
 !.yarn/releases
 !.yarn/plugins
 .pnp.*
+
+# python (скрипты скиллов)
+__pycache__/
