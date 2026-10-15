@@ -12,6 +12,20 @@ export const listRelapses = (db: SQLiteDatabase) =>
     'SELECT id, at FROM relapse WHERE deletedAt IS NULL ORDER BY at DESC',
   );
 
+// Есть ли неудаленный срыв за [from, to) или записанный в это время (задним числом тоже)
+export const hasRelapseBetween = async (
+  db: SQLiteDatabase,
+  from: number,
+  to: number,
+) =>
+  (await db.getFirstAsync(
+    'SELECT 1 FROM relapse WHERE deletedAt IS NULL AND ((at >= ? AND at < ?) OR (createdAt >= ? AND createdAt < ?)) LIMIT 1',
+    from,
+    to,
+    from,
+    to,
+  )) !== null;
+
 // Неудаленные срывы с разбором с началом в [from, to), ранние сверху
 export const listRelapsesBetween = (
   db: SQLiteDatabase,

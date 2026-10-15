@@ -1,4 +1,5 @@
 export {
+  hasRelapseBetween,
   insertRelapse,
   listRelapses,
   listRelapsesBetween,

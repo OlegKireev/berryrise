@@ -1,5 +1,6 @@
 import { router } from 'expo-router';
 
+import { useCelebrate } from '@/features/celebrate-achievement';
 import { Screen, Text } from '@/shared/ui';
 
 import { Achievements } from './Achievements';
@@ -12,6 +13,7 @@ import { t } from '../i18n';
 
 export function ProgressPage() {
   const data = useProgress();
+  useCelebrate();
 
   if (!data) {
     return null;

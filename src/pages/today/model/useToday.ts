@@ -18,6 +18,7 @@ import {
 } from '@/entities/party';
 import { listReasons, reasonOfDay, type ReasonRow } from '@/entities/reason';
 import { listRelapses } from '@/entities/relapse';
+import { useCelebrate } from '@/features/celebrate-achievement';
 import { syncNotifications } from '@/features/notifications';
 import { toDay } from '@/shared/lib';
 
@@ -36,6 +37,7 @@ export function useToday() {
     reasons: ReasonRow[];
   } | null>(null);
   const [now, setNow] = useState(Date.now);
+  const celebrate = useCelebrate();
 
   // Перечитываем при каждом фокусе, в том числе после закрытия модалки срыва
   const load = useCallback(() => {
@@ -77,10 +79,11 @@ export function useToday() {
     return null;
   }
 
-  // ответ на вечеринку снимает ее "как прошло?"
+  // ответ на вечеринку снимает ее "как прошло?" и может дать медаль
   const afterParty = () => {
     syncNotifications(db);
     load();
+    celebrate();
   };
 
   const { habit, party } = data;
