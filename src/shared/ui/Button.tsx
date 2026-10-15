@@ -1,27 +1,38 @@
+import type { ReactNode } from 'react';
 import { Pressable, type StyleProp, type ViewStyle } from 'react-native';
 
 import { Icon, type IconName } from './Icon';
 import { Text } from './Text';
 import { useColors } from './theme';
 
-// кнопка из одной иконки обязана иметь подпись для диктора
+// кнопка из одной иконки обязана иметь подпись для диктора;
+// children - свое содержимое (несколько строк), цвета текста задает вызывающий
 type Content =
   | {
       title: string;
       icon?: never;
+      children?: never;
       accessibilityLabel?: string;
     }
   | {
       icon: IconName;
       title?: never;
+      children?: never;
       accessibilityLabel: string;
+    }
+  | {
+      children: ReactNode;
+      title?: never;
+      icon?: never;
+      accessibilityLabel?: string;
     };
 
 type Props = Content & {
   onPress: () => void;
   // primary - одна на экран, основное действие; quiet - отмена, пропуск, удаление, срыв;
-  // ghost - прозрачная в цвет текста без подчеркивания, для кнопок-иконок в шапке
-  variant?: 'primary' | 'secondary' | 'quiet' | 'ghost';
+  // ghost - прозрачная в цвет текста без подчеркивания, для кнопок-иконок в шапке;
+  // scrim - рамка на темной подложке, где кнопки темы теряются
+  variant?: 'primary' | 'secondary' | 'quiet' | 'ghost' | 'scrim';
   disabled?: boolean;
   style?: StyleProp<ViewStyle>;
 };
@@ -29,6 +40,7 @@ type Props = Content & {
 export function Button({
   title,
   icon,
+  children,
   onPress,
   variant = 'secondary',
   disabled,
@@ -42,6 +54,7 @@ export function Button({
     secondary: colors.onSecondary,
     quiet: colors.muted,
     ghost: colors.text,
+    scrim: colors.onScrim,
   }[variant];
   const bg =
     variant === 'primary'
@@ -69,6 +82,8 @@ export function Button({
           overflow: 'hidden',
           alignItems: 'center',
           backgroundColor: bg,
+          borderWidth: variant === 'scrim' ? 1 : 0,
+          borderColor: fg,
           opacity: disabled ? 0.4 : variant === 'ghost' && pressed ? 0.6 : 1,
         },
         style,
@@ -80,7 +95,7 @@ export function Button({
           size={22}
           color={fg}
         />
-      ) : (
+      ) : title !== undefined ? (
         <Text
           weight={filled ? 'semibold' : 'medium'}
           style={{
@@ -92,6 +107,8 @@ export function Button({
         >
           {title}
         </Text>
+      ) : (
+        children
       )}
     </Pressable>
   );

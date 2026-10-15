@@ -1,8 +1,8 @@
 import { router } from 'expo-router';
-import { Pressable, View } from 'react-native';
+import { View } from 'react-native';
 
 import { formatDay } from '@/shared/i18n';
-import { Text, useColors } from '@/shared/ui';
+import { Button, Text, useColors } from '@/shared/ui';
 
 import { t } from '../i18n';
 
@@ -23,19 +23,9 @@ export function DayReviewButton({ day, isToday, done, beforeStart }: Props) {
 
   const fg = { color: colors.onSecondary };
   return (
-    <Pressable
-      accessibilityRole="button"
+    <Button
       onPress={() => router.push('/day-review')}
-      android_ripple={{ color: colors.onSecondary, foreground: true }}
-      style={{
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingVertical: 14,
-        paddingHorizontal: 16,
-        borderRadius: 10,
-        overflow: 'hidden',
-        backgroundColor: colors.secondary,
-      }}
+      style={{ flexDirection: 'row', paddingVertical: 14 }}
     >
       <View style={{ flex: 1 }}>
         <Text
@@ -54,6 +44,6 @@ export function DayReviewButton({ day, isToday, done, beforeStart }: Props) {
       >
         {t(done ? 'reviewFilled' : 'reviewFill')}
       </Text>
-    </Pressable>
+    </Button>
   );
 }
