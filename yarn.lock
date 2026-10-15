@@ -6892,6 +6892,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lucide-react-native@npm:^1.57.0":
+  version: 1.57.0
+  resolution: "lucide-react-native@npm:1.57.0"
+  peerDependencies:
+    "@types/react": "*"
+    react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
+    react-native: "*"
+    react-native-svg: ^12.0.0 || ^13.0.0 || ^14.0.0 || ^15.0.0
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+  checksum: 10c0/b9537580135c73aa8b1095385b98af460a95fe86ec4cbfaa94f70c9673fe7aff2fb3a7547107394dabb53870cd52e0dbacf66172eb7e581c4b9ad323019be999
+  languageName: node
+  linkType: hard
+
 "madge@npm:^8.0.0":
   version: 8.0.0
   resolution: "madge@npm:8.0.0"
@@ -8727,6 +8742,7 @@ __metadata:
     knip: "npm:^6.41.0"
     lefthook: "npm:^2.2.1"
     lint-staged: "npm:^17.6.0"
+    lucide-react-native: "npm:^1.57.0"
     madge: "npm:^8.0.0"
     prettier: "npm:^3.9.10"
     react: "npm:19.2.3"

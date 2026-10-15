@@ -1,4 +1,4 @@
-import { Link, Redirect } from 'expo-router';
+import { Redirect, router } from 'expo-router';
 import { View } from 'react-native';
 import { Tabs } from 'expo-router/tabs';
 import { useSQLiteContext } from 'expo-sqlite';
@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 
 import { getHabit } from '@/entities/habit';
 import { t } from '@/shared/i18n';
-import { Text, fonts, useColors, useScreenColors } from '@/shared/ui';
+import { Button, Text, fonts, useColors, useScreenColors } from '@/shared/ui';
 
 // Подпись таба: у активного полоска сверху и жирнее
 function TabLabel({
@@ -38,15 +38,13 @@ function TabLabel({
 }
 
 function SettingsButton() {
-  const colors = useColors();
   return (
-    <Link
-      href="/settings"
+    <Button
+      variant="ghost"
+      icon="settings"
       accessibilityLabel={t('settings')}
-      style={{ padding: 16 }}
-    >
-      <Text style={{ color: colors.text, fontSize: 28 }}>⚙︎</Text>
-    </Link>
+      onPress={() => router.push('/settings')}
+    />
   );
 }
 

@@ -4,7 +4,7 @@ import { Button, Text } from '@/shared/ui';
 
 type Props = {
   label: string;
-  prevLabel: string; // для доступности: стрелка без текста
+  prevLabel: string; // для диктора: стрелка без текста
   nextLabel: string;
   canPrev: boolean;
   canNext: boolean;
@@ -31,14 +31,14 @@ export function PeriodNav({
       }}
     >
       <Button
-        title="‹"
+        icon="chevronLeft"
         accessibilityLabel={prevLabel}
         disabled={!canPrev}
         onPress={prev}
       />
       <Text variant="label">{label}</Text>
       <Button
-        title="›"
+        icon="chevronRight"
         accessibilityLabel={nextLabel}
         disabled={!canNext}
         onPress={next}

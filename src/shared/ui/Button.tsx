@@ -1,20 +1,34 @@
 import { Pressable, type StyleProp, type ViewStyle } from 'react-native';
 
+import { Icon, type IconName } from './Icon';
 import { Text } from './Text';
 import { useColors } from './theme';
 
-type Props = {
-  title: string;
+// кнопка из одной иконки обязана иметь подпись для диктора
+type Content =
+  | {
+      title: string;
+      icon?: never;
+      accessibilityLabel?: string;
+    }
+  | {
+      icon: IconName;
+      title?: never;
+      accessibilityLabel: string;
+    };
+
+type Props = Content & {
   onPress: () => void;
-  // primary - одна на экран, основное действие; quiet - отмена, пропуск, удаление, срыв
-  variant?: 'primary' | 'secondary' | 'quiet';
+  // primary - одна на экран, основное действие; quiet - отмена, пропуск, удаление, срыв;
+  // ghost - прозрачная в цвет текста без подчеркивания, для кнопок-иконок в шапке
+  variant?: 'primary' | 'secondary' | 'quiet' | 'ghost';
   disabled?: boolean;
-  accessibilityLabel?: string;
   style?: StyleProp<ViewStyle>;
 };
 
 export function Button({
   title,
+  icon,
   onPress,
   variant = 'secondary',
   disabled,
@@ -22,13 +36,19 @@ export function Button({
   style,
 }: Props) {
   const colors = useColors();
-  const filled = variant !== 'quiet';
-  const fg =
+  const filled = variant !== 'quiet' && variant !== 'ghost';
+  const fg = {
+    primary: colors.onPrimary,
+    secondary: colors.onSecondary,
+    quiet: colors.muted,
+    ghost: colors.text,
+  }[variant];
+  const bg =
     variant === 'primary'
-      ? colors.onPrimary
+      ? colors.primary
       : variant === 'secondary'
-        ? colors.onSecondary
-        : colors.muted;
+        ? colors.secondary
+        : 'transparent';
   return (
     <Pressable
       onPress={onPress}
@@ -36,36 +56,42 @@ export function Button({
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel}
       accessibilityState={{ disabled }}
-      android_ripple={{ color: fg, foreground: true }}
-      style={[
+      // у ghost без ripple, только приглушение при нажатии, как у Row
+      android_ripple={
+        variant === 'ghost' ? undefined : { color: fg, foreground: true }
+      }
+      style={({ pressed }) => [
         {
           paddingVertical: filled ? 16 : 8,
           paddingHorizontal: 16,
           borderRadius: 10,
           overflow: 'hidden',
           alignItems: 'center',
-          backgroundColor:
-            variant === 'primary'
-              ? colors.primary
-              : variant === 'secondary'
-                ? colors.secondary
-                : 'transparent',
-          opacity: disabled ? 0.4 : 1,
+          backgroundColor: bg,
+          opacity: disabled ? 0.4 : variant === 'ghost' && pressed ? 0.6 : 1,
         },
         style,
       ]}
     >
-      <Text
-        weight={filled ? 'semibold' : 'medium'}
-        style={{
-          color: fg,
-          fontSize: filled ? 17 : 16,
-          textAlign: 'center',
-          textDecorationLine: filled ? 'none' : 'underline',
-        }}
-      >
-        {title}
-      </Text>
+      {icon ? (
+        <Icon
+          name={icon}
+          size={22}
+          color={fg}
+        />
+      ) : (
+        <Text
+          weight={filled ? 'semibold' : 'medium'}
+          style={{
+            color: fg,
+            fontSize: filled ? 17 : 16,
+            textAlign: 'center',
+            textDecorationLine: variant === 'quiet' ? 'underline' : 'none',
+          }}
+        >
+          {title}
+        </Text>
+      )}
     </Pressable>
   );
 }
