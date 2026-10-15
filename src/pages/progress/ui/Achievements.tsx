@@ -47,6 +47,12 @@ export function Achievements({ got, states, gotCount }: Props) {
             achievement={k}
             date={got[k]}
             state={states[k]!}
+            onPress={() =>
+              router.push({
+                pathname: '/achievement/[key]',
+                params: { key: k },
+              })
+            }
           />
         ))}
       </View>

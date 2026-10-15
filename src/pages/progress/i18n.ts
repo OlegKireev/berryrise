@@ -35,6 +35,9 @@ export const t = createT(
       // "еще 4 дня" / "4 days to go"
       leftPrefix: 'еще ',
       leftSuffix: '',
+      newAchievement: 'Новое достижение',
+      nextAchievement: 'Дальше',
+      close: 'Закрыть',
     },
     en: {
       statusSober: 'Sober day',
@@ -66,6 +69,9 @@ export const t = createT(
       of: 'of',
       leftPrefix: '',
       leftSuffix: ' to go',
+      newAchievement: 'New achievement',
+      nextAchievement: 'Next',
+      close: 'Close',
     },
   },
   { habit: habitDict, option: optionDict },

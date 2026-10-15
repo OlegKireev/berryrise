@@ -1,3 +1,4 @@
+import { router } from 'expo-router';
 import { View } from 'react-native';
 
 import { achievementKeys } from '@/entities/habit';
@@ -37,6 +38,12 @@ export function AchievementsPage() {
                   achievement={k}
                   date={data.got[k]}
                   state={state}
+                  onPress={() =>
+                    router.push({
+                      pathname: '/achievement/[key]',
+                      params: { key: k },
+                    })
+                  }
                 />
               </View>
             )

@@ -83,6 +83,14 @@ export default function RootLayout() {
             options={{ title: t('achievementsTitle') }}
           />
           <Stack.Screen
+            name="achievement/[key]"
+            options={{
+              headerShown: false,
+              presentation: 'transparentModal',
+              animation: 'fade',
+            }}
+          />
+          <Stack.Screen
             name="company"
             options={{ title: t('company') }}
           />

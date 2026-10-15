@@ -1,4 +1,4 @@
-import { View } from 'react-native';
+import { Pressable } from 'react-native';
 
 import { Medal, type AchievementKey, type MedalState } from '@/entities/habit';
 import { days, evenings, formatDay } from '@/shared/i18n';
@@ -10,21 +10,35 @@ type Props = {
   achievement: AchievementKey;
   date: string | null;
   state: MedalState;
+  onPress: () => void;
 };
 
-// Медаль с названием; под полученной дата, под следующей - сколько осталось
-export function MedalTile({ achievement, date, state }: Props) {
+// Подпись под медалью: у полученной дата, у следующей - сколько осталось
+export function medalHint(
+  achievement: AchievementKey,
+  date: string | null,
+  state: MedalState,
+) {
   const left =
     state.state === 'next' && state.left !== undefined
       ? achievement.startsWith('company')
         ? evenings(state.left)
         : days(state.left)
       : null;
-  const hint = date
+  return date
     ? formatDay(date)
     : left && `${t('leftPrefix')}${left}${t('leftSuffix')}`;
+}
+
+// Медаль с названием и подписью, тап открывает карточку медали
+export function MedalTile({ achievement, date, state, onPress }: Props) {
+  const hint = medalHint(achievement, date, state);
   return (
-    <View style={{ flex: 1, alignItems: 'center', gap: 4 }}>
+    <Pressable
+      onPress={onPress}
+      accessibilityRole="button"
+      style={{ flex: 1, alignItems: 'center', gap: 4 }}
+    >
       <Medal
         achievement={achievement}
         state={state.state}
@@ -44,6 +58,6 @@ export function MedalTile({ achievement, date, state }: Props) {
           {hint}
         </Text>
       )}
-    </View>
+    </Pressable>
   );
 }

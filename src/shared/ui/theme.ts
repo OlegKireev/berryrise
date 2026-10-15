@@ -20,6 +20,9 @@ const palette = {
     silver: '#878B91',
     gold: '#B38B2A',
     special: '#4F7A73',
+    // подложка карточки медали: темная в обеих темах, на ней светится магия
+    scrim: 'rgba(16, 15, 13, 0.94)',
+    onScrim: '#F4F1EA',
   },
   dark: {
     background: '#1A1917',
@@ -37,6 +40,8 @@ const palette = {
     silver: '#B4B8BD',
     gold: '#D8B456',
     special: '#8DB3AA',
+    scrim: 'rgba(8, 8, 7, 0.94)',
+    onScrim: '#ECE7DD',
   },
 };
 
