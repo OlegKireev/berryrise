@@ -51,7 +51,7 @@ function ScrimButton({
   );
 }
 
-// Карточка медали поверх экрана: медаль крупно с магией, название, дата или "еще N".
+// Карточка медали поверх экрана: медаль крупно с магией, название, похвала у полученной или условие у следующей, дата или "еще N".
 // При празднике - вход с вспышкой и очередь новых кнопкой "Дальше"; тап по подложке закрывает
 export function AchievementPage() {
   const { key, celebrate, queue } = useLocalSearchParams<Params>();
@@ -105,6 +105,9 @@ export function AchievementPage() {
           style={{ color: colors.onScrim, textAlign: 'center' }}
         >
           {t(`habit.achievements.${key}`)}
+        </Text>
+        <Text style={{ color: colors.onScrim, textAlign: 'center' }}>
+          {date ? t(`habit.praise.${key}`) : t(`habit.goal.${key}`)}
         </Text>
         {hint && (
           <Text style={{ color: colors.onScrim, opacity: 0.7 }}>{hint}</Text>
