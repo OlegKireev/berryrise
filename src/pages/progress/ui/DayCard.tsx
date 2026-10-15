@@ -1,11 +1,13 @@
+import { router } from 'expo-router';
 import { View } from 'react-native';
 
-import { achievementKeys, Medal, type AchievementKey } from '@/entities/habit';
+import { achievementKeys, type AchievementKey } from '@/entities/habit';
 import { Text } from '@/shared/ui';
 
 import { Answer } from './Answer';
 import { DayRelapse } from './DayRelapse';
 import { DayReviewSummary } from './DayReviewSummary';
+import { MedalTile } from './MedalTile';
 
 import { useDayCard } from '../model/useDayCard';
 
@@ -64,21 +66,29 @@ export function DayCard({ date, start, today, got, onChanged }: Props) {
         review={data.review}
       />
       {medals.length > 0 && (
-        <View style={{ gap: 8 }}>
+        <View style={{ gap: 12 }}>
           <Text weight="semibold">{t('dayAchievements')}</Text>
-          {medals.map((k) => (
-            <View
-              key={k}
-              style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}
-            >
-              <Medal
-                achievement={k}
-                state="got"
-                size={40}
-              />
-              <Text style={{ flex: 1 }}>{t(`habit.achievements.${k}`)}</Text>
-            </View>
-          ))}
+          {/* сеткой по три, как на экране всех достижений */}
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap', rowGap: 20 }}>
+            {medals.map((k) => (
+              <View
+                key={k}
+                style={{ width: '33.33%', paddingHorizontal: 4 }}
+              >
+                <MedalTile
+                  achievement={k}
+                  date={day}
+                  state={{ state: 'got' }}
+                  onPress={() =>
+                    router.push({
+                      pathname: '/achievement/[key]',
+                      params: { key: k },
+                    })
+                  }
+                />
+              </View>
+            ))}
+          </View>
         </View>
       )}
     </View>
