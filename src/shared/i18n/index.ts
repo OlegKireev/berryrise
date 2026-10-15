@@ -140,9 +140,12 @@ const monthYear = new Intl.DateTimeFormat(locale, {
   year: 'numeric',
 });
 
-// "Октябрь 2026 г." / "October 2026", month с нуля, как в Date
+const monthOnly = new Intl.DateTimeFormat(locale, { month: 'long' });
+
+// "Октябрь" в текущем году, иначе "Октябрь 2025 г." / "October 2025", month с нуля, как в Date
 export const formatMonth = (year: number, month: number) => {
-  const s = monthYear.format(new Date(year, month, 1));
+  const format = year === new Date().getFullYear() ? monthOnly : monthYear;
+  const s = format.format(new Date(year, month, 1));
   return s.charAt(0).toUpperCase() + s.slice(1);
 };
 
