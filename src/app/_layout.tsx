@@ -79,6 +79,10 @@ export default function RootLayout() {
             options={{ title: t('about') }}
           />
           <Stack.Screen
+            name="achievements"
+            options={{ title: t('achievementsTitle') }}
+          />
+          <Stack.Screen
             name="company"
             options={{ title: t('company') }}
           />

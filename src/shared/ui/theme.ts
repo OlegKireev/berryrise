@@ -15,6 +15,11 @@ const palette = {
     onSecondary: '#34504C',
     sober: '#6E8F6A',
     relapse: '#C08A5B',
+    // медали ачивок: серии по уровням и ситуационные
+    bronze: '#A9744A',
+    silver: '#878B91',
+    gold: '#B38B2A',
+    special: '#4F7A73',
   },
   dark: {
     background: '#1A1917',
@@ -28,6 +33,10 @@ const palette = {
     onSecondary: '#BFD0C3',
     sober: '#7FA27A',
     relapse: '#C99A6E',
+    bronze: '#C9956A',
+    silver: '#B4B8BD',
+    gold: '#D8B456',
+    special: '#8DB3AA',
   },
 };
 
