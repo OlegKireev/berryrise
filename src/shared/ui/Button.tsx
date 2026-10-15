@@ -56,9 +56,10 @@ export function Button({
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel}
       accessibilityState={{ disabled }}
+      // ripple цветом текста на ~12%, как у нажатия в Material;
       // у ghost без ripple, только приглушение при нажатии, как у Row
       android_ripple={
-        variant === 'ghost' ? undefined : { color: fg, foreground: true }
+        variant === 'ghost' ? undefined : { color: `${fg}1F`, foreground: true }
       }
       style={({ pressed }) => [
         {
