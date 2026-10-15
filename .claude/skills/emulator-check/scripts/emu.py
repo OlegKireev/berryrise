@@ -27,6 +27,9 @@ NATIVE_INPUTS = ['package.json', 'app.json', 'yarn.lock', 'eas.json']
 NATIVE_HASH = APK.parent / 'native-inputs.sha256'
 SDK = Path(os.environ.get('ANDROID_HOME', Path.home() / 'Library/Android/sdk'))
 ADB = str(SDK / 'platform-tools/adb')
+# adb и expo без этого берут первое устройство, а это может быть подключенный телефон
+# ponytail: порт первого эмулятора; если занят другим - задать ANDROID_SERIAL руками
+os.environ.setdefault('ANDROID_SERIAL', 'emulator-5554')
 EMULATOR = str(SDK / 'emulator/emulator')
 JAVA17 = '/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home'
 AVD = os.environ.get('SOBER_AVD', 'Pixel_8')
@@ -276,7 +279,7 @@ def build():
     log = OUT / 'build.log'
     with open(log, 'w') as f:
         before = (ROOT / 'package.json').read_text()
-        r = subprocess.run(['npx', 'expo', 'run:android', '--no-bundler'], cwd=ROOT, env=env(), stdout=f, stderr=subprocess.STDOUT)
+        r = subprocess.run(['npx', 'expo', 'run:android', '--no-bundler', '--device', AVD], cwd=ROOT, env=env(), stdout=f, stderr=subprocess.STDOUT)
     # prebuild при генерации android/ переписывает скрипты android/ios в package.json, возвращаем
     (ROOT / 'package.json').write_text(before)
     # Gradle daemon держит 2+ ГБ и грузит CPU, эмулятору от этого плохо
