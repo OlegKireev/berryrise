@@ -1,16 +1,32 @@
 import { habitDict } from '@/entities/habit';
+import { optionDict } from '@/shared/config';
 import { createT } from '@/shared/i18n';
 
 export const t = createT(
   {
     ru: {
-      relapses: 'Срывы',
-      noRelapses: 'Срывов не было',
+      statusSober: 'Трезвый день',
+      statusRelapse: 'Срыв',
+      statusStart: 'День старта',
+      statusToday: 'Сегодня, день еще идет',
+      relapseAt: 'Срыв в',
+      party: 'В компании',
+      partyResult: {
+        sober: 'без алкоголя',
+        drank: 'выпил',
+        none: 'не отмечено',
+      },
+      reviewEmpty: 'Не заполнены',
+      reviewFill: 'Заполнить',
+      reviewEdit: 'Изменить',
+      dayAchievements: 'Получено в этот день',
       calendar: 'Календарь',
       bestStreak: 'Лучший стрик',
       totalDays: 'Всего трезвых',
       prevMonth: 'Предыдущий месяц',
       nextMonth: 'Следующий месяц',
+      prevDay: 'Предыдущий день',
+      nextDay: 'Следующий день',
       legendSober: 'Трезвый',
       legendRelapse: 'Срыв',
       allAchievements: 'Все',
@@ -18,13 +34,28 @@ export const t = createT(
       of: 'из',
     },
     en: {
-      relapses: 'Relapses',
-      noRelapses: 'No relapses',
+      statusSober: 'Sober day',
+      statusRelapse: 'Relapse',
+      statusStart: 'Start day',
+      statusToday: 'Today, still going',
+      relapseAt: 'Relapse at',
+      party: 'In company',
+      partyResult: {
+        sober: 'stayed sober',
+        drank: 'drank',
+        none: 'not marked',
+      },
+      reviewEmpty: 'Not filled in',
+      reviewFill: 'Fill in',
+      reviewEdit: 'Edit',
+      dayAchievements: 'Unlocked this day',
       calendar: 'Calendar',
       bestStreak: 'Best streak',
       totalDays: 'Total sober',
       prevMonth: 'Previous month',
       nextMonth: 'Next month',
+      prevDay: 'Previous day',
+      nextDay: 'Next day',
       legendSober: 'Sober',
       legendRelapse: 'Relapse',
       allAchievements: 'All',
@@ -32,5 +63,5 @@ export const t = createT(
       of: 'of',
     },
   },
-  { habit: habitDict },
+  { habit: habitDict, option: optionDict },
 );

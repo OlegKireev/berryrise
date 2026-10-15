@@ -4,6 +4,7 @@ export {
   deleteCustomDrink,
   getActiveParty,
   getParty,
+  getPartyOn,
   hasPartyOn,
   listCustomDrinks,
   listPartyStartsSince,

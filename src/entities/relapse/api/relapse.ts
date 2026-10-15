@@ -12,6 +12,18 @@ export const listRelapses = (db: SQLiteDatabase) =>
     'SELECT id, at FROM relapse WHERE deletedAt IS NULL ORDER BY at DESC',
   );
 
+// Неудаленные срывы с разбором с началом в [from, to), ранние сверху
+export const listRelapsesBetween = (
+  db: SQLiteDatabase,
+  from: number,
+  to: number,
+) =>
+  db.getAllAsync<Relapse>(
+    'SELECT * FROM relapse WHERE deletedAt IS NULL AND at >= ? AND at < ? ORDER BY at',
+    from,
+    to,
+  );
+
 type NewRelapse = {
   habitId: string;
   at: number;

@@ -7,10 +7,12 @@ export const t = createT(
     ru: {
       forToday: 'За сегодня',
       forYesterday: 'За вчера',
+      forDay: 'За',
     },
     en: {
       forToday: 'For today',
       forYesterday: 'For yesterday',
+      forDay: 'For',
     },
   },
   { review: dayReviewDict, option: optionDict },

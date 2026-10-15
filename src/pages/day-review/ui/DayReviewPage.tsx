@@ -25,8 +25,11 @@ export function DayReviewPage() {
   return (
     <Screen>
       <Text variant="title">
-        {form.isToday ? t('forToday') : t('forYesterday')},{' '}
-        {formatDay(form.day)}
+        {form.when === 'today'
+          ? `${t('forToday')}, ${formatDay(form.day)}`
+          : form.when === 'yesterday'
+            ? `${t('forYesterday')}, ${formatDay(form.day)}`
+            : `${t('forDay')} ${formatDay(form.day)}`}
       </Text>
 
       <ReasonList reasons={form.reasons} />

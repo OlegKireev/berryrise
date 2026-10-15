@@ -1,8 +1,9 @@
+import { router } from 'expo-router';
+
 import { Screen, Text } from '@/shared/ui';
 
 import { Achievements } from './Achievements';
 import { Calendar } from './Calendar';
-import { Relapses } from './Relapses';
 import { StreakStats } from './StreakStats';
 
 import { useProgress } from '../model/useProgress';
@@ -28,14 +29,13 @@ export function ProgressPage() {
         now={data.now}
         days={data.days}
         reviewDates={data.reviewDates}
+        onOpen={(date) =>
+          router.push({ pathname: '/day/[date]', params: { date } })
+        }
       />
       <Achievements
         got={data.got}
         gotCount={data.gotCount}
-      />
-      <Relapses
-        relapses={data.relapses}
-        onDeleted={data.reload}
       />
     </Screen>
   );

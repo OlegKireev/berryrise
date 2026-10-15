@@ -1,32 +1,45 @@
 import { View } from 'react-native';
 
 import type { Day } from '@/entities/habit';
-import { weekdays } from '@/shared/i18n';
+import { formatMonth, weekdays } from '@/shared/i18n';
 import { toDay } from '@/shared/lib';
 import { Text } from '@/shared/ui';
 
 import { DayCell } from './DayCell';
 import { Legend } from './Legend';
-import { MonthNav } from './MonthNav';
+import { PeriodNav } from './PeriodNav';
 
 import { useCalendar } from '../model/useCalendar';
+
+import { t } from '../i18n';
 
 type Props = {
   startAt: number;
   now: number;
   days: Day[];
   reviewDates: Set<string>;
+  onOpen: (date: string) => void;
 };
 
 const week = { flexDirection: 'row', gap: 4 } as const;
 
-export function Calendar({ startAt, now, days, reviewDates }: Props) {
-  const { weeks, status, ...nav } = useCalendar(startAt, now, days);
+export function Calendar({ startAt, now, days, reviewDates, onOpen }: Props) {
+  const { weeks, status, year, month, ...nav } = useCalendar(
+    startAt,
+    now,
+    days,
+  );
   const today = toDay(now);
+  const start = toDay(startAt);
 
   return (
     <View style={{ gap: 8 }}>
-      <MonthNav {...nav} />
+      <PeriodNav
+        label={formatMonth(year, month)}
+        prevLabel={t('prevMonth')}
+        nextLabel={t('nextMonth')}
+        {...nav}
+      />
       <View style={week}>
         {weekdays.map((w) => (
           <Text
@@ -50,6 +63,11 @@ export function Calendar({ startAt, now, days, reviewDates }: Props) {
               status={date ? status(date) : null}
               today={date === today}
               reviewed={date !== null && reviewDates.has(date)}
+              onPress={
+                date && date >= start && date <= today
+                  ? () => onOpen(date)
+                  : null
+              }
             />
           ))}
         </View>

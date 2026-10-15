@@ -1,21 +1,27 @@
 import { View } from 'react-native';
 
-import { formatMonth } from '@/shared/i18n';
 import { Button, Text } from '@/shared/ui';
 
-import { t } from '../i18n';
-
 type Props = {
-  year: number;
-  month: number;
+  label: string;
+  prevLabel: string; // для доступности: стрелка без текста
+  nextLabel: string;
   canPrev: boolean;
   canNext: boolean;
   prev: () => void;
   next: () => void;
 };
 
-// Название месяца и стрелки листания
-export function MonthNav({ year, month, canPrev, canNext, prev, next }: Props) {
+// Подпись периода и стрелки листания: месяц в календаре, день в модалке дня
+export function PeriodNav({
+  label,
+  prevLabel,
+  nextLabel,
+  canPrev,
+  canNext,
+  prev,
+  next,
+}: Props) {
   return (
     <View
       style={{
@@ -26,14 +32,14 @@ export function MonthNav({ year, month, canPrev, canNext, prev, next }: Props) {
     >
       <Button
         title="‹"
-        accessibilityLabel={t('prevMonth')}
+        accessibilityLabel={prevLabel}
         disabled={!canPrev}
         onPress={prev}
       />
-      <Text variant="label">{formatMonth(year, month)}</Text>
+      <Text variant="label">{label}</Text>
       <Button
         title="›"
-        accessibilityLabel={t('nextMonth')}
+        accessibilityLabel={nextLabel}
         disabled={!canNext}
         onPress={next}
       />

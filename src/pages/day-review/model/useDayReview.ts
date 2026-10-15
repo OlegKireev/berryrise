@@ -8,19 +8,28 @@ import { hasPartyOn } from '@/entities/party';
 import { listReasons, type ReasonRow } from '@/entities/reason';
 import { syncNotifications } from '@/features/notifications';
 import type { Craving, Hardship, Helper, Mood, Place } from '@/shared/config';
-import { toDay, toggle, toggleExclusive } from '@/shared/lib';
+import { dayRange, toDay, toggle, toggleExclusive } from '@/shared/lib';
 
 // Форма итогов дня. null - еще грузим
 export function useDayReview() {
   const db = useSQLiteContext();
 
-  // День из уведомления, иначе по текущему времени. Считаем один раз при открытии:
+  // День из уведомления или карточки дня, иначе по текущему времени. Считаем один раз при открытии:
   // сохраняем ровно за тот, что в заголовке
   const params = useLocalSearchParams<{ day?: string }>();
-  const [{ day, isToday }] = useState(() => {
+  const [{ day, when }] = useState(() => {
     const now = Date.now();
     const day = params.day ?? reviewDay(now);
-    return { day, isToday: day === toDay(now) };
+    const yesterday = new Date(now);
+    yesterday.setDate(yesterday.getDate() - 1);
+    // из карточки дня может прийти и более старый день
+    const when =
+      day === toDay(now)
+        ? ('today' as const)
+        : day === toDay(yesterday.getTime())
+          ? ('yesterday' as const)
+          : null;
+    return { day, when };
   });
   const [state, setState] = useState<{
     beforeStart: boolean;
@@ -50,13 +59,7 @@ export function useDayReview() {
         setNote(existing.note ?? '');
       } else {
         // Была вечеринка в этот день - заранее выбираем место "в компании"
-        const [y, m, d] = day.split('-').map(Number) as [
-          number,
-          number,
-          number,
-        ];
-        const from = new Date(y, m - 1, d).getTime();
-        const to = new Date(y, m - 1, d + 1).getTime();
+        const { from, to } = dayRange(day);
         if (await hasPartyOn(db, from, to)) setPlaces(['company']);
       }
       setState({
@@ -89,7 +92,7 @@ export function useDayReview() {
   return {
     ...state,
     day,
-    isToday,
+    when,
     mood,
     setMood,
     craving,

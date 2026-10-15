@@ -1,4 +1,4 @@
-import { View } from 'react-native';
+import { Pressable, View } from 'react-native';
 
 import { DayCircle, type DayStatus } from '@/entities/habit';
 
@@ -7,19 +7,28 @@ type Props = {
   status: DayStatus;
   today: boolean;
   reviewed: boolean;
+  // null - день не выбирается: до старта или в будущем
+  onPress: (() => void) | null;
 };
 
-export function DayCell({ date, status, today, reviewed }: Props) {
+export function DayCell({ date, status, today, reviewed, onPress }: Props) {
+  if (!date) {
+    return <View style={{ flex: 1 }} />;
+  }
   return (
-    <View style={{ flex: 1 }}>
-      {date && (
-        <DayCircle
-          label={String(Number(date.slice(8)))}
-          status={status}
-          today={today}
-          dot={reviewed}
-        />
-      )}
-    </View>
+    <Pressable
+      disabled={!onPress}
+      onPress={onPress ?? undefined}
+      accessibilityRole="button"
+      accessibilityState={{ disabled: !onPress }}
+      style={{ flex: 1 }}
+    >
+      <DayCircle
+        label={String(Number(date.slice(8)))}
+        status={status}
+        today={today}
+        dot={reviewed}
+      />
+    </Pressable>
   );
 }

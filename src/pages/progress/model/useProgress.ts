@@ -76,7 +76,6 @@ export function useProgress() {
     reviewDates: new Set(reviewDates),
     got,
     gotCount: achievementKeys.filter((k) => got[k]).length,
-    relapses,
     // удаление срыва из вечеринки снова делает ее идущей: нужен "как прошло?"
     reload: () => {
       syncNotifications(db);

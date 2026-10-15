@@ -109,6 +109,14 @@ export const hasPartyOn = async (
     to,
   ));
 
+// Последняя неудаленная вечеринка с началом в [from, to), для карточки дня
+export const getPartyOn = (db: SQLiteDatabase, from: number, to: number) =>
+  db.getFirstAsync<Party>(
+    'SELECT * FROM party WHERE deletedAt IS NULL AND startAt >= ? AND startAt < ? ORDER BY startAt DESC LIMIT 1',
+    from,
+    to,
+  );
+
 // Начала вечеринок с ответом "без алкоголя", для ачивок
 export const listSoberPartyStarts = async (db: SQLiteDatabase) =>
   (
