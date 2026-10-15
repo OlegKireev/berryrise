@@ -65,20 +65,12 @@ export function useColors(): Colors {
   return schemeColors(useColorScheme());
 }
 
-// Цвета шапки и фона экранов для screenOptions навигаторов. Тема из ThemeProvider в корне
-// до навигаторов внутри экранов доходит только при монтировании, смену темы они не видят
-export function useScreenColors() {
-  const c = useColors();
-  return {
-    headerStyle: { backgroundColor: c.background },
-    headerTintColor: c.text,
-    headerTitleStyle: { color: c.text, fontFamily: fonts.semibold },
-    headerShadowVisible: false,
-    // фон экрана: contentStyle у стека, sceneStyle у табов
-    contentStyle: { backgroundColor: c.background },
-    sceneStyle: { backgroundColor: c.background },
-  };
-}
+// Общие screenOptions навигаторов. Цвета шапки и фона приходят из navigationTheme,
+// здесь только то, чего в теме нет: начертание заголовка (на Android по умолчанию medium) и тень
+export const headerOptions = {
+  headerTitleStyle: { fontFamily: fonts.semibold },
+  headerShadowVisible: false,
+};
 
 // Тема React Navigation из наших токенов: шапки, таб-бар и фон экранов
 export function navigationTheme(scheme: string | null | undefined): Theme {

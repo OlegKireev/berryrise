@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 
 import { getHabit } from '@/entities/habit';
 import { t } from '@/shared/i18n';
-import { Button, Text, fonts, useColors, useScreenColors } from '@/shared/ui';
+import { Button, Text, fonts, useColors } from '@/shared/ui';
 
 // Подпись таба: у активного полоска сверху и жирнее
 function TabLabel({
@@ -51,7 +51,6 @@ function SettingsButton() {
 export default function TabsLayout() {
   const db = useSQLiteContext();
   const colors = useColors();
-  const screenColors = useScreenColors();
   // null - еще не знаем. Привычки нет, значит онбординг не пройден
   const [onboarded, setOnboarded] = useState<boolean | null>(null);
   useEffect(() => {
@@ -64,11 +63,10 @@ export default function TabsLayout() {
   return (
     <Tabs
       screenOptions={{
-        ...screenColors,
+        headerShadowVisible: false,
         // крупный заголовок слева, как в макете
         headerTitleAlign: 'left',
         headerTitleStyle: {
-          color: colors.text,
           fontFamily: fonts.bold,
           fontSize: 28,
         },
