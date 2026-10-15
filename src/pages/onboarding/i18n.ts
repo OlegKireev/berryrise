@@ -7,8 +7,6 @@ export const t = createT(
       introTitle: 'Решено',
       introText:
         'Приложение помогает не пить: считает трезвые дни и поддерживает в трудные вечера. Все данные остаются на телефоне.',
-      disclaimer:
-        'Приложение не заменяет врача. Если тебе плохо, обратись за медицинской помощью.',
       screeningTitle: 'Пара вопросов',
       screeningDaily: 'Пьешь почти каждый день?',
       screeningHeavy: 'Бывает больше 5 порций в день?',
@@ -38,8 +36,6 @@ export const t = createT(
       introTitle: 'Welcome',
       introText:
         'This app helps you stay sober: it counts your sober days and supports you on hard evenings. All data stays on your phone.',
-      disclaimer:
-        'This app is not a substitute for a doctor. If you feel unwell, seek medical help.',
       screeningTitle: 'A few questions',
       screeningDaily: 'Do you drink almost every day?',
       screeningHeavy: 'Do you sometimes have more than 5 drinks a day?',

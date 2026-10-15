@@ -59,8 +59,24 @@ export default function RootLayout() {
             options={{ headerShown: false, gestureEnabled: false }}
           />
           <Stack.Screen
-            name="settings"
+            name="settings/index"
             options={{ title: t('settings') }}
+          />
+          <Stack.Screen
+            name="settings/start"
+            options={{ title: t('startSpending') }}
+          />
+          <Stack.Screen
+            name="settings/reasons"
+            options={{ title: t('reasons') }}
+          />
+          <Stack.Screen
+            name="settings/notifications"
+            options={{ title: t('notifications') }}
+          />
+          <Stack.Screen
+            name="settings/about"
+            options={{ title: t('about') }}
           />
           <Stack.Screen
             name="company"

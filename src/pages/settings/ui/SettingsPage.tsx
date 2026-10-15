@@ -1,36 +1,31 @@
 import { router } from 'expo-router';
 
-import { SpendingForm } from '@/features/edit-spending';
-import { DateTimeField, Screen, Text } from '@/shared/ui';
+import { Row, Screen } from '@/shared/ui';
 
 import { DevResetButton } from './DevResetButton';
-import { NotificationsSection } from './NotificationsSection';
-
-import { useSettings } from '../model/useSettings';
 
 import { t } from '../i18n';
 
+// Хаб: новый раздел - новая строка
 export function SettingsPage() {
-  const settings = useSettings();
-
-  if (!settings) {
-    return null;
-  }
-
   return (
     <Screen>
-      <Text variant="label">{t('startAt')}</Text>
-      <DateTimeField
-        value={new Date(settings.habit.startAt)}
-        onChange={settings.changeStart}
-        max={new Date(settings.maxStart)}
+      <Row
+        label={t('startSpending')}
+        onPress={() => router.push('/settings/start')}
       />
-      <SpendingForm
-        habit={settings.habit}
-        submitLabel={t('save')}
-        onSaved={() => router.back()}
+      <Row
+        label={t('reasons')}
+        onPress={() => router.push('/settings/reasons')}
       />
-      <NotificationsSection />
+      <Row
+        label={t('notifications')}
+        onPress={() => router.push('/settings/notifications')}
+      />
+      <Row
+        label={t('about')}
+        onPress={() => router.push('/settings/about')}
+      />
       {__DEV__ && <DevResetButton />}
     </Screen>
   );

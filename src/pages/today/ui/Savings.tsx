@@ -18,7 +18,7 @@ export function Savings({ saved, currency, hasDrinks }: Props) {
     return (
       <Button
         title={t('savingsEmpty')}
-        onPress={() => router.push('/settings')}
+        onPress={() => router.push('/settings/start')}
       />
     );
   }

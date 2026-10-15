@@ -62,10 +62,6 @@ export default function TabsLayout() {
         name="progress"
         options={{ title: t('progress') }}
       />
-      <Tabs.Screen
-        name="reasons"
-        options={{ title: t('reasons') }}
-      />
     </Tabs>
   );
 }
