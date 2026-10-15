@@ -12,6 +12,7 @@
 - `expo-notifications` для локальных напоминаний с кнопками действий (categories), В Expo Go на Android не работает (падает уже на импорте), поэтому разработка идет в development build.
 - Шрифт Manrope из `@expo-google-fonts/manrope`, грузится в рантайме через его `useFonts` (под капотом `expo-font` из `expo`). Прямой зависимости `expo-font` и его плагина в `app.json` нет: `npx expo install expo-font` дописывает плагин, а это нативное изменение.
 - Заранее в сборке, чтобы не пересобирать ради них: `expo-sharing` (экспорт через "Поделиться"), `expo-contacts` (экстренные контакты из телефонной книги, `Contact.presentPicker`; в `app.json` только `READ_CONTACTS`, плагин не подключен, чтобы не тянуть `WRITE_CONTACTS`), `expo-haptics`. Пока не используются: `expo-contacts` и `expo-haptics` в `ignoreDependencies` в `knip.json`, убрать оттуда, когда появится код.
+- `react-native-svg` для медалей ачивок, дальше и для графиков инфографики.
 - `react-native-android-widget` для виджета 1x1. iOS-виджета пока нет.
 - Отдельного стейт-менеджера нет: хватает React и запросов к SQLite. Добавляем только если без него станет больно.
 - i18n с первого дня: ru основной, en сразу рядом.
