@@ -18,7 +18,7 @@ export EMU_OUT=<scratchpad>/emu    # куда класть скриншоты и
 
 1. `E up` - поднимает все, чего не хватает, и запускает приложение (холодный старт ~40 с, если все уже запущено - секунды):
    - эмулятор AVD `Pixel_8` (или `SOBER_AVD`), если устройства нет;
-   - пересборка dev build, если APK нет или поменялись зависимости в `package.json` или содержимое `app.json`/`yarn.lock`/`eas.json` с прошлой сборки (хеш в `android/app/build/outputs/apk/debug/native-inputs.sha256`; `--build` - форсировать). Сборка локальная, квоту EAS не тратит, ~2 мин с кэшем. Правку скриптов `android`/`ios` в `package.json`, которую делает prebuild, скрипт откатывает;
+   - пересборка dev build, если APK нет или поменялись зависимости в `package.json` или содержимое `app.json`/`yarn.lock`/`eas.json`/`assets/*.png` с прошлой сборки; перед сборкой `expo prebuild --clean`, иначе `run:android` не обновит `android/` (иконки, плагины) (хеш в `android/app/build/outputs/apk/debug/native-inputs.sha256`; `--build` - форсировать). Сборка локальная, квоту EAS не тратит, ~2 мин с кэшем. Правку скриптов `android`/`ios` в `package.json`, которую делает prebuild, скрипт откатывает;
    - установка APK, если приложения нет (`--install` - переставить);
    - язык приложения ru (`--locale en`);
    - metro на 8081: если пользователь уже держит `yarn start`, берет его;

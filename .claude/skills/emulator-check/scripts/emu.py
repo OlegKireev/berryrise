@@ -258,6 +258,9 @@ def native_hash():
             pkg = json.loads(data)
             data = json.dumps([pkg.get(k) for k in ('dependencies', 'devDependencies', 'resolutions')]).encode()
         h.update(data)
+    # иконки и сплэш из app.json вшиваются в APK
+    for f in sorted((ROOT / 'assets').glob('*.png')):
+        h.update(f.read_bytes())
     return h.hexdigest()
 
 
@@ -279,6 +282,8 @@ def build():
     log = OUT / 'build.log'
     with open(log, 'w') as f:
         before = (ROOT / 'package.json').read_text()
+        # run:android делает prebuild, только если android/ нет; без --clean иконки и плагины из app.json не обновятся
+        subprocess.run(['npx', 'expo', 'prebuild', '--clean', '--platform', 'android', '--no-install'], cwd=ROOT, env={**env(), 'CI': '1'}, stdout=f, stderr=subprocess.STDOUT, check=True)
         r = subprocess.run(['npx', 'expo', 'run:android', '--no-bundler', '--device', AVD], cwd=ROOT, env=env(), stdout=f, stderr=subprocess.STDOUT)
     # prebuild при генерации android/ переписывает скрипты android/ios в package.json, возвращаем
     (ROOT / 'package.json').write_text(before)
