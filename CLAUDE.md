@@ -19,15 +19,19 @@
 
 ## Команды
 
-Пакетный менеджер yarn 4 (`nodeLinker: node-modules`).
+Пакетный менеджер yarn 4 (`nodeLinker: node-modules`). Пошагово сборка и установка на телефон, эмулятор и через EAS описаны в [README.md](README.md), при изменении скриптов сборки обновляй и его.
 
 ```bash
 yarn install
 yarn start              # dev-сервер, на телефоне открыть в development build (не Expo Go)
-yarn build:dev          # собрать dev build (APK) в EAS; пересобирать после изменения нативных пакетов или app.json
-yarn build:preview      # обычный APK без dev-клиента
+yarn build:local:dev    # dev build APK локально, без квоты -> dist/resheno-dev.apk
+yarn build:local:preview # полноценный APK без dev-клиента (JS внутри, metro не нужен) -> dist/resheno-preview.apk
+yarn install:dev        # поставить dist/resheno-dev.apk на телефон (USB или Wi-Fi), данные сохраняются; при нескольких устройствах ANDROID_SERIAL=<ip:port>
+yarn install:preview    # то же для preview
+yarn build:eas:dev      # dev build в облаке EAS, тратит квоту (15 в месяц)
+yarn build:eas:preview  # preview в облаке EAS, тратит квоту
 yarn eas <команда>      # любой eas-cli (login, init, build:list)
-yarn android            # dev-сервер и запуск на подключенном Android
+yarn android            # debug-сборка, установка на эмулятор/устройство и metro (expo run:android); подпись debug-ключом, для телефона не подходит
 yarn typecheck          # tsc --noEmit
 yarn test               # тесты чистой логики на node:test (TZ=Europe/Berlin, чтобы ловить переход на летнее время)
 yarn lint               # expo lint
@@ -77,7 +81,7 @@ audit: уязвимости без исправленной версии игн�
 ## Expo
 
 - API Expo меняется от SDK к SDK. Перед работой с API сверяйся с доками своей версии: https://docs.expo.dev/versions/v57.0.0/ и https://docs.expo.dev/llms.txt.
-- Разработка идет в development build (`expo-dev-client`), Expo Go не подходит: в нем на Android нет `expo-notifications`. JS-изменения подхватываются dev-сервером как обычно. После добавления или обновления пакета с нативным кодом, плагина или нативных полей `app.json` dev build нужно пересобрать: `yarn build:dev` или `npx expo run:android` (нужны JDK и Android SDK, сейчас не установлены).
+- Разработка идет в development build (`expo-dev-client`), Expo Go не подходит: в нем на Android нет `expo-notifications`. JS-изменения подхватываются dev-сервером как обычно. После добавления или обновления пакета с нативным кодом, плагина или нативных полей `app.json` dev build нужно пересобрать: для телефона `yarn build:local:dev` и `yarn install:dev`, для эмулятора `yarn android` (или `emulator-check up`).
 
 ### Пересборки (бюджет EAS)
 
@@ -87,7 +91,7 @@ audit: уязвимости без исправленной версии игн�
 - Каждый раз, когда вносишь нативное изменение, явно пиши об этом в ответе: что именно изменилось и что нужна пересборка.
 - Если в текущей задаче или ближайших запланированных (tasks.md активных изменений, следующий change из `docs/idea.md`) есть еще нативные изменения, предупреди и посоветуй собрать один раз после всех. Нативные изменения по возможности делай в начале задачи пачкой, чтобы проверять JS уже на свежей сборке.
 - Не предлагай пересборку ради проверки, которую можно сделать в JS (dev-кнопки, логи, `__DEV__`-блоки).
-- Сборка не тратит квоту, если собирать локально (`npx expo run:android` или `yarn eas build --local`), но для этого нужны JDK и Android SDK.
+- Локальные сборки квоту не тратят. `build:local:*` - это `eas build --local`: те же профили из `eas.json` и тот же ключ подписи из EAS, что у облачных, поэтому локальный и облачный APK ставятся поверх друг друга без потери данных. `yarn android` подписывает debug-ключом: такой APK не встанет поверх сборки из EAS (только через удаление, с потерей данных), поэтому он только для эмулятора. Пока обе EAS-сборки идут только под arm64 (`env` в `eas.json`, помечено `TODO(release)`): так release собирается быстрее; перед релизом вернуть все архитектуры. dev и preview - один и тот же пакет `dev.olegkireev.quit`: на телефоне стоит что-то одно, переход между ними сохраняет данные. Нужны JDK 17 (`brew install openjdk@17`, `JAVA_HOME` на него; JDK 25 из Android Studio валит CMake-шаг) и Android SDK (`ANDROID_HOME`), недостающие части SDK Gradle докачивает сам. Локальная сборка - основной способ, EAS - когда локально собрать нельзя (нет мака под рукой, сломалось окружение).
 
 ### Проверка на эмуляторе
 
