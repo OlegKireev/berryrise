@@ -8,9 +8,13 @@
       "developmentClient": true,
       "distribution": "internal",
       "android": { "buildType": "apk" },
-      // TODO(release): временно только arm64, чтобы сборка шла быстрее. Для релиза убрать env:
-      // нужны все архитектуры (armeabi-v7a для старых телефонов, x86/x86_64 для эмуляторов)
-      "env": { "ORG_GRADLE_PROJECT_reactNativeArchitectures": "arm64-v8a" }
+      // TODO(release): временно только arm64, чтобы сборка шла быстрее. Для релиза убрать reactNativeArchitectures:
+      // нужны все архитектуры (armeabi-v7a для старых телефонов, x86/x86_64 для эмуляторов).
+      // NODE_ENV: без него @expo/env пишет в лог, что не знает режим для .env (а .env у нас нет)
+      "env": {
+        "ORG_GRADLE_PROJECT_reactNativeArchitectures": "arm64-v8a",
+        "NODE_ENV": "development"
+      }
     },
     "preview": {
       "distribution": "internal",
