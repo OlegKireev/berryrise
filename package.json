@@ -16,6 +16,7 @@
     "expo-notifications": "~57.0.22",
     "expo-router": "~57.0.26",
     "expo-sharing": "~57.0.23",
+    "expo-splash-screen": "~57.0.10",
     "expo-sqlite": "~57.0.4",
     "expo-status-bar": "~57.0.1",
     "expo-system-ui": "~57.0.4",
@@ -57,7 +58,8 @@
     "test": "TZ=Europe/Berlin node --test 'src/**/*.test.ts'",
     "format": "prettier --write .",
     "lint:circular": "madge --circular --extensions ts,tsx --ts-config tsconfig.json --warning src/",
-    "lint:unused": "knip"
+    "lint:unused": "knip",
+    "icons": "sh -c 'for f in icon android-icon-foreground android-icon-monochrome splash-icon; do yarn dlx -q @resvg/resvg-js-cli --fit-width 1024 assets/src/$f.svg assets/$f.png || exit 1; done'"
   },
   "private": true,
   "lint-staged": {

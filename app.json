@@ -12,9 +12,8 @@
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#111111",
+        "backgroundColor": "#34504C",
         "foregroundImage": "./assets/android-icon-foreground.png",
-        "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
       "predictiveBackGestureEnabled": false,
@@ -27,7 +26,18 @@
       "@react-native-community/datetimepicker",
       "expo-notifications",
       "expo-router",
-      "expo-sharing"
+      "expo-sharing",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 200,
+          "backgroundColor": "#F4F1EA",
+          "dark": {
+            "backgroundColor": "#1A1917"
+          }
+        }
+      ]
     ],
     "extra": {
       "eas": {

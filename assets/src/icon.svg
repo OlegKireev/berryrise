@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 108 108" width="108" height="108">
+<!-- иконка iOS: знак на весь квадрат, углы скругляет система -->
+<rect width="108" height="108" fill="#34504C"/>
+<circle cx="54" cy="50" r="16" fill="#E3B36B"/><g fill="none" stroke-linecap="round"><path d="M24 72H84" stroke="#F4F1EA" stroke-width="4"/><path d="M42 80H66" stroke="#E3B36B" stroke-width="3" opacity=".75"/><path d="M48 87H60" stroke="#E3B36B" stroke-width="3" opacity=".5"/></g>
+</svg>

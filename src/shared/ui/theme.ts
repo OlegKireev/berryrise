@@ -4,7 +4,7 @@ import { useColorScheme } from 'react-native';
 // Палитра "Чернила". Светлая базовая, темная в пару: рамки вместо теней, главная кнопка инвертирована
 const palette = {
   light: {
-    background: '#F4F1EA',
+    background: '#F4F1EA', // повторен в app.json: фон сплэша
     card: '#FFFFFF',
     border: '#E6E0D4',
     text: '#23211D',
@@ -25,7 +25,7 @@ const palette = {
     onScrim: '#F4F1EA',
   },
   dark: {
-    background: '#1A1917',
+    background: '#1A1917', // повторен в app.json: dark.backgroundColor сплэша
     card: '#23211E',
     border: '#37342F',
     text: '#ECE7DD',

@@ -6,6 +6,7 @@ import {
   useFonts,
 } from '@expo-google-fonts/manrope';
 import { Stack, ThemeProvider } from 'expo-router';
+import * as SplashScreen from 'expo-splash-screen';
 import { SQLiteProvider } from 'expo-sqlite';
 import { StatusBar } from 'expo-status-bar';
 import * as SystemUI from 'expo-system-ui';
@@ -17,6 +18,9 @@ import { migrate } from '@/shared/db';
 import { t } from '@/shared/i18n';
 import { headerOptions, navigationTheme } from '@/shared/ui';
 
+// Сплэш держится, пока не загрузился шрифт, иначе между ним и первым экраном пустой кадр
+SplashScreen.preventAutoHideAsync();
+
 // Хуку нужна база, поэтому он внутри SQLiteProvider
 function Notifications() {
   useNotifications();
@@ -24,15 +28,21 @@ function Notifications() {
 }
 
 export default function RootLayout() {
-  // ponytail: шрифт грузится в рантайме, без пересборки; если первый кадр мигает - вшить плагином expo-font
-  const [fontsLoaded] = useFonts({
+  // ponytail: шрифт грузится в рантайме под сплэшем, без пересборки; если старт заметно тормозит - вшить плагином expo-font
+  const [fontsLoaded, fontError] = useFonts({
     Manrope_400Regular,
     Manrope_500Medium,
     Manrope_600SemiBold,
     Manrope_700Bold,
   });
+  // без шрифта лучше открыться системным, чем навсегда остаться на сплэше
+  const ready = fontsLoaded || fontError;
 
-  if (!fontsLoaded) return null;
+  useEffect(() => {
+    if (ready) SplashScreen.hide();
+  }, [ready]);
+
+  if (!ready) return null;
 
   return (
     <SQLiteProvider
