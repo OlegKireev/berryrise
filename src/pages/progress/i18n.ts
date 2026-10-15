@@ -32,6 +32,9 @@ export const t = createT(
       allAchievements: 'Все',
       achievementsGot: 'Получено',
       of: 'из',
+      // "еще 4 дня" / "4 days to go"
+      leftPrefix: 'еще ',
+      leftSuffix: '',
     },
     en: {
       statusSober: 'Sober day',
@@ -61,6 +64,8 @@ export const t = createT(
       allAchievements: 'All',
       achievementsGot: 'Unlocked',
       of: 'of',
+      leftPrefix: '',
+      leftSuffix: ' to go',
     },
   },
   { habit: habitDict, option: optionDict },

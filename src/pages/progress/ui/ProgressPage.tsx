@@ -35,6 +35,7 @@ export function ProgressPage() {
       />
       <Achievements
         got={data.got}
+        states={data.states}
         gotCount={data.gotCount}
       />
     </Screen>

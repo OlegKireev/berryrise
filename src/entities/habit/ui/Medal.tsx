@@ -1,98 +1,87 @@
+import { memo } from 'react';
 import { View } from 'react-native';
-import Svg, { Circle, Polygon } from 'react-native-svg';
+import Svg from 'react-native-svg';
 
 import { createT } from '@/shared/i18n';
-import { Text, useColors } from '@/shared/ui';
+import { Text } from '@/shared/ui';
 
-import type { AchievementKey } from '../model/achievements';
+import type { AchievementKey, MedalState } from '../model/achievements';
 
 import { dict } from '../i18n';
+import { Frame, RIBBON_Y, VIEW_H, VIEW_W } from './medal/frames';
+import { medals } from './medal/medals';
+import { ink, metals, silhouette } from './medal/palette';
+import { Silhouette } from './medal/primitives';
 
 const t = createT(dict);
 
+// подпись на ленте есть только у стрика
+type StreakKey = Extract<AchievementKey, `days${number}`>;
+
 type Props = {
   achievement: AchievementKey;
-  got: boolean;
+  state: MedalState['state'];
   size?: number;
 };
 
-const tiers = {
-  days1: 'bronze',
-  days3: 'bronze',
-  days7: 'bronze',
-  days14: 'silver',
-  days30: 'silver',
-  days60: 'silver',
-  days90: 'gold',
-  days180: 'gold',
-  days365: 'gold',
-} as const;
-
-// Медаль достижения: диск на двух лентах, цвет по уровню, неполученная - контуром.
-// Нарисована кодом, чтобы подстраиваться под тему; на PNG заменяется только этот файл
-export function Medal({ achievement, got, size = 64 }: Props) {
-  const colors = useColors();
-  const tier =
-    achievement in tiers ? tiers[achievement as keyof typeof tiers] : 'special';
-  const color = got ? colors[tier] : colors.border;
-  // пропорции из viewBox 64x72: ленты сверху, диск снизу
-  const height = (size * 72) / 64;
+// Медаль достижения: рамка по уровню и сцена (матрица в medal/medals.tsx).
+// Следующая неполученная - силуэтом сцены в своей рамке; дальше по серии медали не показываем.
+// Нарисована кодом; на картинки заменяется только этот файл и папка medal/
+export const Medal = memo(function Medal({
+  achievement,
+  state,
+  size = 64,
+}: Props) {
+  const m = medals[achievement];
+  const height = (size * VIEW_H) / VIEW_W;
+  const label = m.shape === 'hex';
+  const text = label ? t(`medal.${achievement as StreakKey}`) : '';
+  // лента высотой 17 из 108: цифры должны влезать с запасом
+  const fontSize = size * (text.length > 3 ? 0.095 : 0.125);
   return (
     <View style={{ width: size, height }}>
       <Svg
         width={size}
         height={height}
-        viewBox="0 0 64 72"
+        viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
       >
-        <Polygon
-          points="14,0 28,0 34,26 20,26"
-          fill={color}
-          opacity={0.55}
-        />
-        <Polygon
-          points="50,0 36,0 30,26 44,26"
-          fill={color}
-          opacity={0.55}
-        />
-        <Circle
-          cx={32}
-          cy={44}
-          r={26}
-          fill={got ? color : 'none'}
-          stroke={color}
-          strokeWidth={got ? 0 : 2}
-        />
-        <Circle
-          cx={32}
-          cy={44}
-          r={21}
-          fill="none"
-          stroke={got ? colors.background : colors.border}
-          strokeOpacity={got ? 0.5 : 1}
-          strokeWidth={1.5}
-        />
+        <Silhouette.Provider value={state === 'next' ? silhouette : null}>
+          <Frame
+            shape={m.shape}
+            metal={metals[m.metal]}
+            scene={<m.Scene />}
+            over={m.Over && <m.Over />}
+          />
+        </Silhouette.Provider>
       </Svg>
-      <View
-        style={{
-          position: 'absolute',
-          left: 0,
-          right: 0,
-          top: (height * 18) / 72,
-          bottom: 0,
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <Text
-          weight="bold"
+      {label && (
+        <View
+          pointerEvents="none"
           style={{
-            fontSize: size * 0.26,
-            color: got ? colors.background : colors.muted,
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            // центр подписи на ленте. У Manrope цифры сидят ниже середины строки,
+            // поэтому чуть выше центра
+            top: (height * RIBBON_Y) / VIEW_H - size * 0.165,
+            height: size * 0.3,
+            alignItems: 'center',
+            justifyContent: 'center',
           }}
         >
-          {t(`medal.${achievement}`)}
-        </Text>
-      </View>
+          <Text
+            weight="bold"
+            style={{
+              fontSize,
+              lineHeight: fontSize * 1.2,
+              includeFontPadding: false,
+              color: ink.paper,
+            }}
+          >
+            {text}
+          </Text>
+        </View>
+      )}
     </View>
   );
-}
+});

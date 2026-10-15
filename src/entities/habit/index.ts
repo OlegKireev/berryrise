@@ -13,6 +13,9 @@ export { useDayColor } from './ui/dayColor';
 export {
   achievementKeys,
   achievements,
+  companyEvenings,
+  medalStates,
   type AchievementKey,
+  type MedalState,
 } from './model/achievements';
 export { dict as habitDict } from './i18n';

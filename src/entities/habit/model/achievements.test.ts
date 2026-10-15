@@ -3,7 +3,12 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
 import { toDay } from '../../../shared/lib/utils/toDay.ts';
-import { achievements } from './achievements.ts';
+import {
+  achievements,
+  achievementKeys,
+  medalStates,
+  type AchievementKey,
+} from './achievements.ts';
 import { soberDays } from './streak.ts';
 
 // Месяц с нуля, как в Date: oct(13, 9) = 13 октября 2026, 09:00 по местному времени.
@@ -84,7 +89,7 @@ test('без срывов восстановления нет', () => {
   assert.equal(get(oct(1), [], oct(31)).comeback7, null);
 });
 
-test('сводный пример со спеки: 5 из 16', () => {
+test('сводный пример со спеки: 5 из 20', () => {
   const a = get(oct(1), [], oct(9));
   const done = Object.entries(a).filter(([, d]) => d !== null);
   assert.deepEqual(Object.fromEntries(done), {
@@ -94,7 +99,7 @@ test('сводный пример со спеки: 5 из 16', () => {
     friday: day(2),
     weekend: day(4),
   });
-  assert.equal(Object.keys(a).length, 16);
+  assert.equal(Object.keys(a).length, 20);
 });
 
 test('первая трезвая вечеринка', () => {
@@ -127,4 +132,60 @@ test('вечеринка в день старта засчитывается п�
     get(oct(16, 10), [], oct(17), [], [oct(16, 19)]).company1,
     day(16),
   );
+});
+
+test('два года', () => {
+  const now = new Date(2028, 9, 1, 12).getTime();
+  const a = get(oct(1), [], now);
+  assert.equal(a.days365, '2027-10-01');
+  assert.equal(a.days730, '2028-09-30'); // 2028 високосный, 730-й день на день раньше
+  assert.equal(a.days1095, null);
+});
+
+const none = () =>
+  Object.fromEntries(achievementKeys.map((k) => [k, null])) as Record<
+    AchievementKey,
+    string | null
+  >;
+const gotUpTo = (...keys: AchievementKey[]) => {
+  const g = none();
+  for (const k of keys) g[k] = '2026-10-01';
+  return g;
+};
+
+test('ничего не получено: первая в серии следующая, дальше скрыты', () => {
+  const s = medalStates(none(), 0, 0);
+  assert.deepEqual(s.days1, { state: 'next', left: 1 });
+  assert.equal(s.days3, undefined);
+  assert.deepEqual(s.company1, { state: 'next', left: 1 });
+  assert.equal(s.company5, undefined);
+  assert.deepEqual(s.friday, { state: 'next', left: undefined });
+  assert.equal(s.reviews7?.state, 'next');
+});
+
+test('середина стрика: остаток от текущей серии', () => {
+  const s = medalStates(gotUpTo('days1', 'days3', 'days7'), 10, 0);
+  assert.equal(s.days7?.state, 'got');
+  assert.deepEqual(s.days14, { state: 'next', left: 4 });
+  assert.equal(s.days30, undefined);
+});
+
+test('после срыва остаток считается от текущей, а не от лучшей серии', () => {
+  const s = medalStates(gotUpTo('days1', 'days3', 'days7', 'days14'), 3, 0);
+  assert.deepEqual(s.days30, { state: 'next', left: 27 });
+});
+
+test('вечера в компании', () => {
+  const s = medalStates(gotUpTo('company1'), 0, 3);
+  assert.deepEqual(s.company5, { state: 'next', left: 2 });
+  assert.equal(s.company10, undefined);
+});
+
+test('возвращение после срыва скрыто, пока не получено', () => {
+  assert.equal(medalStates(none(), 0, 0).comeback7, undefined);
+  assert.equal(medalStates(gotUpTo('comeback7'), 0, 0).comeback7?.state, 'got');
+});
+
+test('полученная одиночная', () => {
+  assert.equal(medalStates(gotUpTo('friday'), 0, 0).friday?.state, 'got');
 });

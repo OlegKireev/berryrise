@@ -1,7 +1,11 @@
 import { router } from 'expo-router';
 import { View } from 'react-native';
 
-import { achievementKeys, type AchievementKey } from '@/entities/habit';
+import {
+  achievementKeys,
+  type AchievementKey,
+  type MedalState,
+} from '@/entities/habit';
 import { Button, Text } from '@/shared/ui';
 
 import { MedalTile } from './MedalTile';
@@ -12,11 +16,12 @@ import { t } from '../i18n';
 
 type Props = {
   got: Record<AchievementKey, string | null>;
+  states: Partial<Record<AchievementKey, MedalState>>;
   gotCount: number;
 };
 
 // Три медали: последние полученные или ближайшие цели, остальные - на экране "Все"
-export function Achievements({ got, gotCount }: Props) {
+export function Achievements({ got, states, gotCount }: Props) {
   return (
     <View style={{ gap: 12 }}>
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
@@ -36,11 +41,12 @@ export function Achievements({ got, gotCount }: Props) {
         />
       </View>
       <View style={{ flexDirection: 'row', gap: 8 }}>
-        {pickMedals(got).map((k) => (
+        {pickMedals(got, states).map((k) => (
           <MedalTile
             key={k}
             achievement={k}
             date={got[k]}
+            state={states[k]!}
           />
         ))}
       </View>

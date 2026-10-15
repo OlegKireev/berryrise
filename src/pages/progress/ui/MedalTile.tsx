@@ -1,20 +1,34 @@
 import { View } from 'react-native';
 
-import { Medal, type AchievementKey } from '@/entities/habit';
-import { formatDay } from '@/shared/i18n';
+import { Medal, type AchievementKey, type MedalState } from '@/entities/habit';
+import { days, evenings, formatDay } from '@/shared/i18n';
 import { Text } from '@/shared/ui';
 
 import { t } from '../i18n';
 
-type Props = { achievement: AchievementKey; date: string | null };
+type Props = {
+  achievement: AchievementKey;
+  date: string | null;
+  state: MedalState;
+};
 
-// Медаль с названием и датой получения; неполученная серая и без даты
-export function MedalTile({ achievement, date }: Props) {
+// Медаль с названием; под полученной дата, под следующей - сколько осталось
+export function MedalTile({ achievement, date, state }: Props) {
+  const left =
+    state.state === 'next' && state.left !== undefined
+      ? achievement.startsWith('company')
+        ? evenings(state.left)
+        : days(state.left)
+      : null;
+  const hint = date
+    ? formatDay(date)
+    : left && `${t('leftPrefix')}${left}${t('leftSuffix')}`;
   return (
     <View style={{ flex: 1, alignItems: 'center', gap: 4 }}>
       <Medal
         achievement={achievement}
-        got={!!date}
+        state={state.state}
+        size={80}
       />
       <Text
         style={{ textAlign: 'center', fontSize: 14 }}
@@ -22,12 +36,12 @@ export function MedalTile({ achievement, date }: Props) {
       >
         {t(`habit.achievements.${achievement}`)}
       </Text>
-      {date && (
+      {hint && (
         <Text
           variant="hint"
           style={{ fontSize: 13 }}
         >
-          {formatDay(date)}
+          {hint}
         </Text>
       )}
     </View>

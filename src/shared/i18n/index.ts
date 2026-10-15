@@ -165,6 +165,15 @@ const portionForms: PluralForms =
 export const portions = (n: number) =>
   `${n} ${pluralize(n, portionForms, locale)}`;
 
+const eveningForms: PluralForms =
+  locale === 'ru'
+    ? { one: 'вечер', few: 'вечера', many: 'вечеров' }
+    : { one: 'evening', many: 'evenings' };
+
+// "1 вечер", "3 вечера", "5 вечеров"
+export const evenings = (n: number) =>
+  `${n} ${pluralize(n, eveningForms, locale)}`;
+
 const numberFormat = new Intl.NumberFormat(locale);
 
 // "18 800" с разделителем разрядов локали

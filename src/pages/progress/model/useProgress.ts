@@ -6,7 +6,9 @@ import { listDayReviewDates, listCompanyDates } from '@/entities/day-review';
 import {
   achievementKeys,
   achievements,
+  companyEvenings,
   getHabit,
+  medalStates,
   soberDays,
   streak,
 } from '@/entities/habit';
@@ -61,11 +63,14 @@ export function useProgress() {
     data;
   const relapseAts = relapses.map((r) => r.at);
   const days = soberDays(startAt, relapseAts, now);
-  const { best, total } = streak(startAt, relapseAts, now);
-  const got = achievements(days, reviewDates, toDay(now), {
-    soberParties,
-    companyDates,
-  });
+  const { best, total, current } = streak(startAt, relapseAts, now);
+  const company = { soberParties, companyDates };
+  const got = achievements(days, reviewDates, toDay(now), company);
+  const states = medalStates(
+    got,
+    current,
+    companyEvenings(days, company).length,
+  );
 
   return {
     startAt,
@@ -75,6 +80,7 @@ export function useProgress() {
     total,
     reviewDates: new Set(reviewDates),
     got,
+    states,
     gotCount: achievementKeys.filter((k) => got[k]).length,
     // удаление срыва из вечеринки снова делает ее идущей: нужен "как прошло?"
     reload: () => {

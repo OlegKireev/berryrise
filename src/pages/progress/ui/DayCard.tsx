@@ -73,7 +73,7 @@ export function DayCard({ date, start, today, got, onChanged }: Props) {
             >
               <Medal
                 achievement={k}
-                got
+                state="got"
                 size={40}
               />
               <Text style={{ flex: 1 }}>{t(`habit.achievements.${k}`)}</Text>
