@@ -1,3 +1,4 @@
+import { router, type Href } from 'expo-router';
 import type { ReactNode } from 'react';
 import { Pressable, type StyleProp, type ViewStyle } from 'react-native';
 
@@ -27,21 +28,26 @@ type Content =
       accessibilityLabel?: string;
     };
 
-type Props = Content & {
-  onPress: () => void;
-  // primary - одна на экран, основное действие; quiet - отмена, пропуск, удаление, срыв;
-  // ghost - прозрачная в цвет текста без подчеркивания, для кнопок-иконок в шапке;
-  // scrim - рамка на темной подложке, где кнопки темы теряются
-  variant?: 'primary' | 'secondary' | 'quiet' | 'ghost' | 'scrim';
-  disabled?: boolean;
-  style?: StyleProp<ViewStyle>;
-};
+// href - переход по пути через router.push, вместо своего onPress
+type Action =
+  { onPress: () => void; href?: never } | { href: Href; onPress?: never };
+
+type Props = Content &
+  Action & {
+    // primary - одна на экран, основное действие; quiet - отмена, пропуск, удаление, срыв;
+    // ghost - прозрачная в цвет текста без подчеркивания, для кнопок-иконок в шапке;
+    // scrim - рамка на темной подложке, где кнопки темы теряются
+    variant?: 'primary' | 'secondary' | 'quiet' | 'ghost' | 'scrim';
+    disabled?: boolean;
+    style?: StyleProp<ViewStyle>;
+  };
 
 export function Button({
   title,
   icon,
   children,
   onPress,
+  href,
   variant = 'secondary',
   disabled,
   accessibilityLabel,
@@ -64,7 +70,7 @@ export function Button({
         : 'transparent';
   return (
     <Pressable
-      onPress={onPress}
+      onPress={href ? () => router.push(href) : onPress}
       disabled={disabled}
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel}

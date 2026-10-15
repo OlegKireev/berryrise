@@ -37,7 +37,7 @@ export function Achievements({ got, states, gotCount }: Props) {
         <Button
           variant="quiet"
           title={t('allAchievements')}
-          onPress={() => router.push('/achievements')}
+          href="/achievements"
         />
       </View>
       <View style={{ flexDirection: 'row', gap: 8 }}>

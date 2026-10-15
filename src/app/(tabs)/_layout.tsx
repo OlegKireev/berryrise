@@ -1,4 +1,4 @@
-import { Redirect, router } from 'expo-router';
+import { Redirect } from 'expo-router';
 import { View } from 'react-native';
 import { Tabs } from 'expo-router/tabs';
 import { useSQLiteContext } from 'expo-sqlite';
@@ -43,7 +43,7 @@ function SettingsButton() {
       variant="ghost"
       icon="settings"
       accessibilityLabel={t('settings')}
-      onPress={() => router.push('/settings')}
+      href="/settings"
     />
   );
 }

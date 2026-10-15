@@ -1,4 +1,3 @@
-import { router } from 'expo-router';
 import { View } from 'react-native';
 
 import type { Savings as SavingsData } from '@/entities/habit';
@@ -19,7 +18,7 @@ export function Savings({ saved, currency, hasDrinks }: Props) {
     return (
       <Button
         title={t('savingsEmpty')}
-        onPress={() => router.push('/settings/start')}
+        href="/settings/start"
       />
     );
   }

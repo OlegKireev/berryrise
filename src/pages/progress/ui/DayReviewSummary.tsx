@@ -1,4 +1,3 @@
-import { router } from 'expo-router';
 import { View } from 'react-native';
 
 import type { Craving, Hardship, Helper, Mood, Place } from '@/shared/config';
@@ -58,9 +57,7 @@ export function DayReviewSummary({ date, review }: Props) {
       )}
       <Button
         title={review ? t('reviewEdit') : t('reviewFill')}
-        onPress={() =>
-          router.push({ pathname: '/day-review', params: { day: date } })
-        }
+        href={{ pathname: '/day-review', params: { day: date } }}
       />
     </View>
   );

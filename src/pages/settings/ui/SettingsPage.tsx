@@ -1,5 +1,3 @@
-import { router } from 'expo-router';
-
 import { Row, Screen } from '@/shared/ui';
 
 import { DevResetButton } from './DevResetButton';
@@ -13,22 +11,22 @@ export function SettingsPage() {
       <Row
         icon="wallet"
         label={t('startSpending')}
-        onPress={() => router.push('/settings/start')}
+        href="/settings/start"
       />
       <Row
         icon="heart"
         label={t('reasons')}
-        onPress={() => router.push('/settings/reasons')}
+        href="/settings/reasons"
       />
       <Row
         icon="bell"
         label={t('notifications')}
-        onPress={() => router.push('/settings/notifications')}
+        href="/settings/notifications"
       />
       <Row
         icon="info"
         label={t('about')}
-        onPress={() => router.push('/settings/about')}
+        href="/settings/about"
       />
       {__DEV__ && <DevResetButton />}
     </Screen>

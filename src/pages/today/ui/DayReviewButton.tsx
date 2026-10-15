@@ -1,4 +1,3 @@
-import { router } from 'expo-router';
 import { View } from 'react-native';
 
 import { formatDay } from '@/shared/i18n';
@@ -24,7 +23,7 @@ export function DayReviewButton({ day, isToday, done, beforeStart }: Props) {
   const fg = { color: colors.onSecondary };
   return (
     <Button
-      onPress={() => router.push('/day-review')}
+      href="/day-review"
       style={{ flexDirection: 'row', paddingVertical: 14 }}
     >
       <View style={{ flex: 1 }}>

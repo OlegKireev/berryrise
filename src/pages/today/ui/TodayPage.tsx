@@ -1,4 +1,3 @@
-import { router } from 'expo-router';
 import { View } from 'react-native';
 
 import { Button, Screen } from '@/shared/ui';
@@ -49,7 +48,7 @@ export function TodayPage() {
         <Button
           variant="primary"
           title={t('company')}
-          onPress={() => router.push('/company')}
+          href="/company"
         />
       )}
       {/* Срыв отдельно и внизу, чтобы не путать с остальными действиями */}
@@ -57,7 +56,7 @@ export function TodayPage() {
         <Button
           variant="quiet"
           title={t('hadRelapse')}
-          onPress={() => router.push('/relapse')}
+          href="/relapse"
         />
       </View>
     </Screen>

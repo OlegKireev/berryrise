@@ -1,3 +1,4 @@
+import { router, type Href } from 'expo-router';
 import type { ReactNode } from 'react';
 import { Pressable, View, type StyleProp, type ViewStyle } from 'react-native';
 
@@ -13,11 +14,14 @@ type Props = {
   style?: StyleProp<ViewStyle>;
   // с ним строка нажимается целиком и ведет дальше, стрелка справа
   onPress?: () => void;
+  // то же, но переход по пути через router.push
+  href?: Href;
 };
 
 // Строка списка: подпись слева, справа значение или действие
-export function Row({ label, icon, children, style, onPress }: Props) {
+export function Row({ label, icon, children, style, onPress, href }: Props) {
   const colors = useColors();
+  const press = href ? () => router.push(href) : onPress;
   const rowStyle: StyleProp<ViewStyle> = [
     { flexDirection: 'row', alignItems: 'center', gap: icon ? 12 : 8 },
     style,
@@ -32,7 +36,7 @@ export function Row({ label, icon, children, style, onPress }: Props) {
       )}
       <Text style={{ flex: 1 }}>{label}</Text>
       {children}
-      {onPress && (
+      {press && (
         <Icon
           name="chevronRight"
           size={20}
@@ -42,11 +46,11 @@ export function Row({ label, icon, children, style, onPress }: Props) {
     </>
   );
 
-  if (onPress) {
+  if (press) {
     return (
       <Pressable
         accessibilityRole="button"
-        onPress={onPress}
+        onPress={press}
         style={({ pressed }) => [
           rowStyle,
           { paddingVertical: 12 },

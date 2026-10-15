@@ -1,4 +1,3 @@
-import { router } from 'expo-router';
 import type { ReactNode } from 'react';
 import { View } from 'react-native';
 
@@ -32,16 +31,14 @@ export function PartyCard({ party, onSober, onCancel }: Props) {
         />
         <Button
           title={t('partyDrank')}
-          onPress={() =>
-            router.push({ pathname: '/relapse', params: { partyId: party.id } })
-          }
+          href={{ pathname: '/relapse', params: { partyId: party.id } }}
           style={{ flex: 1 }}
         />
       </ButtonPair>
       <ButtonPair>
         <Button
           title={t('partyOpen')}
-          onPress={() => router.push('/company')}
+          href="/company"
           style={{ flex: 1 }}
         />
         <Button

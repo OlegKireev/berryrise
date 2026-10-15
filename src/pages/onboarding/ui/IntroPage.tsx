@@ -1,5 +1,3 @@
-import { router } from 'expo-router';
-
 import { Button, Screen, Text } from '@/shared/ui';
 
 import { t } from '../i18n';
@@ -13,7 +11,7 @@ export function IntroPage() {
       <Button
         variant="primary"
         title={t('next')}
-        onPress={() => router.push('/onboarding/screening')}
+        href="/onboarding/screening"
       />
     </Screen>
   );
