@@ -12,4 +12,10 @@ export { Switch } from './Switch';
 export { Text } from './Text';
 export { TimeField } from './TimeField';
 export { toast } from './toast';
-export { fonts, headerOptions, navigationTheme, useColors } from './theme';
+export {
+  fonts,
+  headerOptions,
+  navigationTheme,
+  palette,
+  useColors,
+} from './theme';

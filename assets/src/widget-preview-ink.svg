@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+<!-- Превью темного виджета: фон и свечение как у иконки; шрифт подставляет yarn icons -->
+<defs><radialGradient id="glow" cx=".5" cy=".5" r=".6"><stop offset="0" stop-color="#8E3040" stop-opacity=".85"/><stop offset="1" stop-color="#8E3040" stop-opacity="0"/></radialGradient></defs>
+<rect width="64" height="64" rx="10" fill="#1C1A18"/><rect width="64" height="64" rx="10" fill="url(#glow)"/>
+<text x="32" y="44.5" text-anchor="middle" font-family="Manrope" font-weight="700" font-size="34" letter-spacing="-1" fill="#F4F1EA">12</text>
+</svg>

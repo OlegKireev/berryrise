@@ -2,7 +2,7 @@ import type { Theme } from 'expo-router';
 import { useColorScheme } from 'react-native';
 
 // Палитра "Чернила". Светлая базовая, темная в пару: рамки вместо теней, главная кнопка инвертирована
-const palette = {
+export const palette = {
   light: {
     background: '#F4F1EA', // повторен в app.json: фон сплэша
     card: '#FFFFFF',

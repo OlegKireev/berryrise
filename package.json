@@ -1,7 +1,7 @@
 {
   "name": "berryrise",
   "version": "1.0.0",
-  "main": "expo-router/entry",
+  "main": "index.ts",
   "dependencies": {
     "@expo-google-fonts/manrope": "^0.4.2",
     "@react-native-community/datetimepicker": "9.1.0",
@@ -24,6 +24,7 @@
     "lucide-react-native": "^1.57.0",
     "react": "19.2.3",
     "react-native": "0.86.3",
+    "react-native-android-widget": "^0.22.1",
     "react-native-safe-area-context": "~5.7.0",
     "react-native-screens": "~4.26.0",
     "react-native-svg": "15.15.4"
@@ -60,7 +61,7 @@
     "format": "prettier --write .",
     "lint:circular": "madge --circular --extensions ts,tsx --ts-config tsconfig.json --warning src/",
     "lint:unused": "knip",
-    "icons": "sh -c 'for f in icon android-icon-background android-icon-foreground android-icon-monochrome splash-icon; do yarn dlx -q @resvg/resvg-js-cli --fit-width 1024 assets/src/$f.svg assets/$f.png || exit 1; done'"
+    "icons": "sh -c 'for f in icon android-icon-background android-icon-foreground android-icon-monochrome splash-icon; do yarn dlx -q @resvg/resvg-js-cli --fit-width 1024 assets/src/$f.svg assets/$f.png || exit 1; done && yarn dlx -q @resvg/resvg-js-cli --font-file node_modules/@expo-google-fonts/manrope/700Bold/Manrope_700Bold.ttf --fit-width 256 assets/src/widget-preview.svg assets/widget-preview.png && yarn dlx -q @resvg/resvg-js-cli --font-file node_modules/@expo-google-fonts/manrope/700Bold/Manrope_700Bold.ttf --fit-width 256 assets/src/widget-preview-ink.svg assets/widget-preview-ink.png'"
   },
   "private": true,
   "lint-staged": {

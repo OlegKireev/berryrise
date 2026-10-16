@@ -3525,6 +3525,7 @@ __metadata:
     prettier: "npm:^3.9.10"
     react: "npm:19.2.3"
     react-native: "npm:0.86.3"
+    react-native-android-widget: "npm:^0.22.1"
     react-native-safe-area-context: "npm:~5.7.0"
     react-native-screens: "npm:~4.26.0"
     react-native-svg: "npm:15.15.4"
@@ -8461,6 +8462,20 @@ __metadata:
   version: 19.3.0
   resolution: "react-is@npm:19.3.0"
   checksum: 10c0/99b16fc1009222ec0bbe05286566c865908430778ea6ba90dd418c7a11594c6cbb8db58432735b9203e3c6463e3eef5a399df1317ee2d75fd96b3a88cfaa662e
+  languageName: node
+  linkType: hard
+
+"react-native-android-widget@npm:^0.22.1":
+  version: 0.22.1
+  resolution: "react-native-android-widget@npm:0.22.1"
+  peerDependencies:
+    expo: ">=54.0.0"
+    react: "*"
+    react-native: "*"
+  peerDependenciesMeta:
+    expo:
+      optional: true
+  checksum: 10c0/d8aa12694714ce24ff039e14c70aa7921222d0b107507dd391d56f905e2b0e5c0c858d067d60b8eccd6a7f928677904bc27930b51de5df5394b087d6f74dd3c2
   languageName: node
   linkType: hard
 

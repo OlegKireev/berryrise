@@ -36,6 +36,38 @@
             "backgroundColor": "#1A1917"
           }
         }
+      ],
+      [
+        "react-native-android-widget",
+        {
+          "fonts": [
+            "./node_modules/@expo-google-fonts/manrope/700Bold/Manrope_700Bold.ttf"
+          ],
+          "widgets": [
+            {
+              "name": "Streak",
+              "label": "Счетчик дней",
+              "minWidth": "40dp",
+              "minHeight": "40dp",
+              "targetCellWidth": 1,
+              "targetCellHeight": 1,
+              "resizeMode": "none",
+              "previewImage": "./assets/widget-preview.png",
+              "updatePeriodMillis": 1800000
+            },
+            {
+              "name": "StreakInk",
+              "label": "Счетчик дней, темный",
+              "minWidth": "40dp",
+              "minHeight": "40dp",
+              "targetCellWidth": 1,
+              "targetCellHeight": 1,
+              "resizeMode": "none",
+              "previewImage": "./assets/widget-preview-ink.png",
+              "updatePeriodMillis": 1800000
+            }
+          ]
+        }
       ]
     ],
     "owner": "flucky",

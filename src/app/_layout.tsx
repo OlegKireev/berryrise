@@ -14,6 +14,7 @@ import { useEffect } from 'react';
 import { useColorScheme } from 'react-native';
 
 import { useNotifications } from '@/features/notifications';
+import { useWidget } from '@/features/widget';
 import { migrate } from '@/shared/db';
 import { t } from '@/shared/i18n';
 import { headerOptions, navigationTheme } from '@/shared/ui';
@@ -21,9 +22,10 @@ import { headerOptions, navigationTheme } from '@/shared/ui';
 // Сплэш держится, пока не загрузился шрифт, иначе между ним и первым экраном пустой кадр
 SplashScreen.preventAutoHideAsync();
 
-// Хуку нужна база, поэтому он внутри SQLiteProvider
-function Notifications() {
+// Хукам нужна база, поэтому они внутри SQLiteProvider
+function Background() {
   useNotifications();
+  useWidget();
   return null;
 }
 
@@ -49,7 +51,7 @@ export default function RootLayout() {
       databaseName="berryrise.db"
       onInit={migrate}
     >
-      <Notifications />
+      <Background />
       <Navigation />
     </SQLiteProvider>
   );

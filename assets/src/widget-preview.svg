@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+<!-- Превью виджета в пикере лаунчера: светлая палитра, как StreakWidget; шрифт подставляет yarn icons -->
+<rect x="0.5" y="0.5" width="63" height="63" rx="10" fill="#FFFFFF" stroke="#E6E0D4"/>
+<text x="32" y="40" text-anchor="middle" font-family="Manrope" font-weight="700" font-size="34" letter-spacing="-1" fill="#23211D">12</text>
+<path d="M25 48H39" stroke="#E0475B" stroke-width="2.6" stroke-linecap="round"/>
+</svg>

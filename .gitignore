@@ -40,6 +40,8 @@ yarn-error.*
 # generated native folders
 /ios
 /android
+# сборка локальных Expo modules
+/modules/*/android/build
 
 # yarn berry
 .yarn/*
