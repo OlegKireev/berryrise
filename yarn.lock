@@ -3503,7 +3503,6 @@ __metadata:
     eslint-config-expo: "npm:~57.0.2"
     expo: "npm:~57.0.28"
     expo-constants: "npm:~57.0.21"
-    expo-contacts: "npm:~57.0.7"
     expo-crypto: "npm:~57.0.4"
     expo-dev-client: "npm:~57.0.20"
     expo-doctor: "npm:1.20.4"
@@ -4959,17 +4958,6 @@ __metadata:
     expo: "*"
     react-native: "*"
   checksum: 10c0/4e1ea31f17e953e27dfe4bfbe672190914eab4027a8d1717c30e1b62679f6b4e760bc7f74aff165c453f77f52791245631eb3322343d335e6b90716266923830
-  languageName: node
-  linkType: hard
-
-"expo-contacts@npm:~57.0.7":
-  version: 57.0.7
-  resolution: "expo-contacts@npm:57.0.7"
-  peerDependencies:
-    expo: "*"
-    react: "*"
-    react-native: "*"
-  checksum: 10c0/177e729016ece299a6f79e92896539a16e525837444481554cd24237a872d7b647c35017b5c8a1bed59fb8147da4681a4915854bb2e8bbe9b8180be513212932
   languageName: node
   linkType: hard
 

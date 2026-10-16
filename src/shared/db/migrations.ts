@@ -55,11 +55,6 @@ const migrations: string[] = [
     "order" INTEGER NOT NULL,
     CHECK ((key IS NULL) != (customText IS NULL))
   );
-  CREATE TABLE contact (${row},
-    name TEXT NOT NULL,
-    phone TEXT NOT NULL,
-    "order" INTEGER NOT NULL
-  );
   CREATE TABLE settings (
     key TEXT PRIMARY KEY NOT NULL,
     value TEXT NOT NULL

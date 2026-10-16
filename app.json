@@ -17,8 +17,7 @@
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
       "predictiveBackGestureEnabled": false,
-      "package": "com.berryrise.app",
-      "permissions": ["android.permission.READ_CONTACTS"]
+      "package": "com.berryrise.app"
     },
     "scheme": "berryrise",
     "plugins": [
