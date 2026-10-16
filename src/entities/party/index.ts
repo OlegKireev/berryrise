@@ -7,6 +7,7 @@ export {
   getPartyOn,
   hasPartyOn,
   listCustomDrinks,
+  listPartyResultsBetween,
   listPartyStartsSince,
   listSoberPartyStarts,
   setPartyDrinks,

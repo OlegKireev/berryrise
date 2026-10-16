@@ -125,6 +125,20 @@ export const listSoberPartyStarts = async (db: SQLiteDatabase) =>
     )
   ).map((p) => p.startAt);
 
+// Ответы неудаленных вечеринок с ответом и началом в [from, to), для статистики
+export const listPartyResultsBetween = async (
+  db: SQLiteDatabase,
+  from: number,
+  to: number,
+) =>
+  (
+    await db.getAllAsync<{ result: 'sober' | 'drank' }>(
+      'SELECT result FROM party WHERE deletedAt IS NULL AND result IS NOT NULL AND startAt >= ? AND startAt < ?',
+      from,
+      to,
+    )
+  ).map((p) => p.result);
+
 // Начала неудаленных вечеринок с from, для расписания уведомлений
 export const listPartyStartsSince = async (db: SQLiteDatabase, from: number) =>
   (

@@ -20,6 +20,18 @@ export const listDayReviewDates = async (db: SQLiteDatabase) =>
     )
   ).map((r) => r.date);
 
+// Неудаленные итоги за дни с fromDate по toDate включительно, YYYY-MM-DD. Для статистики
+export const listDayReviewsBetween = (
+  db: SQLiteDatabase,
+  fromDate: string,
+  toDate: string,
+) =>
+  db.getAllAsync<DayReview>(
+    'SELECT * FROM dayReview WHERE deletedAt IS NULL AND date >= ? AND date <= ?',
+    fromDate,
+    toDate,
+  );
+
 // Даты итогов, где в местах есть компания или бар: там обычно пьют. Для достижений
 export const listCompanyDates = async (db: SQLiteDatabase) =>
   (

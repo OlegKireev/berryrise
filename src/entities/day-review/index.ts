@@ -1,6 +1,7 @@
 export {
   getDayReview,
   listDayReviewDates,
+  listDayReviewsBetween,
   listCompanyDates,
   saveDayReview,
 } from './api/dayReview';
