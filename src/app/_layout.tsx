@@ -94,6 +94,10 @@ function Navigation() {
           options={{ title: t('notifications') }}
         />
         <Stack.Screen
+          name="settings/backup"
+          options={{ title: t('exportImport') }}
+        />
+        <Stack.Screen
           name="settings/about"
           options={{ title: t('about') }}
         />

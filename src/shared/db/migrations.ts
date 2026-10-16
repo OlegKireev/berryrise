@@ -67,6 +67,29 @@ const migrations: string[] = [
   `,
 ];
 
+// Текущая версия схемы, ее пишет экспорт
+export const schemaVersion = migrations.length;
+
+// Восстановление из бэкапа одной транзакцией: схема строится до версии файла,
+// fill вставляет его строки, остальные миграции доводят их до текущей версии.
+// Любая ошибка откатывает все, включая DROP TABLE
+export async function restoreDatabase(
+  db: SQLiteDatabase,
+  version: number,
+  fill: (tx: SQLiteDatabase) => Promise<void>,
+) {
+  await db.withExclusiveTransactionAsync(async (tx) => {
+    const tables = await tx.getAllAsync<{ name: string }>(
+      "SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%'",
+    );
+    for (const { name } of tables) await tx.execAsync(`DROP TABLE "${name}"`);
+    for (const sql of migrations.slice(0, version)) await tx.execAsync(sql);
+    await fill(tx);
+    for (const sql of migrations.slice(version)) await tx.execAsync(sql);
+    await tx.execAsync(`PRAGMA user_version = ${migrations.length}`);
+  });
+}
+
 // onInit для SQLiteProvider: применяет миграции новее user_version, каждую в своей транзакции
 export async function migrate(db: SQLiteDatabase) {
   const { user_version } = (await db.getFirstAsync<{ user_version: number }>(

@@ -5,6 +5,8 @@ export const t = createT(
   {
     ru: {
       introTitle: 'Решено',
+      restoreFromFile: 'Восстановить из файла',
+      noStart: 'В копии нет старта. Пройди онбординг дальше.',
       introText:
         'Приложение помогает не пить: считает трезвые дни и поддерживает в трудные вечера. Все данные остаются на телефоне.',
       screeningTitle: 'Пара вопросов',
@@ -34,6 +36,8 @@ export const t = createT(
     },
     en: {
       introTitle: 'Welcome',
+      restoreFromFile: 'Restore from file',
+      noStart: 'This backup has no start date. Please continue onboarding.',
       introText:
         'This app helps you stay sober: it counts your sober days and supports you on hard evenings. All data stays on your phone.',
       screeningTitle: 'A few questions',

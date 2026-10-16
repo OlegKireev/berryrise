@@ -24,6 +24,11 @@ export function SettingsPage() {
         href="/settings/notifications"
       />
       <Row
+        icon="archive"
+        label={t('exportImport')}
+        href="/settings/backup"
+      />
+      <Row
         icon="info"
         label={t('about')}
         href="/settings/about"

@@ -2323,6 +2323,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-native-documents/picker@npm:^12.0.2":
+  version: 12.0.2
+  resolution: "@react-native-documents/picker@npm:12.0.2"
+  peerDependencies:
+    react: "*"
+    react-native: ">=0.79.0"
+  checksum: 10c0/4f81e001cbb2b61cf7fce27dd4e8b8954ba3a471daf5cba86738b1515977dbdfdf206c948c12c11684dc0f568e687b48b20abe4398ad3ed8a9fa2f8aff8be5c7
+  languageName: node
+  linkType: hard
+
 "@react-native-masked-view/masked-view@npm:^0.3.2":
   version: 0.3.2
   resolution: "@react-native-masked-view/masked-view@npm:0.3.2"
@@ -8733,6 +8743,7 @@ __metadata:
   dependencies:
     "@expo-google-fonts/manrope": "npm:^0.4.2"
     "@react-native-community/datetimepicker": "npm:9.1.0"
+    "@react-native-documents/picker": "npm:^12.0.2"
     "@types/node": "npm:^24"
     "@types/react": "npm:~19.2.2"
     eslint: "npm:^9.0.0"
@@ -8743,6 +8754,7 @@ __metadata:
     expo-crypto: "npm:~57.0.4"
     expo-dev-client: "npm:~57.0.20"
     expo-doctor: "npm:1.20.4"
+    expo-file-system: "npm:~57.0.7"
     expo-haptics: "npm:~57.0.3"
     expo-intent-launcher: "npm:~57.0.1"
     expo-linking: "npm:~57.0.12"
