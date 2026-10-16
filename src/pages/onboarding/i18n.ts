@@ -4,7 +4,7 @@ import { createT } from '@/shared/i18n';
 export const t = createT(
   {
     ru: {
-      introTitle: 'Решено',
+      introTitle: 'Морс',
       restoreFromFile: 'Восстановить из файла',
       noStart: 'В копии нет старта. Пройди онбординг дальше.',
       introText:

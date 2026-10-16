@@ -1,26 +1,26 @@
 {
   "expo": {
-    "name": "Решено",
-    "slug": "resheno",
+    "name": "Морс",
+    "slug": "berryrise",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "dev.olegkireev.quit"
+      "bundleIdentifier": "com.berryrise.app"
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#34504C",
+        "backgroundImage": "./assets/android-icon-background.png",
         "foregroundImage": "./assets/android-icon-foreground.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
       "predictiveBackGestureEnabled": false,
-      "package": "dev.olegkireev.quit",
+      "package": "com.berryrise.app",
       "permissions": ["android.permission.READ_CONTACTS"]
     },
-    "scheme": "resheno",
+    "scheme": "berryrise",
     "plugins": [
       "expo-sqlite",
       "@react-native-community/datetimepicker",
@@ -39,11 +39,12 @@
         }
       ]
     ],
+    "owner": "flucky",
     "extra": {
+      "router": {},
       "eas": {
-        "projectId": "d4cc0ee2-0e12-4084-8a87-8f1d0dd6ea57"
+        "projectId": "fda86666-4947-4c12-b225-632bae741322"
       }
-    },
-    "owner": "flucky"
+    }
   }
 }

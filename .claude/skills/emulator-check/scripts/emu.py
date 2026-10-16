@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Проверка приложения "Решено" на Android-эмуляторе. Только stdlib.
+"""Проверка приложения "Морс" на Android-эмуляторе. Только stdlib.
 
 python3 .claude/skills/emulator-check/scripts/emu.py <команда> [аргументы]
 Команды и примеры - в SKILL.md рядом.
@@ -18,9 +18,9 @@ import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[4]
-PKG = 'dev.olegkireev.quit'
-DEEPLINK = 'exp+resheno://expo-development-client/?url=http%3A%2F%2Flocalhost%3A8081'
-DB = 'files/SQLite/resheno.db'
+PKG = 'com.berryrise.app'
+DEEPLINK = 'exp+berryrise://expo-development-client/?url=http%3A%2F%2Flocalhost%3A8081'
+DB = 'files/SQLite/berryrise.db'
 APK = ROOT / 'android/app/build/outputs/apk/debug/app-debug.apk'
 # ponytail: нативное изменение = поменялся один из этих файлов, пересборку можно форсировать up --build
 NATIVE_INPUTS = ['package.json', 'app.json', 'yarn.lock', 'eas.json']

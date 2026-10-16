@@ -1,4 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 108 108" width="108" height="108">
-<!-- лаунчер показывает центральные 72 из 108, поэтому знак уменьшен на 2/3 к центру -->
-<g transform="translate(54 54) scale(0.6667) translate(-54 -54)"><circle cx="54" cy="50" r="16" fill="#E3B36B"/><g fill="none" stroke-linecap="round"><path d="M24 72H84" stroke="#F4F1EA" stroke-width="4"/><path d="M42 80H66" stroke="#E3B36B" stroke-width="3" opacity=".75"/><path d="M48 87H60" stroke="#E3B36B" stroke-width="3" opacity=".5"/></g></g>
+<!-- лаунчер показывает центральные 72 из 108, поэтому знак уменьшен на 2/3 к центру; фон со свечением - в android-icon-background.svg -->
+<defs><radialGradient id="berry" cx=".38" cy=".36" r=".75"><stop offset="0" stop-color="#F7798A"/><stop offset=".6" stop-color="#E0475B"/><stop offset="1" stop-color="#A82E43"/></radialGradient></defs>
+<g transform="translate(54 54) scale(0.6667) translate(-54 -54)"><circle cx="54" cy="50" r="16" fill="url(#berry)"/><circle cx="48.5" cy="44.5" r="4" fill="#FFFFFF" opacity=".35"/><g fill="none" stroke-linecap="round"><path d="M54 34.5c0-4 2-7 6-8.5" stroke="#F4F1EA" stroke-width="2.5"/><path d="M24 72H84" stroke="#F4F1EA" stroke-width="4"/><path d="M42 80H66" stroke="#E0475B" stroke-width="3" opacity=".75"/><path d="M48 87H60" stroke="#E0475B" stroke-width="3" opacity=".5"/></g></g>
 </svg>

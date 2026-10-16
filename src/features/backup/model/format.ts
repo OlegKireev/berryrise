@@ -1,16 +1,16 @@
 // Маркер файла - bundle id: он не меняется, в отличие от названия приложения
-export const APP = 'dev.olegkireev.quit';
+export const APP = 'com.berryrise.app';
 
 export type Tables = Record<string, Record<string, unknown>[]>;
 export type Backup = { version: number; tables: Tables };
 
 const pad = (n: number) => String(n).padStart(2, '0');
 
-// resheno-YYYY-MM-DD-HH-mm-SS.json по локальному времени
+// berryrise-YYYY-MM-DD-HH-mm-SS.json по локальному времени
 export function backupFileName(d: Date) {
   const date = [d.getFullYear(), pad(d.getMonth() + 1), pad(d.getDate())];
   const time = [pad(d.getHours()), pad(d.getMinutes()), pad(d.getSeconds())];
-  return `resheno-${[...date, ...time].join('-')}.json`;
+  return `berryrise-${[...date, ...time].join('-')}.json`;
 }
 
 const isObject = (v: unknown): v is Record<string, unknown> =>

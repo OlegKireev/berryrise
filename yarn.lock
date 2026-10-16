@@ -3490,6 +3490,49 @@ __metadata:
   languageName: node
   linkType: hard
 
+"berryrise@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "berryrise@workspace:."
+  dependencies:
+    "@expo-google-fonts/manrope": "npm:^0.4.2"
+    "@react-native-community/datetimepicker": "npm:9.1.0"
+    "@react-native-documents/picker": "npm:^12.0.2"
+    "@types/node": "npm:^24"
+    "@types/react": "npm:~19.2.2"
+    eslint: "npm:^9.0.0"
+    eslint-config-expo: "npm:~57.0.2"
+    expo: "npm:~57.0.28"
+    expo-constants: "npm:~57.0.21"
+    expo-contacts: "npm:~57.0.7"
+    expo-crypto: "npm:~57.0.4"
+    expo-dev-client: "npm:~57.0.20"
+    expo-doctor: "npm:1.20.4"
+    expo-file-system: "npm:~57.0.7"
+    expo-haptics: "npm:~57.0.3"
+    expo-intent-launcher: "npm:~57.0.1"
+    expo-linking: "npm:~57.0.12"
+    expo-notifications: "npm:~57.0.22"
+    expo-router: "npm:~57.0.26"
+    expo-sharing: "npm:~57.0.23"
+    expo-splash-screen: "npm:~57.0.10"
+    expo-sqlite: "npm:~57.0.4"
+    expo-status-bar: "npm:~57.0.1"
+    expo-system-ui: "npm:~57.0.4"
+    knip: "npm:^6.41.0"
+    lefthook: "npm:^2.2.1"
+    lint-staged: "npm:^17.6.0"
+    lucide-react-native: "npm:^1.57.0"
+    madge: "npm:^8.0.0"
+    prettier: "npm:^3.9.10"
+    react: "npm:19.2.3"
+    react-native: "npm:0.86.3"
+    react-native-safe-area-context: "npm:~5.7.0"
+    react-native-screens: "npm:~4.26.0"
+    react-native-svg: "npm:15.15.4"
+    typescript: "npm:~6.0.3"
+  languageName: unknown
+  linkType: soft
+
 "big-integer@npm:1.6.x":
   version: 1.6.52
   resolution: "big-integer@npm:1.6.52"
@@ -8736,49 +8779,6 @@ __metadata:
   checksum: 10c0/84471a69a7f4c8a30974371dd6fc5194fe450e49a55298f2f91ef48c765cfe1babf25b6e92d765c0595ee22bfc40bd1e8cb5e242c2d4e9d2301dfbec459d13a0
   languageName: node
   linkType: hard
-
-"resheno@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "resheno@workspace:."
-  dependencies:
-    "@expo-google-fonts/manrope": "npm:^0.4.2"
-    "@react-native-community/datetimepicker": "npm:9.1.0"
-    "@react-native-documents/picker": "npm:^12.0.2"
-    "@types/node": "npm:^24"
-    "@types/react": "npm:~19.2.2"
-    eslint: "npm:^9.0.0"
-    eslint-config-expo: "npm:~57.0.2"
-    expo: "npm:~57.0.28"
-    expo-constants: "npm:~57.0.21"
-    expo-contacts: "npm:~57.0.7"
-    expo-crypto: "npm:~57.0.4"
-    expo-dev-client: "npm:~57.0.20"
-    expo-doctor: "npm:1.20.4"
-    expo-file-system: "npm:~57.0.7"
-    expo-haptics: "npm:~57.0.3"
-    expo-intent-launcher: "npm:~57.0.1"
-    expo-linking: "npm:~57.0.12"
-    expo-notifications: "npm:~57.0.22"
-    expo-router: "npm:~57.0.26"
-    expo-sharing: "npm:~57.0.23"
-    expo-splash-screen: "npm:~57.0.10"
-    expo-sqlite: "npm:~57.0.4"
-    expo-status-bar: "npm:~57.0.1"
-    expo-system-ui: "npm:~57.0.4"
-    knip: "npm:^6.41.0"
-    lefthook: "npm:^2.2.1"
-    lint-staged: "npm:^17.6.0"
-    lucide-react-native: "npm:^1.57.0"
-    madge: "npm:^8.0.0"
-    prettier: "npm:^3.9.10"
-    react: "npm:19.2.3"
-    react-native: "npm:0.86.3"
-    react-native-safe-area-context: "npm:~5.7.0"
-    react-native-screens: "npm:~4.26.0"
-    react-native-svg: "npm:15.15.4"
-    typescript: "npm:~6.0.3"
-  languageName: unknown
-  linkType: soft
 
 "resolve-dependency-path@npm:^4.0.1":
   version: 4.0.1

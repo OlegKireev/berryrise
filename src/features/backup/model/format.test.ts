@@ -16,11 +16,11 @@ const file = (over: Record<string, unknown> = {}) =>
 test('backupFileName: локальное время с нулями', () => {
   assert.equal(
     backupFileName(new Date(2026, 0, 2, 3, 4, 5)),
-    'resheno-2026-01-02-03-04-05.json',
+    'berryrise-2026-01-02-03-04-05.json',
   );
   assert.equal(
     backupFileName(new Date(2026, 9, 16, 21, 5, 9)),
-    'resheno-2026-10-16-21-05-09.json',
+    'berryrise-2026-10-16-21-05-09.json',
   );
 });
 

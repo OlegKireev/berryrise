@@ -46,7 +46,7 @@ export default function RootLayout() {
 
   return (
     <SQLiteProvider
-      databaseName="resheno.db"
+      databaseName="berryrise.db"
       onInit={migrate}
     >
       <Notifications />

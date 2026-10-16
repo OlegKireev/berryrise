@@ -16,7 +16,7 @@ export const t = createT({
       'Все текущие данные на телефоне удалятся, вместо них будут данные из файла.',
     replace: 'Заменить',
     importFailed: 'Не удалось импортировать',
-    notBackup: 'Это не резервная копия "Решено".',
+    notBackup: 'Это не резервная копия "Морс".',
     tooNew: 'Файл сделан в более новой версии приложения. Обнови приложение.',
     damaged: 'Файл поврежден, данные не изменились.',
   },
@@ -35,7 +35,7 @@ export const t = createT({
       'All current data on this phone will be deleted and replaced with the data from the file.',
     replace: 'Replace',
     importFailed: 'Import failed',
-    notBackup: 'This is not a Resheno backup.',
+    notBackup: 'This is not a Berryrise backup.',
     tooNew:
       'This file was made in a newer version of the app. Please update the app.',
     damaged: 'The file is damaged, your data has not changed.',
