@@ -1,7 +1,9 @@
 import * as Haptics from 'expo-haptics';
 import { useEffect, useMemo, useState } from 'react';
-import { AccessibilityInfo, Animated, Easing, View } from 'react-native';
+import { Animated, Easing, View } from 'react-native';
 import Svg, { Circle, Defs, RadialGradient, Stop } from 'react-native-svg';
+
+import { useReduceMotion } from '@/shared/lib';
 
 import type { AchievementKey, MedalState } from '../model/achievements';
 
@@ -25,20 +27,6 @@ const rnd = (i: number, k: number) => {
   const v = Math.sin(i * 12.9898 + k * 78.233) * 43758.5453;
   return v - Math.floor(v);
 };
-
-// Системное "уменьшить движение". null - еще не знаем
-function useReduceMotion() {
-  const [reduce, setReduce] = useState<boolean | null>(null);
-  useEffect(() => {
-    AccessibilityInfo.isReduceMotionEnabled().then(setReduce);
-    const sub = AccessibilityInfo.addEventListener(
-      'reduceMotionChanged',
-      setReduce,
-    );
-    return () => sub.remove();
-  }, []);
-  return reduce;
-}
 
 // Искра: четыре луча из двух вытянутых ромбов
 function Spark({ size, color }: { size: number; color: string }) {

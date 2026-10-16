@@ -16,15 +16,18 @@ export function SpendingStepPage() {
   }
 
   return (
-    <Screen>
+    <Screen
+      footer={
+        <Button
+          variant="primary"
+          title={t('next')}
+          onPress={() => router.replace('/onboarding/reasons')}
+        />
+      }
+    >
       <Text variant="title">{t('spendingTitle')}</Text>
       <Text>{t('spendingHint')}</Text>
       <SpendingForm habit={habit} />
-      <Button
-        variant="primary"
-        title={t('next')}
-        onPress={() => router.replace('/onboarding/reasons')}
-      />
     </Screen>
   );
 }

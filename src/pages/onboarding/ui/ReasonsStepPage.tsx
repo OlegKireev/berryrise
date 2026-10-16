@@ -15,15 +15,18 @@ export function ReasonsStepPage() {
   }
 
   return (
-    <Screen>
+    <Screen
+      footer={
+        <Button
+          variant="primary"
+          title={t('next')}
+          onPress={() => router.replace('/onboarding/notifications')}
+        />
+      }
+    >
       <Text variant="title">{t('reasonsStepTitle')}</Text>
       <Text>{t('reasonsStepHint')}</Text>
       <ReasonPicker picker={picker} />
-      <Button
-        variant="primary"
-        title={t('next')}
-        onPress={() => router.replace('/onboarding/notifications')}
-      />
     </Screen>
   );
 }

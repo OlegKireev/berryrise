@@ -4,3 +4,4 @@ export { pluralize, type PluralForms } from './utils/pluralize';
 export { toDay } from './utils/toDay';
 export { toggle, toggleExclusive } from './utils/toggle';
 export { iconMask } from './iconMask';
+export { useReduceMotion } from './useReduceMotion';

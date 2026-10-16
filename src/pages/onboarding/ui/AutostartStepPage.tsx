@@ -8,13 +8,16 @@ import { t } from '../i18n';
 // Только на Xiaomi и подобных, туда ведет шаг уведомлений
 export function AutostartStepPage() {
   return (
-    <Screen>
+    <Screen
+      footer={
+        <Button
+          variant="primary"
+          title={t('done')}
+          onPress={() => router.replace('/')}
+        />
+      }
+    >
       <AutostartHint />
-      <Button
-        variant="primary"
-        title={t('done')}
-        onPress={() => router.replace('/')}
-      />
     </Screen>
   );
 }

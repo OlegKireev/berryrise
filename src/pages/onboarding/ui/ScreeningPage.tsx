@@ -8,7 +8,15 @@ export function ScreeningPage() {
   const { answers, setAnswer, next } = useScreening();
 
   return (
-    <Screen>
+    <Screen
+      footer={
+        <Button
+          variant="primary"
+          title={t('next')}
+          onPress={next}
+        />
+      }
+    >
       <Text variant="title">{t('screeningTitle')}</Text>
       {questions.map((q, i) => (
         <Row
@@ -21,11 +29,6 @@ export function ScreeningPage() {
           />
         </Row>
       ))}
-      <Button
-        variant="primary"
-        title={t('next')}
-        onPress={next}
-      />
     </Screen>
   );
 }

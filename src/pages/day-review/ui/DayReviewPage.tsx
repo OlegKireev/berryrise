@@ -23,7 +23,16 @@ export function DayReviewPage() {
   }
 
   return (
-    <Screen>
+    <Screen
+      footer={
+        <Button
+          variant="primary"
+          title={t('save')}
+          disabled={!form.canSave}
+          onPress={form.save}
+        />
+      }
+    >
       <Text variant="title">
         {form.when === 'today'
           ? `${t('forToday')}, ${formatDay(form.day)}`
@@ -75,13 +84,6 @@ export function DayReviewPage() {
         onChangeText={form.setNote}
         placeholder={t('note')}
         multiline
-      />
-
-      <Button
-        variant="primary"
-        title={t('save')}
-        disabled={!form.canSave}
-        onPress={form.save}
       />
     </Screen>
   );
