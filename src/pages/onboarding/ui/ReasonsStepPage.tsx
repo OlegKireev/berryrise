@@ -1,41 +1,27 @@
 import { router } from 'expo-router';
 
-import { reasons } from '@/entities/reason';
-import { Button, Choices, Input, Screen, Text } from '@/shared/ui';
-
-import { useReasonsStep } from '../model/useReasonsStep';
+import { ReasonPicker, useReasonPicker } from '@/features/edit-reasons';
+import { Button, Screen, Text } from '@/shared/ui';
 
 import { t } from '../i18n';
 
-// Шаг после старта: привычка уже есть, поэтому шаг необязательный и назад не ведет
+// Шаг после старта: привычка уже есть, поэтому шаг необязательный и назад не ведет.
+// Выбор сохраняется сразу, "Дальше" только переходит
 export function ReasonsStepPage() {
-  const form = useReasonsStep();
+  const picker = useReasonPicker();
+
+  if (!picker) {
+    return null;
+  }
 
   return (
     <Screen>
       <Text variant="title">{t('reasonsStepTitle')}</Text>
       <Text>{t('reasonsStepHint')}</Text>
-      <Choices
-        keys={reasons}
-        label={(k) => t(`reason.labels.${k}`)}
-        isSelected={(k) => form.keys.includes(k)}
-        onPress={form.toggleKey}
-      />
-      <Input
-        value={form.custom}
-        onChangeText={form.setCustom}
-        placeholder={t('reason.customReason')}
-      />
+      <ReasonPicker picker={picker} />
       <Button
         variant="primary"
         title={t('next')}
-        disabled={!form.canSubmit}
-        onPress={form.submit}
-      />
-      <Button
-        variant="quiet"
-        title={t('skip')}
-        disabled={form.saving}
         onPress={() => router.replace('/onboarding/notifications')}
       />
     </Screen>

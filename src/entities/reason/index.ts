@@ -1,8 +1,9 @@
 export {
   addReason,
-  addReasons,
   deleteReason,
+  listCustomReasons,
   listReasons,
+  saveCustomReasons,
   type NewReason,
 } from './api/reason';
 export { reasonLabel } from './model/reasonLabel';

@@ -7,9 +7,7 @@ import { useHabit } from '../model/useHabit';
 
 import { t } from '../i18n';
 
-const next = () => router.replace('/onboarding/reasons');
-
-// Шаг после старта: необязательный, назад на старт не ведет
+// Шаг после старта: необязательный, назад на старт не ведет. Форма сохраняется сама
 export function SpendingStepPage() {
   const habit = useHabit();
 
@@ -21,15 +19,11 @@ export function SpendingStepPage() {
     <Screen>
       <Text variant="title">{t('spendingTitle')}</Text>
       <Text>{t('spendingHint')}</Text>
-      <SpendingForm
-        habit={habit}
-        submitLabel={t('next')}
-        onSaved={next}
-      />
+      <SpendingForm habit={habit} />
       <Button
-        variant="quiet"
-        title={t('skip')}
-        onPress={next}
+        variant="primary"
+        title={t('next')}
+        onPress={() => router.replace('/onboarding/reasons')}
       />
     </Screen>
   );

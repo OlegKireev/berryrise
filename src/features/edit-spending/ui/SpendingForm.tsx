@@ -1,20 +1,13 @@
 import type { Habit } from '@/entities/habit';
-import { Button } from '@/shared/ui';
 
 import { DrinkCounts } from './DrinkCounts';
 import { WeeklySpend } from './WeeklySpend';
 
 import { useSpendingForm } from '../model/useSpendingForm';
 
-type Props = {
-  habit: Habit;
-  submitLabel: string;
-  onSaved: () => void;
-};
-
-// Траты и пресеты напитков: одна форма для онбординга и настроек
-export function SpendingForm({ habit, submitLabel, onSaved }: Props) {
-  const form = useSpendingForm(habit, onSaved);
+// Траты и пресеты напитков: одна форма для онбординга и настроек, сохраняется сразу
+export function SpendingForm({ habit }: { habit: Habit }) {
+  const form = useSpendingForm(habit);
 
   return (
     <>
@@ -27,12 +20,6 @@ export function SpendingForm({ habit, submitLabel, onSaved }: Props) {
       <DrinkCounts
         counts={form.counts}
         setCount={form.setCount}
-      />
-      <Button
-        variant="primary"
-        title={submitLabel}
-        disabled={form.saving}
-        onPress={form.save}
       />
     </>
   );

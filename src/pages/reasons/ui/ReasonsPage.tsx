@@ -1,52 +1,19 @@
-import { reasonLabel } from '@/entities/reason';
-import { AddField, Button, Choices, Row, Screen, Text } from '@/shared/ui';
-
-import { useReasons } from '../model/useReasons';
+import { ReasonPicker, useReasonPicker } from '@/features/edit-reasons';
+import { Screen, Text } from '@/shared/ui';
 
 import { t } from '../i18n';
 
 export function ReasonsPage() {
-  const reasons = useReasons();
+  const picker = useReasonPicker();
 
-  if (!reasons) {
+  if (!picker) {
     return null;
   }
 
   return (
     <Screen>
-      {reasons.list.length === 0 && <Text>{t('noReasons')}</Text>}
-      {reasons.list.map((item) => (
-        <Row
-          key={item.id}
-          label={reasonLabel(item)}
-        >
-          <Button
-            variant="quiet"
-            title={t('delete')}
-            onPress={() => reasons.remove(item.id)}
-          />
-        </Row>
-      ))}
-
-      <Text
-        variant="heading"
-        style={{ marginTop: 8 }}
-      >
-        {t('addReasonTitle')}
-      </Text>
-      <Choices
-        keys={reasons.presets}
-        label={(k) => t(`reason.labels.${k}`)}
-        isSelected={() => false}
-        onPress={reasons.addPreset}
-      />
-      <AddField
-        value={reasons.custom}
-        onChangeText={reasons.setCustom}
-        placeholder={t('reason.customReason')}
-        canAdd={reasons.canAddCustom}
-        onAdd={reasons.addCustom}
-      />
+      {picker.count === 0 && <Text>{t('noReasons')}</Text>}
+      <ReasonPicker picker={picker} />
     </Screen>
   );
 }

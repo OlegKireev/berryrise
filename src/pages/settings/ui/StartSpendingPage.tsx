@@ -1,5 +1,3 @@
-import { router } from 'expo-router';
-
 import { SpendingForm } from '@/features/edit-spending';
 import { DateTimeField, Screen, Text } from '@/shared/ui';
 
@@ -22,11 +20,7 @@ export function StartSpendingPage() {
         onChange={settings.changeStart}
         max={new Date(settings.maxStart)}
       />
-      <SpendingForm
-        habit={settings.habit}
-        submitLabel={t('save')}
-        onSaved={() => router.back()}
-      />
+      <SpendingForm habit={settings.habit} />
     </Screen>
   );
 }
