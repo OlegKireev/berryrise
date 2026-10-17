@@ -48,11 +48,13 @@ export async function setupNotifications() {
   ]);
 }
 
-// Разрешение просим, только если оно еще не спрошено
+// Разрешение просим, пока система готова показать диалог. По status не
+// смотрим: на Android 13+ до первого запроса он уже DENIED, потому что
+// expo-notifications проверяет areNotificationsEnabled раньше UNDETERMINED
 export async function ensurePermission() {
-  const { status } = await Notifications.getPermissionsAsync();
+  const { granted, canAskAgain } = await Notifications.getPermissionsAsync();
 
-  if (status === Notifications.PermissionStatus.UNDETERMINED) {
+  if (!granted && canAskAgain) {
     await Notifications.requestPermissionsAsync();
   }
 }
