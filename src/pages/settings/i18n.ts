@@ -4,6 +4,8 @@ export const t = createT({
   ru: {
     startAt: 'Старт',
     version: 'Версия',
+    shareWidgetLog: 'Отправить лог виджета',
+    widgetLogEmpty: 'Лог виджета пока пуст',
     notificationsDenied:
       'Уведомления выключены в системе, напоминания не придут.',
     openSystemSettings: 'Включить в настройках',
@@ -13,6 +15,8 @@ export const t = createT({
   en: {
     startAt: 'Start',
     version: 'Version',
+    shareWidgetLog: 'Send widget log',
+    widgetLogEmpty: 'Widget log is empty so far',
     notificationsDenied:
       'Notifications are turned off in system settings, reminders will not arrive.',
     openSystemSettings: 'Turn on in settings',
