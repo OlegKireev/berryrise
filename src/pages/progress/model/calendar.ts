@@ -1,4 +1,4 @@
-import { toDay } from '../../../shared/lib/utils/toDay.ts';
+import { toDay } from '@/shared/lib';
 
 // Номер месяца от нулевого года, чтобы листать и сравнивать месяцы одним числом
 export const monthIndex = (ms: number) => {

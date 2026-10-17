@@ -1,8 +1,7 @@
-// Полоска последних 7 дней на "Сегодня". Чистая логика для node:test
+// Полоска последних 7 дней на "Сегодня". Чистая логика
 
-import type { Day } from '../../../entities/habit/model/streak.ts';
-import type { DayStatus } from '../../../entities/habit/model/types.ts';
-import { toDay } from '../../../shared/lib/utils/toDay.ts';
+import type { Day, DayStatus } from '@/entities/habit';
+import { toDay } from '@/shared/lib';
 
 // weekday: 0 - понедельник, как в weekdays из i18n
 export type WeekDay = { date: string; weekday: number; status: DayStatus };

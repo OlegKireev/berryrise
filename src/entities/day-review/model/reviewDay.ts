@@ -1,7 +1,7 @@
-// Чистая логика дня для итогов, без React Native: ее гоняет node:test.
+// Чистая логика дня для итогов, без React Native.
 // До 18:00 подводятся итоги за вчера, с 18:00 за сегодня.
 
-import { toDay } from '../../../shared/lib/utils/toDay.ts';
+import { toDay } from '@/shared/lib';
 
 const CUTOFF_HOUR = 18;
 

@@ -1,9 +1,8 @@
-// Чистая логика достижений, без React Native: ее гоняет node:test.
+// Чистая логика достижений, без React Native.
 // Достижения не храним, а вычисляем из истории. Дата получения - YYYY-MM-DD.
 
-import { dayDate } from '../../../shared/lib/utils/dayDate.ts';
-import { toDay } from '../../../shared/lib/utils/toDay.ts';
-import type { Day } from './streak.ts';
+import { dayDate, toDay } from '@/shared/lib';
+import type { Day } from './streak';
 
 // после года - шаг в год, до 5 лет
 const streakGoals = [

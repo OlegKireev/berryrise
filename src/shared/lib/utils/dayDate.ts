@@ -1,4 +1,4 @@
-import { at } from './at.ts';
+import { at } from './at';
 
 // Локальная полночь дня YYYY-MM-DD, shift - сдвиг в днях.
 // Разбираем руками: new Date('YYYY-MM-DD') трактуется как UTC.

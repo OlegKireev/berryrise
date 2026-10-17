@@ -1,10 +1,9 @@
-// Чистая логика расписания, без React Native: ее гоняет node:test.
+// Чистая логика расписания, без React Native.
 
-import { reviewDay } from '../../../entities/day-review/model/reviewDay.ts';
-import { isOneOf, isRecord, isString } from '../../../shared/lib/utils/json.ts';
-import { toDay } from '../../../shared/lib/utils/toDay.ts';
+import { reviewDay } from '@/entities/day-review';
+import { isOneOf, isRecord, isString, toDay } from '@/shared/lib';
 
-import type { NotificationKind, NotificationPrefs } from './types.ts';
+import type { NotificationKind, NotificationPrefs } from './types';
 
 export const HORIZON_DAYS = 14;
 

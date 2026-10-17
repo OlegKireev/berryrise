@@ -1,4 +1,4 @@
-import type { Locale } from './getLocale.ts';
+import type { Locale } from './getLocale';
 
 export type PluralForms = { one: string; few?: string; many: string };
 

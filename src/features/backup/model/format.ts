@@ -1,4 +1,4 @@
-import { isRecord } from '../../../shared/lib/utils/json.ts';
+import { isRecord } from '@/shared/lib';
 
 // Маркер файла - bundle id: он не меняется, в отличие от названия приложения
 export const APP = 'com.berryrise.app';

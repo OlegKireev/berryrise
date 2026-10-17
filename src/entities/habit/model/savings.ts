@@ -1,5 +1,5 @@
-// Чистая логика экономии, без React Native: ее гоняет node:test.
-import { drinks as drinkKeys, type Drink } from './types.ts';
+// Чистая логика экономии, без React Native.
+import { drinks as drinkKeys, type Drink } from './types';
 
 // Примерные ккал на порцию: пиво 0,5, бокал вина 150 мл, шот 40 мл, коктейль
 export const drinkKcal: Record<Drink, number> = {

@@ -1,7 +1,7 @@
-// Чистая логика стрика, без React Native: ее гоняет node:test.
+// Чистая логика стрика, без React Native.
 // Трезвый день - локальный календарный день строго после дня старта без срывов.
 
-import { toDay } from '../../../shared/lib/utils/toDay.ts';
+import { toDay } from '@/shared/lib';
 
 export type Day = { date: string; sober: boolean }; // date: YYYY-MM-DD
 

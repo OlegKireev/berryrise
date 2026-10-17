@@ -9,11 +9,10 @@ import {
   type Helper,
   type Mood,
   type Place,
-} from '../../../shared/config/options.ts';
-import { dayRange } from '../../../shared/lib/utils/dayRange.ts';
-import { toDay } from '../../../shared/lib/utils/toDay.ts';
+} from '@/shared/config';
+import { dayRange, toDay } from '@/shared/lib';
 
-import { monthIndex } from './calendar.ts';
+import { monthIndex } from './calendar';
 
 // Сколько итогов дня в периоде нужно, чтобы показать графики из них
 export const REVIEWS_NEEDED = 7;

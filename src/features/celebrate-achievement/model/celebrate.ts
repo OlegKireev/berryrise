@@ -1,10 +1,10 @@
-// Какие медали праздновать, чистая логика для node:test
+// Какие медали праздновать, чистая логика
 
 import {
   achievementKeys,
   type AchievementKey,
   type Got,
-} from '../../../entities/habit/model/achievements.ts';
+} from '@/entities/habit';
 
 // seen - показанные медали, null - памяти еще нет (первый запуск после обновления).
 // show - очередь празднования в общем порядке, seen - что запомнить

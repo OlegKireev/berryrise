@@ -83,6 +83,17 @@ module.exports = defineConfig([
               message: 'Используй Button и Switch из @/shared/ui',
             },
           ],
+          // другой слайс импортируем только через @/ и его index.ts
+          patterns: [
+            {
+              group: ['@/*/*/**'],
+              message: 'Импортируй слайс через его index.ts: @/<слой>/<слайс>',
+            },
+            {
+              regex: String.raw`^\.\./\.\./\.\./(?!\.\./assets/)`,
+              message: 'Другой слайс импортируй через @/<слой>/<слайс>',
+            },
+          ],
         },
       ],
     },
