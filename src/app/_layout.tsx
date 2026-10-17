@@ -19,6 +19,9 @@ import { migrate } from '@/shared/db';
 import { t } from '@/shared/i18n';
 import { headerOptions, navigationTheme } from '@/shared/ui';
 
+// Упавший при отрисовке экран показывает это вместо белого экрана и пишет ошибку в журнал
+export { ErrorPage as ErrorBoundary } from '@/pages/error';
+
 // Сплэш держится, пока не загрузился шрифт, иначе между ним и первым экраном пустой кадр
 SplashScreen.preventAutoHideAsync();
 
@@ -106,6 +109,10 @@ function Navigation() {
         <Stack.Screen
           name="settings/about"
           options={{ title: t('about') }}
+        />
+        <Stack.Screen
+          name="settings/log"
+          options={{ title: t('log') }}
         />
         <Stack.Screen
           name="achievements"

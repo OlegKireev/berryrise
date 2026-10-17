@@ -1,14 +1,9 @@
-import {
-  errorCodes,
-  isErrorWithCode,
-  saveDocuments,
-} from '@react-native-documents/picker';
 import { File, Paths } from 'expo-file-system';
-import * as Sharing from 'expo-sharing';
 import { useSQLiteContext } from 'expo-sqlite';
 import { Alert } from 'react-native';
 
 import { schemaVersion } from '@/shared/db';
+import { saveFile, shareFile } from '@/shared/lib';
 import { toast } from '@/shared/ui';
 
 import { dumpTables } from '../api/backup';
@@ -37,37 +32,23 @@ export function useExport() {
     return { name, uri: file.uri };
   };
 
-  // Системный диалог "Сохранить как": в нем можно выбрать и Download, и корень памяти
-  // (выбор папки туда не пускает). Здесь, в отличие от "Поделиться", результат известен точно
   const save = async () => {
     const { name, uri } = await build();
 
     try {
-      const [res] = await saveDocuments({
-        sourceUris: [uri],
-        mimeType: MIME,
-        fileName: name,
-      });
+      const saved = await saveFile({ uri, name, mime: MIME });
 
-      if (res.error) {
-        throw new Error(res.error);
+      if (saved !== null) {
+        toast(`${t('saved')}: ${saved}`);
       }
-
-      toast(`${t('saved')}: ${res.name ?? name}`);
-    } catch (e) {
-      if (isErrorWithCode(e) && e.code === errorCodes.OPERATION_CANCELED) {
-        return;
-      }
-
+    } catch {
       Alert.alert(t('saveFailed'));
     }
   };
 
-  // Системное "Поделиться". Закрыть меню - не ошибка:
-  // на Android shareAsync завершается одинаково, отправили файл или нет
   const share = async () => {
     const { uri } = await build();
-    await Sharing.shareAsync(uri, { mimeType: MIME });
+    await shareFile(uri, MIME);
   };
 
   return () =>

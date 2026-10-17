@@ -11,7 +11,7 @@ import {
   type NewReason,
   type Reason,
 } from '@/entities/reason';
-import { toggle } from '@/shared/lib';
+import { logError, toggle } from '@/shared/lib';
 
 type State = {
   // Выбранные готовые и свои
@@ -53,7 +53,9 @@ export function useReasonPicker() {
 
   const write = (...ops: (() => Promise<unknown>)[]) => {
     for (const op of ops) {
-      queue.current = queue.current.then(op).catch(console.warn);
+      queue.current = queue.current
+        .then(op)
+        .catch((e: unknown) => logError('reasons', e));
     }
   };
 

@@ -11,6 +11,7 @@ import {
   syncNotifications,
   type NotificationPrefs,
 } from '@/features/notifications';
+import { logError } from '@/shared/lib';
 
 // На шаге все виды включены: "Дальше" и есть согласие, "Пропустить" ничего не включает
 export function useNotificationsStep() {
@@ -42,7 +43,7 @@ export function useNotificationsStep() {
 
         await syncNotifications(db);
       } catch (e) {
-        console.warn(e);
+        logError('onboarding', e);
       }
 
       // подсказка про автозапуск нужна, только если что-то включено

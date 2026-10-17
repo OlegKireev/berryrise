@@ -7,7 +7,7 @@ import {
   type Drink,
   type Habit,
 } from '@/entities/habit';
-import { getLocale, parseCounts } from '@/shared/lib';
+import { getLocale, logError, parseCounts } from '@/shared/lib';
 
 // ponytail: короткий список частых валют, расширим по запросу
 export const currencies = [
@@ -62,7 +62,7 @@ export function useSpendingForm(habit: Habit) {
           ),
         }),
       )
-      .catch(console.warn);
+      .catch((e: unknown) => logError('spending', e));
   };
 
   return {

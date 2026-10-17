@@ -4,8 +4,14 @@ export const t = createT({
   ru: {
     startAt: 'Старт',
     version: 'Версия',
-    shareWidgetLog: 'Отправить лог виджета',
-    widgetLogEmpty: 'Лог виджета пока пуст',
+    logEmpty: 'Записей пока нет.',
+    saveToPhone: 'Сохранить на телефон',
+    send: 'Отправить',
+    clear: 'Очистить',
+    clearLogTitle: 'Очистить журнал?',
+    clearLogText: 'Все записи удалятся.',
+    savedFile: 'Сохранено',
+    saveFailed: 'Не удалось сохранить файл.',
     notificationsDenied:
       'Уведомления выключены в системе, напоминания не придут.',
     openSystemSettings: 'Включить в настройках',
@@ -15,8 +21,14 @@ export const t = createT({
   en: {
     startAt: 'Start',
     version: 'Version',
-    shareWidgetLog: 'Send widget log',
-    widgetLogEmpty: 'Widget log is empty so far',
+    logEmpty: 'No entries yet.',
+    saveToPhone: 'Save to phone',
+    send: 'Send',
+    clear: 'Clear',
+    clearLogTitle: 'Clear the log?',
+    clearLogText: 'All entries will be deleted.',
+    savedFile: 'Saved',
+    saveFailed: 'Could not save the file.',
     notificationsDenied:
       'Notifications are turned off in system settings, reminders will not arrive.',
     openSystemSettings: 'Turn on in settings',

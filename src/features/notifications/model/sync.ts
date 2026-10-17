@@ -3,7 +3,7 @@ import type { SQLiteDatabase } from 'expo-sqlite';
 
 import { listDayReviewDates } from '@/entities/day-review';
 import { getActiveParty, listPartyStartsSince } from '@/entities/party';
-import { DAY_MS, toDay } from '@/shared/lib';
+import { DAY_MS, logError, toDay } from '@/shared/lib';
 
 import { getPrefs } from '../api/prefs';
 import { t } from '../i18n';
@@ -61,4 +61,6 @@ async function run(db: SQLiteDatabase) {
 let queue = Promise.resolve();
 
 export const syncNotifications = (db: SQLiteDatabase) =>
-  (queue = queue.then(() => run(db)).catch(console.warn));
+  (queue = queue
+    .then(() => run(db))
+    .catch((e: unknown) => logError('notifications', e)));

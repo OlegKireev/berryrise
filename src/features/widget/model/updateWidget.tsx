@@ -7,9 +7,9 @@ import {
 
 import { getHabit, streak } from '@/entities/habit';
 import { listRelapses } from '@/entities/relapse';
+import { log, logError } from '@/shared/lib';
 
 import { StreakWidget, type WidgetVariant } from '../ui/StreakWidget';
-import { logWidget } from './log';
 
 // Имена как в app.json: карточка первой в пикере, чернила вторым
 const variants: Record<string, WidgetVariant> = {
@@ -68,7 +68,7 @@ export async function updateWidget(db: SQLiteDatabase) {
       });
     }
   } catch (e) {
-    console.warn('widget update failed', e);
+    logError('widget', e);
   }
 }
 
@@ -104,11 +104,14 @@ export const widgetTaskHandler: WidgetTaskHandler = async (props) => {
       await db.closeAsync();
     }
   } catch (e) {
-    console.warn('widget task failed', e);
+    logError('widget', e);
     result = `error: ${String(e)}`;
   }
 
-  logWidget(`${props.widgetAction} ${props.widgetInfo.widgetName} ${result}`);
+  log(
+    'widget',
+    `${props.widgetAction} ${props.widgetInfo.widgetName} ${result}`,
+  );
 
   // Не прочитали стрик - не рисуем: Android оставит прошлую картинку, а не 0.
   // Свежее число придет со следующим запуском задачи или из приложения.
