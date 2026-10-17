@@ -1,14 +1,6 @@
-/// <reference types="node" />
 import assert from 'node:assert/strict';
-import { test } from 'node:test';
 
-import {
-  isOneOf,
-  isString,
-  parseCounts,
-  parseJson,
-  parseList,
-} from './json.ts';
+import { isOneOf, isString, parseCounts, parseJson, parseList } from './json';
 
 test('parseJson: битая строка и null - null', () => {
   assert.equal(parseJson(null), null);

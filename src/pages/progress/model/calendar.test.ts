@@ -1,8 +1,6 @@
-/// <reference types="node" />
 import assert from 'node:assert/strict';
-import { test } from 'node:test';
 
-import { monthIndex, monthWeeks } from './calendar.ts';
+import { monthIndex, monthWeeks } from './calendar';
 
 test('monthWeeks начинает неделю с понедельника и добивает до полной', () => {
   // Октябрь 2026 начинается в четверг, 31 день

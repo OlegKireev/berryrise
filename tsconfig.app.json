@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "tsBuildInfoFile": "node_modules/.cache/tsc/app.tsbuildinfo",
+    "types": []
+  },
+  "include": ["src", "index.ts", "assets.d.ts"],
+  "exclude": ["src/**/*.test.ts"]
+}

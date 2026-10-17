@@ -1,8 +1,6 @@
-/// <reference types="node" />
 import assert from 'node:assert/strict';
-import { test } from 'node:test';
 
-import { reasonOfDay } from './reasonOfDay.ts';
+import { reasonOfDay } from './reasonOfDay';
 
 test('без причин - null', () => {
   assert.equal(reasonOfDay([], '2026-10-13'), null);

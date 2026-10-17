@@ -1,8 +1,6 @@
-/// <reference types="node" />
 import assert from 'node:assert/strict';
-import { test } from 'node:test';
 
-import { drinkKcal, savings } from './savings.ts';
+import { drinkKcal, savings } from './savings';
 
 test('700 в неделю за 14 трезвых дней - 1400', () => {
   assert.equal(savings(14, 700, {}).money, 1400);

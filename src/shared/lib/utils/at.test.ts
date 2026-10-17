@@ -1,8 +1,6 @@
-/// <reference types="node" />
 import assert from 'node:assert/strict';
-import { test } from 'node:test';
 
-import { at } from './at.ts';
+import { at } from './at';
 
 test('at: элемент по индексу, за границей - ошибка', () => {
   assert.equal(at(['a', 'b'], 1), 'b');

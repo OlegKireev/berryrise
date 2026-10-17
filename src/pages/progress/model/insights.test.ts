@@ -1,8 +1,6 @@
-/// <reference types="node" />
 import assert from 'node:assert/strict';
-import { test } from 'node:test';
 
-import { insights, periodDays, periods } from './insights.ts';
+import { insights, periodDays, periods } from './insights';
 
 const at = (y: number, m: number, d: number) =>
   new Date(y, m - 1, d, 12).getTime();

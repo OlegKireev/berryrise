@@ -1,16 +1,14 @@
-/// <reference types="node" />
 import assert from 'node:assert/strict';
-import { test } from 'node:test';
 
-import { toDay } from '../../../shared/lib/utils/toDay.ts';
+import { toDay } from '@/shared/lib';
 import {
   achievements,
   achievementKeys,
   medalStates,
   type AchievementKey,
   type Got,
-} from './achievements.ts';
-import { soberDays } from './streak.ts';
+} from './achievements';
+import { soberDays } from './streak';
 
 // Месяц с нуля, как в Date: oct(13, 9) = 13 октября 2026, 09:00 по местному времени.
 // 16.10.2026 - пятница

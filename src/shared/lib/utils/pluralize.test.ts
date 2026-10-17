@@ -1,8 +1,6 @@
-/// <reference types="node" />
 import assert from 'node:assert/strict';
-import { test } from 'node:test';
 
-import { pluralize } from './pluralize.ts';
+import { pluralize } from './pluralize';
 
 const ruDays = { one: 'день', few: 'дня', many: 'дней' };
 const forms = (

@@ -1,8 +1,6 @@
-/// <reference types="node" />
 import assert from 'node:assert/strict';
-import { test } from 'node:test';
 
-import { getLocale } from './getLocale.ts';
+import { getLocale } from './getLocale';
 
 test('русская локаль в любом регионе', () => {
   for (const l of ['ru', 'ru-RU', 'ru_RU', 'ru-KZ', 'RU-ru']) {

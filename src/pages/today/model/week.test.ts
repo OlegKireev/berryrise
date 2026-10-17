@@ -1,10 +1,8 @@
-/// <reference types="node" />
 import assert from 'node:assert/strict';
-import { test } from 'node:test';
 
-import { soberDays } from '../../../entities/habit/model/streak.ts';
+import { soberDays } from '@/entities/habit';
 
-import { lastWeek } from './week.ts';
+import { lastWeek } from './week';
 
 // Месяц с нуля, как в Date: oct(13, 9) = 13 октября, 09:00 по местному времени
 const oct = (d: number, h = 12) => new Date(2026, 9, d, h).getTime();

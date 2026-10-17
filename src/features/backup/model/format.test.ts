@@ -1,8 +1,6 @@
-/// <reference types="node" />
 import assert from 'node:assert/strict';
-import { test } from 'node:test';
 
-import { APP, backupFileName, parseBackup } from './format.ts';
+import { APP, backupFileName, parseBackup } from './format';
 
 const file = (over: Record<string, unknown> = {}) =>
   JSON.stringify({

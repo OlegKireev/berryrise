@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "tsBuildInfoFile": "node_modules/.cache/tsc/node.tsbuildinfo",
+    "types": ["node", "jest"]
+  },
+  "include": [
+    "src/**/*.test.ts",
+    "app.config.ts",
+    "eslint.config.js",
+    "assets.d.ts"
+  ]
+}

@@ -1,9 +1,7 @@
-/// <reference types="node" />
 import assert from 'node:assert/strict';
-import { test } from 'node:test';
 
-import { HORIZON_DAYS, isStale, parseNotificationData, plan } from './plan.ts';
-import { defaultPrefs, type NotificationPrefs } from './types.ts';
+import { HORIZON_DAYS, isStale, parseNotificationData, plan } from './plan';
+import { defaultPrefs, type NotificationPrefs } from './types';
 
 // 2026-10-14 - среда. Месяц с нуля, как в Date
 const oct = (d: number, h = 12, min = 0) =>

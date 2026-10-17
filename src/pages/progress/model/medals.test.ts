@@ -1,12 +1,7 @@
-/// <reference types="node" />
 import assert from 'node:assert/strict';
-import { test } from 'node:test';
 
-import {
-  type Got,
-  medalStates,
-} from '../../../entities/habit/model/achievements.ts';
-import { pickMedals } from './medals.ts';
+import { type Got, medalStates } from '@/entities/habit';
+import { pickMedals } from './medals';
 
 const none = (): Got => ({});
 

@@ -1,12 +1,7 @@
-/// <reference types="node" />
 import assert from 'node:assert/strict';
-import { test } from 'node:test';
 
-import type {
-  AchievementKey,
-  Got,
-} from '../../../entities/habit/model/achievements.ts';
-import { celebrate } from './celebrate.ts';
+import type { AchievementKey, Got } from '@/entities/habit';
+import { celebrate } from './celebrate';
 
 const gotOf = (keys: AchievementKey[]): Got =>
   Object.fromEntries(keys.map((k) => [k, '2026-10-10']));

@@ -1,8 +1,6 @@
-/// <reference types="node" />
 import assert from 'node:assert/strict';
-import { test } from 'node:test';
 
-import { dayRange } from './dayRange.ts';
+import { dayRange } from './dayRange';
 
 const HOUR = 60 * 60 * 1000;
 
