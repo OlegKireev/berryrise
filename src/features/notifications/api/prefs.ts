@@ -1,5 +1,6 @@
 import type { SQLiteDatabase } from 'expo-sqlite';
 
+import { getSetting, setSetting } from '@/shared/db';
 import { isRecord, parseJson } from '@/shared/lib';
 
 import { defaultPrefs, type NotificationPrefs } from '../model/types';
@@ -41,17 +42,7 @@ function parsePrefs(json: string | null): NotificationPrefs {
 // Нет строки - ничего не включали
 export const getPrefs = async (
   db: SQLiteDatabase,
-): Promise<NotificationPrefs> => {
-  const row = await db.getFirstAsync<{ value: string }>(
-    'SELECT value FROM settings WHERE key = ?',
-    KEY,
-  );
-  return parsePrefs(row?.value ?? null);
-};
+): Promise<NotificationPrefs> => parsePrefs(await getSetting(db, KEY));
 
 export const savePrefs = (db: SQLiteDatabase, prefs: NotificationPrefs) =>
-  db.runAsync(
-    'INSERT INTO settings (key, value) VALUES (?, ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value',
-    KEY,
-    JSON.stringify(prefs),
-  );
+  setSetting(db, KEY, prefs);

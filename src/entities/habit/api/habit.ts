@@ -1,6 +1,6 @@
 import type { SQLiteDatabase } from 'expo-sqlite';
 
-import { newRow, parseRow } from '@/shared/db';
+import { insertRow, parseRow, updateRow } from '@/shared/db';
 
 import { habitSchema } from '../model/schema';
 import type { Drink } from '../model/types';
@@ -18,28 +18,20 @@ export const getHabit = async (db: SQLiteDatabase) =>
   );
 
 export async function createHabit(db: SQLiteDatabase, startAt: number) {
-  const r = newRow();
-  await db.runAsync(
-    'INSERT INTO habit (id, createdAt, updatedAt, type, startAt) VALUES (?, ?, ?, ?, ?)',
-    r.id,
-    r.createdAt,
-    r.updatedAt,
-    'alcohol',
+  await insertRow(db, 'habit', habitSchema, {
+    type: 'alcohol',
     startAt,
-  );
+    weeklySpend: null,
+    currency: null,
+    drinks: {},
+  });
 }
 
 export const updateHabitStart = (
   db: SQLiteDatabase,
   id: string,
   startAt: number,
-) =>
-  db.runAsync(
-    'UPDATE habit SET startAt = ?, updatedAt = ? WHERE id = ?',
-    startAt,
-    Date.now(),
-    id,
-  );
+) => updateRow(db, 'habit', habitSchema, id, { startAt });
 
 type Spending = {
   weeklySpend: number | null;
@@ -53,13 +45,8 @@ export const updateSpending = (
   id: string,
   { weeklySpend, currency, drinks }: Spending,
 ) =>
-  db.runAsync(
-    'UPDATE habit SET weeklySpend = ?, currency = ?, drinks = ?, updatedAt = ? WHERE id = ?',
+  updateRow(db, 'habit', habitSchema, id, {
     weeklySpend,
     currency,
-    JSON.stringify(
-      Object.fromEntries(Object.entries(drinks).filter(([, n]) => n > 0)),
-    ),
-    Date.now(),
-    id,
-  );
+    drinks: Object.fromEntries(Object.entries(drinks).filter(([, n]) => n > 0)),
+  });

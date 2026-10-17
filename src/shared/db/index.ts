@@ -5,6 +5,13 @@ export { newRow } from './records';
 export { type Setting } from './records';
 export { resetDatabase } from './reset';
 export {
+  getSetting,
+  insertRow,
+  setSetting,
+  softDelete,
+  updateRow,
+} from './rows';
+export {
   jsonCounts,
   jsonList,
   optional,

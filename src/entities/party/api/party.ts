@@ -1,6 +1,14 @@
 import type { SQLiteDatabase } from 'expo-sqlite';
 
-import { newRow, parseRow, parseRows } from '@/shared/db';
+import {
+  getSetting,
+  insertRow,
+  parseRow,
+  parseRows,
+  setSetting,
+  softDelete,
+  updateRow,
+} from '@/shared/db';
 import { HOUR_MS, isString, parseList } from '@/shared/lib';
 
 import { partySchema, type Party } from '../model/schema';
@@ -44,27 +52,16 @@ export async function startParty(db: SQLiteDatabase): Promise<Party> {
         'SELECT * FROM party WHERE deletedAt IS NULL ORDER BY startAt DESC LIMIT 1',
       ),
     );
-    const r = newRow();
-    const party: Party = {
-      ...r,
-      startAt: r.createdAt,
-      expectedEndAt: r.createdAt + DEFAULT_HOURS * HOUR_MS,
+    const now = Date.now();
+    const id = await insertRow(tx, 'party', partySchema, {
+      startAt: now,
+      expectedEndAt: now + DEFAULT_HOURS * HOUR_MS,
       drinkKeys: last?.drinkKeys ?? [],
       drinkCustoms: last?.drinkCustoms ?? [],
       result: null,
       relapseId: null,
-    };
-    await tx.runAsync(
-      'INSERT INTO party (id, createdAt, updatedAt, startAt, expectedEndAt, drinkKeys, drinkCustoms) VALUES (?, ?, ?, ?, ?, ?, ?)',
-      r.id,
-      r.createdAt,
-      r.updatedAt,
-      party.startAt,
-      party.expectedEndAt,
-      JSON.stringify(party.drinkKeys),
-      JSON.stringify(party.drinkCustoms),
-    );
-    result.party = party;
+    });
+    result.party = (await getParty(tx, id)) ?? undefined;
   });
 
   if (!result.party) {
@@ -74,21 +71,8 @@ export async function startParty(db: SQLiteDatabase): Promise<Party> {
   return result.party;
 }
 
-const update = (
-  db: SQLiteDatabase,
-  id: string,
-  set: string,
-  ...args: (string | number | null)[]
-) =>
-  db.runAsync(
-    `UPDATE party SET ${set}, updatedAt = ? WHERE id = ?`,
-    ...args,
-    Date.now(),
-    id,
-  );
-
 export const setPartyEnd = (db: SQLiteDatabase, id: string, at: number) =>
-  update(db, id, 'expectedEndAt = ?', at);
+  updateRow(db, 'party', partySchema, id, { expectedEndAt: at });
 
 // Все выбранные напитки вечеринки целиком: готовые ключами, свои текстом
 export const setPartyDrinks = (
@@ -97,24 +81,21 @@ export const setPartyDrinks = (
   keys: PartyDrink[],
   customs: string[],
 ) =>
-  update(
-    db,
-    id,
-    'drinkKeys = ?, drinkCustoms = ?',
-    JSON.stringify(keys),
-    JSON.stringify(customs),
-  );
+  updateRow(db, 'party', partySchema, id, {
+    drinkKeys: keys,
+    drinkCustoms: customs,
+  });
 
 export const setPartyResult = (
   db: SQLiteDatabase,
   id: string,
   result: 'sober' | 'drank',
   relapseId: string | null = null,
-) => update(db, id, 'result = ?, relapseId = ?', result, relapseId);
+) => updateRow(db, 'party', partySchema, id, { result, relapseId });
 
 // "Не пошел": вечеринку удаляем, в достижения она не идет
 export const cancelParty = (db: SQLiteDatabase, id: string) =>
-  update(db, id, 'deletedAt = ?', Date.now());
+  softDelete(db, 'party', id);
 
 // Была ли неудаленная вечеринка с началом в [from, to)
 export const hasPartyOn = async (
@@ -177,20 +158,11 @@ export const listPartyStartsSince = async (db: SQLiteDatabase, from: number) =>
 // ponytail: список целиком в одной строке, отдельная таблица понадобится, если появится синхронизация
 const CUSTOM_DRINKS = 'customPartyDrinks';
 
-export const listCustomDrinks = async (db: SQLiteDatabase) => {
-  const row = await db.getFirstAsync<{ value: string }>(
-    'SELECT value FROM settings WHERE key = ?',
-    CUSTOM_DRINKS,
-  );
-  return parseList(row?.value ?? null, isString);
-};
+export const listCustomDrinks = async (db: SQLiteDatabase) =>
+  parseList(await getSetting(db, CUSTOM_DRINKS), isString);
 
 const saveCustomDrinks = (db: SQLiteDatabase, list: string[]) =>
-  db.runAsync(
-    'INSERT INTO settings (key, value) VALUES (?, ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value',
-    CUSTOM_DRINKS,
-    JSON.stringify(list),
-  );
+  setSetting(db, CUSTOM_DRINKS, list);
 
 export async function addCustomDrink(db: SQLiteDatabase, name: string) {
   const list = await listCustomDrinks(db);

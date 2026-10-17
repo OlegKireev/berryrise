@@ -1,7 +1,7 @@
 import type { SQLiteDatabase } from 'expo-sqlite';
 
 import type { Hardship, Mood, Place } from '@/shared/config';
-import { newRow, parseRows } from '@/shared/db';
+import { insertRow, parseRows } from '@/shared/db';
 
 import { relapseSchema } from '../model/schema';
 
@@ -56,21 +56,9 @@ type NewRelapse = {
   note: string;
 };
 
-// Пустой разбор пишем как NULL, а не как "[]" и "". Возвращает id срыва
-export async function insertRelapse(db: SQLiteDatabase, data: NewRelapse) {
-  const r = newRow();
-  await db.runAsync(
-    `INSERT INTO relapse (id, createdAt, updatedAt, habitId, at, mood, places, hardships, note)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-    r.id,
-    r.createdAt,
-    r.updatedAt,
-    data.habitId,
-    data.at,
-    data.mood,
-    data.places.length ? JSON.stringify(data.places) : null,
-    data.hardships.length ? JSON.stringify(data.hardships) : null,
-    data.note.trim() || null,
-  );
-  return r.id;
-}
+// Пустую заметку пишем как NULL. Возвращает id срыва
+export const insertRelapse = (db: SQLiteDatabase, data: NewRelapse) =>
+  insertRow(db, 'relapse', relapseSchema, {
+    ...data,
+    note: data.note.trim() || null,
+  });

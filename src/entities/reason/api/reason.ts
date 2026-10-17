@@ -1,6 +1,6 @@
 import type { SQLiteDatabase } from 'expo-sqlite';
 
-import { newRow, parseRows } from '@/shared/db';
+import { getSetting, newRow, parseRows, setSetting } from '@/shared/db';
 import { isString, parseList } from '@/shared/lib';
 
 import { reasonSchema } from '../model/schema';
@@ -47,17 +47,8 @@ export async function deleteReason(db: SQLiteDatabase, item: NewReason) {
 // Свои формулировки, в том числе невыбранные: JSON-массив в settings, как свои напитки
 const CUSTOM_REASONS = 'customReasons';
 
-export const listCustomReasons = async (db: SQLiteDatabase) => {
-  const row = await db.getFirstAsync<{ value: string }>(
-    'SELECT value FROM settings WHERE key = ?',
-    CUSTOM_REASONS,
-  );
-  return parseList(row?.value ?? null, isString);
-};
+export const listCustomReasons = async (db: SQLiteDatabase) =>
+  parseList(await getSetting(db, CUSTOM_REASONS), isString);
 
 export const saveCustomReasons = (db: SQLiteDatabase, list: string[]) =>
-  db.runAsync(
-    'INSERT INTO settings (key, value) VALUES (?, ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value',
-    CUSTOM_REASONS,
-    JSON.stringify(list),
-  );
+  setSetting(db, CUSTOM_REASONS, list);

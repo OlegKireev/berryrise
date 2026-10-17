@@ -1,6 +1,6 @@
 import type { SQLiteDatabase } from 'expo-sqlite';
 
-import { newRow, parseRows } from '@/shared/db';
+import { newRow, parseRows, softDelete } from '@/shared/db';
 
 import { replySchema } from '../model/schema';
 
@@ -28,12 +28,5 @@ export async function addReply(db: SQLiteDatabase, customText: string) {
   );
 }
 
-export async function deleteReply(db: SQLiteDatabase, id: string) {
-  const now = Date.now();
-  await db.runAsync(
-    'UPDATE reply SET deletedAt = ?, updatedAt = ? WHERE id = ?',
-    now,
-    now,
-    id,
-  );
-}
+export const deleteReply = (db: SQLiteDatabase, id: string) =>
+  softDelete(db, 'reply', id);
