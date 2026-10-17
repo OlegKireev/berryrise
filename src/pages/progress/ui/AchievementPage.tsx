@@ -43,45 +43,47 @@ export function AchievementPage() {
       accessible={false}
       style={{ flex: 1, backgroundColor: colors.scrim }}
     >
-      <SafeAreaView
-        style={{
-          flex: 1,
-          padding: 24,
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: 8,
-        }}
-      >
-        {celebrate && (
-          <Text
-            variant="label"
-            style={{ color: colors.onScrim }}
-          >
-            {t('newAchievement')}
-          </Text>
-        )}
-        <MedalMagic
-          // новый key - новый вход у следующей медали очереди
-          key={key}
-          achievement={key}
-          state={state.state}
-          size={180}
-          entrance={!!celebrate}
-        />
-        <Text
-          variant="title"
-          style={{ color: colors.onScrim, textAlign: 'center' }}
+      <SafeAreaView style={{ flex: 1, padding: 24 }}>
+        <View
+          style={{
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 8,
+          }}
         >
-          {t(`habit.achievements.${key}`)}
-        </Text>
-        <Text style={{ color: colors.onScrim, textAlign: 'center' }}>
-          {date ? t(`habit.praise.${key}`) : t(`habit.goal.${key}`)}
-        </Text>
-        {hint && (
-          <Text style={{ color: colors.onScrim, opacity: 0.7 }}>{hint}</Text>
-        )}
+          {celebrate && (
+            <Text
+              variant="label"
+              style={{ color: colors.onScrim }}
+            >
+              {t('newAchievement')}
+            </Text>
+          )}
+          <MedalMagic
+            // новый key - новый вход у следующей медали очереди
+            key={key}
+            achievement={key}
+            state={state.state}
+            size={180}
+            entrance={!!celebrate}
+          />
+          <Text
+            variant="title"
+            style={{ color: colors.onScrim, textAlign: 'center' }}
+          >
+            {t(`habit.achievements.${key}`)}
+          </Text>
+          <Text style={{ color: colors.onScrim, textAlign: 'center' }}>
+            {date ? t(`habit.praise.${key}`) : t(`habit.goal.${key}`)}
+          </Text>
+          {hint && (
+            <Text style={{ color: colors.onScrim, opacity: 0.7 }}>{hint}</Text>
+          )}
+        </View>
         {celebrate && (
-          <View style={{ alignSelf: 'stretch', marginTop: 24 }}>
+          // кнопка прибита к низу: при листании очереди текст разной длины не двигает ее
+          <View style={{ marginTop: 24 }}>
             <Button
               variant="scrim"
               title={next ? t('nextAchievement') : t('close')}

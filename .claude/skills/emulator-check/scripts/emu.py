@@ -96,8 +96,16 @@ def metro_up():
 # ---------- UI ----------
 
 
+IDLE_HINT = (
+    'uiautomator не дождался простоя: на экране бесконечная анимация, обычно карточка новой медали. '
+    'Закрой ее `key back` (по тексту она не находится)'
+)
+
+
 def nodes():
     xml = adb('exec-out', 'uiautomator', 'dump', '/dev/tty', check=False)
+    if 'could not get idle state' in xml:
+        print(IDLE_HINT, file=sys.stderr)
     res = []
     for n in re.findall(r'<node [^>]*>', xml):
         label = _attr(n, 'text') or _attr(n, 'content-desc')
@@ -243,6 +251,8 @@ def seed(a):
     cur = 'NULL' if a.spend is None else f"'{a.currency}'"
     q = [
         'DELETE FROM habit; DELETE FROM relapse; DELETE FROM reason; DELETE FROM dayReview; DELETE FROM party;',
+        # без строки приложение молча считает все медали показанными, иначе на старте вылезет праздник
+        "DELETE FROM settings WHERE key = 'seenAchievements';",
         f"INSERT INTO habit (id,createdAt,updatedAt,type,startAt,weeklySpend,currency,drinks) "
         f"VALUES ('{hid}',{nowms},{nowms},'alcohol',{ms(start)},{spend},{cur},'{drinks}');",
     ]
