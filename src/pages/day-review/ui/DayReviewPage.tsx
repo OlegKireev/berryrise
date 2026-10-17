@@ -1,5 +1,4 @@
 import { cutoffTime } from '@/entities/day-review';
-import { ReasonList } from '@/entities/reason';
 import { cravings, hardships, helpers, moods, places } from '@/shared/config';
 import { formatDay } from '@/shared/i18n';
 import { Choices, Input, Screen, Text } from '@/shared/ui';
@@ -44,8 +43,6 @@ export function DayReviewPage() {
             ? `${t('forYesterday')}, ${formatDay(form.day)}`
             : `${t('forDay')} ${formatDay(form.day)}`}
       </Text>
-
-      <ReasonList reasons={form.reasons} />
 
       <Choices
         title={t('option.titles.mood')}

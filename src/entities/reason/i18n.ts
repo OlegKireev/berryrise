@@ -11,8 +11,7 @@ export const dict = defineDict({
       control: 'Контроль над собой',
       fitness: 'Спорт и форма',
     },
-    myReasons: 'Мои причины',
-    customReason: 'Своя причина',
+    customReason: 'Например, ради дочери',
   },
   en: {
     labels: {
@@ -24,8 +23,7 @@ export const dict = defineDict({
       control: 'Self-control',
       fitness: 'Fitness',
     },
-    myReasons: 'My reasons',
-    customReason: 'Your own reason',
+    customReason: 'For example, my kids',
   },
 });
 

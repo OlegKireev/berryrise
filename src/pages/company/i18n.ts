@@ -16,6 +16,7 @@ export const t = createT(
         'Можно просто уйти, это нормально. Никто не обязан сидеть до конца.',
       leave: 'Уже ушел',
       notGoing: 'Не пошел',
+      reasonsTitle: 'Помни, ради чего ты не пьешь',
     },
     en: {
       partyEnd: 'Until about',
@@ -29,6 +30,7 @@ export const t = createT(
         "You can just leave, that's okay. Nobody has to stay till the end.",
       leave: "I've left",
       notGoing: "Didn't go",
+      reasonsTitle: "Remember why you don't drink",
     },
   },
   { party: partyDict, reply: replyDict },

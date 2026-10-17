@@ -35,7 +35,10 @@ export function CompanyPage() {
         </>
       }
     >
-      <ReasonList reasons={company.reasons} />
+      <ReasonList
+        title={t('reasonsTitle')}
+        reasons={company.reasons}
+      />
 
       <Text variant="label">{t('partyEnd')}</Text>
       <DateTimeField

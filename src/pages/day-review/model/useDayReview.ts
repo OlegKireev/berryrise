@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 import { reviewDay, getDayReview, saveDayReview } from '@/entities/day-review';
 import { getHabit } from '@/entities/habit';
 import { hasPartyOn } from '@/entities/party';
-import { listReasons, type ReasonRow } from '@/entities/reason';
 import { syncNotifications } from '@/features/notifications';
 import {
   type Craving,
@@ -45,10 +44,7 @@ export function useDayReview() {
           : null;
     return { day, when };
   });
-  const [state, setState] = useState<{
-    beforeStart: boolean;
-    reasons: ReasonRow[];
-  } | null>(null);
+  const [state, setState] = useState<{ beforeStart: boolean } | null>(null);
   const [mood, setMood] = useState<Mood | null>(null);
   const [craving, setCraving] = useState<Craving | null>(null);
   const [places, setPlaces] = useState<Place[]>([]);
@@ -60,9 +56,8 @@ export function useDayReview() {
 
   useEffect(() => {
     (async () => {
-      const [habit, reasons, existing] = await Promise.all([
+      const [habit, existing] = await Promise.all([
         getHabit(db),
-        listReasons(db),
         getDayReview(db, day),
       ]);
 
@@ -84,7 +79,6 @@ export function useDayReview() {
 
       setState({
         beforeStart: !habit || day < toDay(habit.startAt),
-        reasons,
       });
     })();
   }, [db, day]);
