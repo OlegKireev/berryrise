@@ -11,9 +11,16 @@ type Paint = { fill: string; bg?: boolean; opacity?: number };
 
 function usePaint({ fill, bg, opacity }: Paint) {
   const s = useContext(Silhouette);
-  if (!s) return { fill, opacity };
+
+  if (!s) {
+    return { fill, opacity };
+  }
+
   // полупрозрачные блики и сияние в силуэте не нужны, иначе проступают пятнами
-  if (opacity !== undefined && opacity < 1) return { fill, opacity: 0 };
+  if (opacity !== undefined && opacity < 1) {
+    return { fill, opacity: 0 };
+  }
+
   return { fill: bg ? s.bg : s.fill };
 }
 

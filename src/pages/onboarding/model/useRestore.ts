@@ -17,9 +17,14 @@ export function useRestore() {
   const db = useSQLiteContext();
 
   const onImported = async () => {
-    if (!(await getHabit(db)))
+    if (!(await getHabit(db))) {
       return Alert.alert(t('restoreFromFile'), t('noStart'));
-    if (anyOn(await getPrefs(db))) await ensurePermission();
+    }
+
+    if (anyOn(await getPrefs(db))) {
+      await ensurePermission();
+    }
+
     await syncNotifications(db);
     router.replace('/');
   };

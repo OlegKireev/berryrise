@@ -26,5 +26,6 @@ export async function openAutostartSettings() {
       // экрана нет в этой версии прошивки
     }
   }
+
   await Linking.openSettings();
 }

@@ -30,6 +30,7 @@
     "react-native-svg": "15.15.4"
   },
   "devDependencies": {
+    "@eslint/js": "^9",
     "@types/node": "^24",
     "@types/react": "~19.2.2",
     "eslint": "^9.0.0",
@@ -40,7 +41,8 @@
     "lint-staged": "^17.6.0",
     "madge": "^8.0.0",
     "prettier": "^3.9.10",
-    "typescript": "~6.0.3"
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.71.1"
   },
   "scripts": {
     "start": "expo start",
@@ -53,7 +55,7 @@
     "install:dev": "adb install -r dist/berryrise-dev.apk",
     "install:preview": "adb install -r dist/berryrise-preview.apk",
     "eas": "yarn dlx eas-cli",
-    "lint": "expo lint",
+    "lint": "expo lint --max-warnings 0",
     "typecheck": "tsc --noEmit",
     "doctor": "expo-doctor",
     "audit": "yarn npm audit --all --recursive --no-deprecations",
@@ -66,7 +68,7 @@
   "private": true,
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": [
-      "eslint --fix",
+      "eslint --fix --max-warnings 0",
       "prettier --write"
     ],
     "**/*.{json,md,yml}": "prettier --write"

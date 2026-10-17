@@ -46,23 +46,33 @@ export function useImport({ confirm, onImported }: Options) {
 
   return async () => {
     const picked = await File.pickFileAsync({ mimeTypes });
-    if (picked.canceled) return;
+
+    if (picked.canceled) {
+      return;
+    }
 
     let backup: Backup | 'notBackup' | 'tooNew';
+
     try {
       backup = parseBackup(await picked.result.text(), schemaVersion);
     } catch {
       backup = 'notBackup';
     }
-    if (typeof backup === 'string')
+
+    if (typeof backup === 'string') {
       return Alert.alert(t('importFailed'), t(backup));
-    if (confirm && !(await ask())) return;
+    }
+
+    if (confirm && !(await ask())) {
+      return;
+    }
 
     try {
       await importBackup(db, backup);
     } catch {
       return Alert.alert(t('importFailed'), t('damaged'));
     }
+
     toast(t('restored'));
     await onImported();
   };

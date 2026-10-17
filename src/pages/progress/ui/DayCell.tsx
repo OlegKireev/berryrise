@@ -15,6 +15,7 @@ export function DayCell({ date, status, today, reviewed, onPress }: Props) {
   if (!date) {
     return <View style={{ flex: 1 }} />;
   }
+
   return (
     <Pressable
       disabled={!onPress}

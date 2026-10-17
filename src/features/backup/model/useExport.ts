@@ -41,17 +41,24 @@ export function useExport() {
   // (выбор папки туда не пускает). Здесь, в отличие от "Поделиться", результат известен точно
   const save = async () => {
     const { name, uri } = await build();
+
     try {
       const [res] = await saveDocuments({
         sourceUris: [uri],
         mimeType: MIME,
         fileName: name,
       });
-      if (res.error) throw new Error(res.error);
+
+      if (res.error) {
+        throw new Error(res.error);
+      }
+
       toast(`${t('saved')}: ${res.name ?? name}`);
     } catch (e) {
-      if (isErrorWithCode(e) && e.code === errorCodes.OPERATION_CANCELED)
+      if (isErrorWithCode(e) && e.code === errorCodes.OPERATION_CANCELED) {
         return;
+      }
+
       Alert.alert(t('saveFailed'));
     }
   };

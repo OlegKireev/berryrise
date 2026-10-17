@@ -18,7 +18,10 @@ export function useProgress() {
     (async () => {
       const now = Date.now();
       const loaded = await loadAchievements(db, now);
-      if (loaded) setData({ ...loaded, now });
+
+      if (loaded) {
+        setData({ ...loaded, now });
+      }
     })();
   }, [db]);
 

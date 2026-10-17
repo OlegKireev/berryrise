@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import { cravings } from '@/shared/config';
 import { weekdays } from '@/shared/i18n';
 import { Text, useColors } from '@/shared/ui';
+import { at } from '@/shared/lib';
 
 import { t } from '../i18n';
 
@@ -64,7 +65,7 @@ export function CravingChart({ values }: { values: (number | null)[] }) {
                   accessibilityLabel={
                     v === null
                       ? weekdays[i]
-                      : `${weekdays[i]}: ${t(`option.craving.${cravings[Math.round(v)]!}`)}`
+                      : `${weekdays[i]}: ${t(`option.craving.${at(cravings, Math.round(v))}`)}`
                   }
                   style={{
                     flex: 1,

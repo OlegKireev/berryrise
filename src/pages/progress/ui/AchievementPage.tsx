@@ -27,6 +27,7 @@ export function AchievementPage() {
   const colors = useColors();
 
   const state = data?.states[key];
+
   if (!data || !state) {
     return null;
   }

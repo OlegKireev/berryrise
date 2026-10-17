@@ -24,9 +24,11 @@ export type Period =
 // Периоды для листания: сначала последние 30 дней, дальше прошлые месяцы до месяца старта
 export function periods(startAt: number, now: number): Period[] {
   const out: Period[] = [{ kind: 'last30' }];
+
   for (let i = monthIndex(now) - 1; i >= monthIndex(startAt); i--) {
     out.push({ kind: 'month', year: Math.floor(i / 12), month: i % 12 });
   }
+
   return out;
 }
 
@@ -39,6 +41,7 @@ export function periodDays(period: Period, now: number): string[] {
       toDay(new Date(year, month, i + 1).getTime()),
     );
   }
+
   const d = new Date(now);
   return Array.from({ length: 30 }, (_, i) =>
     toDay(
@@ -63,7 +66,8 @@ const top3 = <K extends string>(
     .slice(0, 3);
 
 // День недели с понедельника: 0 - понедельник
-type Weekday = 0 | 1 | 2 | 3 | 4 | 5 | 6;
+// день недели как у Date.getDay()
+const weekdayList = [0, 1, 2, 3, 4, 5, 6] as const;
 const weekdayOf = (date: string) =>
   (new Date(dayRange(date).from).getDay() + 6) % 7;
 
@@ -83,14 +87,16 @@ type Input = {
 export function insights({ reviews, relapses, partyResults }: Input) {
   const sums = Array<number>(7).fill(0);
   const counts = Array<number>(7).fill(0);
+
   for (const r of reviews) {
     const wd = weekdayOf(r.date);
-    sums[wd]! += cravings.indexOf(r.craving);
-    counts[wd]!++;
+    sums[wd] = (sums[wd] ?? 0) + cravings.indexOf(r.craving);
+    counts[wd] = (counts[wd] ?? 0) + 1;
   }
+
   // средний уровень 0..3, null - за этот день недели итогов нет
   const cravingByWeekday = sums.map((s, i) =>
-    counts[i] ? s / counts[i]! : null,
+    counts[i] ? s / counts[i] : null,
   );
 
   const peak = Math.max(...cravingByWeekday.map((c) => c ?? 0));
@@ -140,7 +146,10 @@ export function insights({ reviews, relapses, partyResults }: Input) {
         }
       : null,
     // для превью: день недели с самой сильной тягой (ранний при равенстве), null - тяги не было
-    peakWeekday: peak > 0 ? (cravingByWeekday.indexOf(peak) as Weekday) : null,
+    peakWeekday:
+      peak > 0
+        ? (weekdayList.find((w) => cravingByWeekday[w] === peak) ?? null)
+        : null,
     topHelper: helpers[0]?.key ?? null,
   };
 }

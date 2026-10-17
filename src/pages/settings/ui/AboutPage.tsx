@@ -19,7 +19,9 @@ export function AboutPage() {
         variant="quiet"
         title={t('shareWidgetLog')}
         onPress={async () => {
-          if (!(await shareWidgetLog())) toast(t('widgetLogEmpty'));
+          if (!(await shareWidgetLog())) {
+            toast(t('widgetLogEmpty'));
+          }
         }}
       />
       {widgetLog ? <Text variant="hint">{widgetLog}</Text> : null}

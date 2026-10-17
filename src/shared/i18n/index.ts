@@ -1,4 +1,5 @@
 import {
+  dayDate,
   getLocale,
   pluralize,
   type Locale,
@@ -21,9 +22,13 @@ type Path<T> = {
 
 const flatten = (tree: Tree, prefix = '', out: Record<string, string> = {}) => {
   for (const [k, v] of Object.entries(tree)) {
-    if (typeof v === 'string') out[prefix + k] = v;
-    else flatten(v, `${prefix}${k}.`, out);
+    if (typeof v === 'string') {
+      out[prefix + k] = v;
+    } else {
+      flatten(v, `${prefix}${k}.`, out);
+    }
   }
+
   return out;
 };
 
@@ -45,6 +50,7 @@ type Clash<K, Taken, Msg extends string> = {
 type OwnClash<D> = [keyof D & CommonKey] extends [never]
   ? unknown
   : {
+      // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents -- текст ошибки для разработчика, а не тип
       i18nError: `i18n: "${keyof D & CommonKey & string}" уже есть в common.ts, переименуй ключ`;
     };
 
@@ -52,6 +58,7 @@ type OwnClash<D> = [keyof D & CommonKey] extends [never]
 // createT(dict, { habit: habitDict }) -> t('habit.drinks.beer')
 export const createT = <
   D extends Tree,
+  // eslint-disable-next-line @typescript-eslint/no-generated-empty-object-type -- пустой набор неймспейсов по умолчанию
   N extends Record<string, Dict> = Record<never, never>,
 >(
   dict: { ru: D; en: NoInfer<D> } & NoInfer<OwnClash<D>>,
@@ -63,8 +70,12 @@ export const createT = <
     >,
 ) => {
   const lang = flatten(dict[locale]);
-  for (const [ns, d] of Object.entries((deps ?? {}) as Record<string, Dict>))
+  const namespaces: Record<string, Dict> = deps ?? {};
+
+  for (const [ns, d] of Object.entries(namespaces)) {
     flatten(d[locale], `${ns}.`, lang);
+  }
+
   // Ключ без строки (например, устаревший ключ из базы) показываем как есть, а не undefined
   return (key: Path<D & { [K in keyof N]: N[K]['ru'] }> | CommonKey): string =>
     lang[key] ?? commonLang[key] ?? key;
@@ -131,8 +142,7 @@ const shortDate = new Intl.DateTimeFormat(locale, {
 
 // "13 окт." из YYYY-MM-DD. Разбираем руками: new Date('YYYY-MM-DD') трактуется как UTC
 export const formatDay = (date: string) => {
-  const [y, m, d] = date.split('-').map(Number) as [number, number, number];
-  return shortDate.format(new Date(y, m - 1, d));
+  return shortDate.format(dayDate(date));
 };
 
 const monthYear = new Intl.DateTimeFormat(locale, {

@@ -1,6 +1,7 @@
 import type { SQLiteDatabase } from 'expo-sqlite';
 
 import { newRow } from '@/shared/db';
+import { isString, parseList } from '@/shared/lib';
 
 import type { Reason, ReasonRow } from '../model/types';
 
@@ -45,7 +46,7 @@ export const listCustomReasons = async (db: SQLiteDatabase) => {
     'SELECT value FROM settings WHERE key = ?',
     CUSTOM_REASONS,
   );
-  return row ? (JSON.parse(row.value) as string[]) : [];
+  return parseList(row?.value ?? null, isString);
 };
 
 export const saveCustomReasons = (db: SQLiteDatabase, list: string[]) =>

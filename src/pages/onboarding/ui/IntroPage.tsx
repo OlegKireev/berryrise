@@ -9,7 +9,7 @@ import { useRestore } from '../model/useRestore';
 
 import { t } from '../i18n';
 
-const icon = require('../../../../assets/splash-icon.png');
+import icon from '../../../../assets/splash-icon.png';
 
 const points = [
   { icon: 'calendarCheck', label: 'introDays' },

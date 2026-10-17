@@ -23,5 +23,6 @@ export function iconMask() {
       cached = null;
     }
   }
+
   return cached;
 }

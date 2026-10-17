@@ -33,11 +33,13 @@ export function soberDays(
   today.setHours(0, 0, 0, 0);
 
   const days: Day[] = [];
+
   // setDate, а не +24ч: переход на летнее время не сбивает шаг
   for (; day <= today; day.setDate(day.getDate() + 1)) {
     const date = toDay(day.getTime());
     days.push({ date, sober: !relapseDays.has(date) });
   }
+
   return days;
 }
 
@@ -49,9 +51,14 @@ export function streak(
   let run = 0;
   let best = 0;
   let total = 0;
+
   for (const { sober } of soberDays(startAt, relapseAts, now)) {
     run = sober ? run + 1 : 0;
-    if (sober) total++;
+
+    if (sober) {
+      total++;
+    }
+
     best = Math.max(best, run);
   }
 

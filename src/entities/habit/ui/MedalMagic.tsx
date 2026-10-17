@@ -77,14 +77,20 @@ export function MedalMagic({ achievement, state, size, entrance }: Props) {
   );
 
   useEffect(() => {
-    if (reduce === null) return;
-    if (entrance)
+    if (reduce === null) {
+      return;
+    }
+
+    if (entrance) {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    }
+
     if (reduce || !magic) {
       grow.setValue(1);
       glow.setValue(magic ? 0.5 : 0);
       return;
     }
+
     const native = { useNativeDriver: true };
     const loops = [
       Animated.loop(

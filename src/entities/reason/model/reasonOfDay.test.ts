@@ -17,7 +17,8 @@ test('соседние дни - следующая причина, по круг
   const list = ['health', 'sleep', 'money'];
   const days = ['2026-10-13', '2026-10-14', '2026-10-15', '2026-10-16'];
   const got = days.map((d) => reasonOfDay(list, d));
-  const i = list.indexOf(got[0]!);
+  assert.ok(got[0]);
+  const i = list.indexOf(got[0]);
   assert.deepEqual(
     got,
     [0, 1, 2, 3].map((k) => list[(i + k) % 3]),

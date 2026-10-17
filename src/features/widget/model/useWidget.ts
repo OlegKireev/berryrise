@@ -12,7 +12,9 @@ export function useWidget() {
   useEffect(() => {
     updateWidget(db);
     const sub = AppState.addEventListener('change', (s) => {
-      if (s === 'background') updateWidget(db);
+      if (s === 'background') {
+        updateWidget(db);
+      }
     });
     return () => sub.remove();
   }, [db]);

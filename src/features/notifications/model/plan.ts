@@ -1,6 +1,7 @@
 // Чистая логика расписания, без React Native: ее гоняет node:test.
 
 import { reviewDay } from '../../../entities/day-review/model/reviewDay.ts';
+import { isOneOf, isRecord, isString } from '../../../shared/lib/utils/json.ts';
 import { toDay } from '../../../shared/lib/utils/toDay.ts';
 
 import type { NotificationKind, NotificationPrefs } from './types.ts';
@@ -14,6 +15,21 @@ export type NotificationData = {
   day?: string;
   partyId?: string;
 };
+
+const kinds: readonly NotificationKind[] = ['dayReview', 'risk', 'party'];
+
+// data из шторки или ответа на уведомление: могла остаться от старой версии, проверяем форму
+export function parseNotificationData(data: unknown): NotificationData | null {
+  if (!isRecord(data) || !isOneOf(kinds)(data.kind)) {
+    return null;
+  }
+
+  return {
+    kind: data.kind,
+    day: isString(data.day) ? data.day : undefined,
+    partyId: isString(data.partyId) ? data.partyId : undefined,
+  };
+}
 
 export type Planned = NotificationData & { at: number };
 
@@ -51,26 +67,33 @@ export function plan(
       const t = at(i, prefs.dayReview.time);
       // по reviewDay: "Заполнить" открывает ровно тот день, о котором напомнили
       const day = reviewDay(t);
-      if (t > now && !reviews.has(day))
+
+      if (t > now && !reviews.has(day)) {
         out.push({ kind: 'dayReview', at: t, day });
+      }
     }
+
     if (prefs.risk.on) {
       const day = new Date(at(i, 0));
       const time = prefs.risk.days[day.getDay()];
+
       if (time !== undefined) {
         const t = at(i, time);
-        if (t > now && !parties.has(toDay(t)))
+
+        if (t > now && !parties.has(toDay(t))) {
           out.push({ kind: 'risk', at: t, day: toDay(t) });
+        }
       }
     }
   }
 
-  if (prefs.party.on && activeParty && activeParty.expectedEndAt > now)
+  if (prefs.party.on && activeParty && activeParty.expectedEndAt > now) {
     out.push({
       kind: 'party',
       at: activeParty.expectedEndAt,
       partyId: activeParty.id,
     });
+  }
 
   return out;
 }
@@ -81,7 +104,13 @@ export function isStale(
   { kind, day, partyId }: NotificationData,
   { reviewDates, partyDays, activeParty }: Data,
 ): boolean {
-  if (kind === 'dayReview') return !!day && reviewDates.includes(day);
-  if (kind === 'risk') return !!day && partyDays.includes(day);
+  if (kind === 'dayReview') {
+    return !!day && reviewDates.includes(day);
+  }
+
+  if (kind === 'risk') {
+    return !!day && partyDays.includes(day);
+  }
+
   return activeParty?.id !== partyId;
 }

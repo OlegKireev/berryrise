@@ -41,10 +41,14 @@ export default function RootLayout() {
   const ready = fontsLoaded || fontError;
 
   useEffect(() => {
-    if (ready) SplashScreen.hide();
+    if (ready) {
+      SplashScreen.hide();
+    }
   }, [ready]);
 
-  if (!ready) return null;
+  if (!ready) {
+    return null;
+  }
 
   return (
     <SQLiteProvider

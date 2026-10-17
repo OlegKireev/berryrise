@@ -2,6 +2,7 @@ import { View } from 'react-native';
 
 import { DayCircle } from '@/entities/habit';
 import { weekdays } from '@/shared/i18n';
+import { at } from '@/shared/lib';
 
 import type { WeekDay } from '../model/week';
 
@@ -18,7 +19,7 @@ export function WeekStrip({ week }: { week: WeekDay[] }) {
       {week.map((d, i) => (
         <DayCircle
           key={d.date}
-          label={weekdays[d.weekday]!}
+          label={at(weekdays, d.weekday)}
           status={d.status}
           today={i === week.length - 1}
           size={36}

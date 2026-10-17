@@ -7,8 +7,24 @@ import { getHabit } from '@/entities/habit';
 import { hasPartyOn } from '@/entities/party';
 import { listReasons, type ReasonRow } from '@/entities/reason';
 import { syncNotifications } from '@/features/notifications';
-import type { Craving, Hardship, Helper, Mood, Place } from '@/shared/config';
-import { dayRange, toDay, toggle, toggleExclusive } from '@/shared/lib';
+import {
+  hardships as hardshipKeys,
+  helpers as helperKeys,
+  places as placeKeys,
+  type Craving,
+  type Hardship,
+  type Helper,
+  type Mood,
+  type Place,
+} from '@/shared/config';
+import {
+  dayRange,
+  isOneOf,
+  parseList,
+  toDay,
+  toggle,
+  toggleExclusive,
+} from '@/shared/lib';
 
 // Форма итогов дня. null - еще грузим
 export function useDayReview() {
@@ -50,18 +66,23 @@ export function useDayReview() {
         listReasons(db),
         getDayReview(db, day),
       ]);
+
       if (existing) {
         setMood(existing.mood);
         setCraving(existing.craving);
-        setPlaces(JSON.parse(existing.places));
-        setHardships(JSON.parse(existing.hardships));
-        setHelpers(JSON.parse(existing.helpers));
+        setPlaces(parseList(existing.places, isOneOf(placeKeys)));
+        setHardships(parseList(existing.hardships, isOneOf(hardshipKeys)));
+        setHelpers(parseList(existing.helpers, isOneOf(helperKeys)));
         setNote(existing.note ?? '');
       } else {
         // Была вечеринка в этот день - заранее выбираем место "в компании"
         const { from, to } = dayRange(day);
-        if (await hasPartyOn(db, from, to)) setPlaces(['company']);
+
+        if (await hasPartyOn(db, from, to)) {
+          setPlaces(['company']);
+        }
       }
+
       setState({
         beforeStart: !habit || day < toDay(habit.startAt),
         reasons,
@@ -74,7 +95,10 @@ export function useDayReview() {
   }
 
   const save = async () => {
-    if (mood === null || craving === null) return;
+    if (mood === null || craving === null) {
+      return;
+    }
+
     setSaving(true);
     await saveDayReview(db, {
       date: day,

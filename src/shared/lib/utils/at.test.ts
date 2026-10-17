@@ -1,0 +1,11 @@
+/// <reference types="node" />
+import assert from 'node:assert/strict';
+import { test } from 'node:test';
+
+import { at } from './at.ts';
+
+test('at: элемент по индексу, за границей - ошибка', () => {
+  assert.equal(at(['a', 'b'], 1), 'b');
+  assert.throws(() => at(['a'], 1), RangeError);
+  assert.throws(() => at([], 0), RangeError);
+});

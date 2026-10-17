@@ -19,7 +19,11 @@ const variants: Record<string, WidgetVariant> = {
 
 async function currentStreak(db: SQLiteDatabase) {
   const habit = await getHabit(db);
-  if (!habit) return null; // онбординг не пройден
+
+  if (!habit) {
+    return null;
+  } // онбординг не пройден
+
   const relapses = await listRelapses(db);
   return streak(
     habit.startAt,
@@ -56,6 +60,7 @@ const widgetTree = (count: number, info: WidgetInfo) => {
 export async function updateWidget(db: SQLiteDatabase) {
   try {
     const count = (await currentStreak(db)) ?? 0;
+
     for (const widgetName of Object.keys(variants)) {
       await requestWidgetUpdate({
         widgetName,
@@ -69,10 +74,17 @@ export async function updateWidget(db: SQLiteDatabase) {
 
 // Из фона: добавление виджета и updatePeriodMillis (раз в 30 минут, так ловим полночь)
 export const widgetTaskHandler: WidgetTaskHandler = async (props) => {
-  if (props.widgetAction === 'WIDGET_DELETED') return;
-  if (props.widgetAction === 'WIDGET_CLICK') return; // OPEN_APP библиотека обрабатывает сама
+  if (props.widgetAction === 'WIDGET_DELETED') {
+    return;
+  }
+
+  if (props.widgetAction === 'WIDGET_CLICK') {
+    return;
+  } // OPEN_APP библиотека обрабатывает сама
+
   let count: number | null = null;
   let result = 'no habit';
+
   try {
     // ponytail: только чтение, без миграций; до первого запуска таблиц нет - это ошибка
     // Свое соединение: без него при живом приложении expo-sqlite отдает из кэша
@@ -81,20 +93,29 @@ export const widgetTaskHandler: WidgetTaskHandler = async (props) => {
     const db = await openDatabaseAsync('berryrise.db', {
       useNewConnection: true,
     });
+
     try {
       count = await currentStreak(db);
-      if (count !== null) result = String(count);
+
+      if (count !== null) {
+        result = String(count);
+      }
     } finally {
       await db.closeAsync();
     }
   } catch (e) {
     console.warn('widget task failed', e);
-    result = `error: ${e}`;
+    result = `error: ${String(e)}`;
   }
+
   logWidget(`${props.widgetAction} ${props.widgetInfo.widgetName} ${result}`);
+
   // Не прочитали стрик - не рисуем: Android оставит прошлую картинку, а не 0.
   // Свежее число придет со следующим запуском задачи или из приложения.
   // Новому виджету нарисовать что-то нужно, тогда 0
-  if (count === null && props.widgetAction !== 'WIDGET_ADDED') return;
+  if (count === null && props.widgetAction !== 'WIDGET_ADDED') {
+    return;
+  }
+
   props.renderWidget(widgetTree(count ?? 0, props.widgetInfo));
 };

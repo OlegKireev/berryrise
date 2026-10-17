@@ -14,7 +14,9 @@ export function useNotifications() {
   useEffect(() => {
     setupNotifications().then(() => syncNotifications(db));
     const sub = AppState.addEventListener('change', (s) => {
-      if (s === 'active') syncNotifications(db);
+      if (s === 'active') {
+        syncNotifications(db);
+      }
     });
     return () => sub.remove();
   }, [db]);

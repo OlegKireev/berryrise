@@ -6,27 +6,35 @@ import { listDayReviewsBetween } from '@/entities/day-review';
 import { getHabit } from '@/entities/habit';
 import { listPartyResultsBetween } from '@/entities/party';
 import { listRelapsesBetween } from '@/entities/relapse';
-import type { Hardship, Helper, Place } from '@/shared/config';
-import { dayRange } from '@/shared/lib';
+import { hardships, helpers, places } from '@/shared/config';
+import { at, dayRange, isOneOf, parseList } from '@/shared/lib';
 
 import { insights, periodDays, periods } from './insights';
 
-const list = <T>(json: string | null): T[] => (json ? JSON.parse(json) : []);
-
 // index - номер периода в списке: 0 - последние 30 дней, дальше месяцы назад
+const isPlace = isOneOf(places);
+const isHardship = isOneOf(hardships);
+const isHelper = isOneOf(helpers);
+
 const load = async (db: SQLiteDatabase, index: number) => {
   const habit = await getHabit(db);
-  if (!habit) return null;
+
+  if (!habit) {
+    return null;
+  }
+
   const now = Date.now();
   const all = periods(habit.startAt, now);
   // экран мог пережить смену месяца: не уходим за конец списка
   const i = Math.min(index, all.length - 1);
-  const period = all[i]!;
+  const period = at(all, i);
   const days = periodDays(period, now);
-  const from = dayRange(days[0]!).from;
-  const to = dayRange(days.at(-1)!).to;
+  const first = at(days, 0);
+  const last = at(days, days.length - 1);
+  const from = dayRange(first).from;
+  const to = dayRange(last).to;
   const [reviews, relapses, partyResults] = await Promise.all([
-    listDayReviewsBetween(db, days[0]!, days.at(-1)!),
+    listDayReviewsBetween(db, first, last),
     listRelapsesBetween(db, from, to),
     listPartyResultsBetween(db, from, to),
   ]);
@@ -39,12 +47,12 @@ const load = async (db: SQLiteDatabase, index: number) => {
         date: r.date,
         mood: r.mood,
         craving: r.craving,
-        hardships: list<Hardship>(r.hardships),
-        helpers: list<Helper>(r.helpers),
+        hardships: parseList(r.hardships, isHardship),
+        helpers: parseList(r.helpers, isHelper),
       })),
       relapses: relapses.map((r) => ({
-        places: list<Place>(r.places),
-        hardships: list<Hardship>(r.hardships),
+        places: parseList(r.places, isPlace),
+        hardships: parseList(r.hardships, isHardship),
       })),
       partyResults,
     }),

@@ -9,11 +9,12 @@ import {
   setPartyEnd,
   startParty,
   type Party,
+  partyDrinks,
   type PartyDrink,
 } from '@/entities/party';
 import { listReasons, type ReasonRow } from '@/entities/reason';
 import { syncNotifications } from '@/features/notifications';
-import { toggle } from '@/shared/lib';
+import { isOneOf, isString, parseList, toggle } from '@/shared/lib';
 
 // Режим "иду в компанию". null - еще грузим
 export function useCompany() {
@@ -45,8 +46,8 @@ export function useCompany() {
   }
 
   // Напитков может быть несколько: тап добавляет или убирает
-  const drinkKeys: PartyDrink[] = JSON.parse(party.drinkKeys);
-  const drinkCustoms: string[] = JSON.parse(party.drinkCustoms);
+  const drinkKeys = parseList(party.drinkKeys, isOneOf(partyDrinks));
+  const drinkCustoms = parseList(party.drinkCustoms, isString);
 
   const changeDrinks = (keys: PartyDrink[], customs: string[]) => {
     setParty({

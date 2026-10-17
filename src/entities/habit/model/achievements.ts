@@ -1,6 +1,7 @@
 // Чистая логика достижений, без React Native: ее гоняет node:test.
 // Достижения не храним, а вычисляем из истории. Дата получения - YYYY-MM-DD.
 
+import { dayDate } from '../../../shared/lib/utils/dayDate.ts';
 import { toDay } from '../../../shared/lib/utils/toDay.ts';
 import type { Day } from './streak.ts';
 
@@ -21,17 +22,10 @@ export const achievementKeys = [
 ] as const;
 export type AchievementKey = (typeof achievementKeys)[number];
 
-const parse = (date: string) => {
-  const [y, m, d] = date.split('-').map(Number) as [number, number, number];
-  return new Date(y, m - 1, d);
-};
+// Дата получения по ключу, неполученных медалей в объекте нет
+export type Got = Partial<Record<AchievementKey, string>>;
 
-// setDate, а не +24ч: переход на летнее время не сбивает шаг
-const nextDay = (date: string) => {
-  const d = parse(date);
-  d.setDate(d.getDate() + 1);
-  return toDay(d.getTime());
-};
+const nextDay = (date: string) => toDay(dayDate(date, 1).getTime());
 
 const FRIDAY = 5;
 const SUNDAY = 0;
@@ -59,45 +53,72 @@ export function achievements(
   reviewDates: string[], // YYYY-MM-DD, любой порядок
   today: string, // YYYY-MM-DD
   company: Company = { soberParties: [], companyDates: [] },
-): Record<AchievementKey, string | null> {
-  const got = Object.fromEntries(
-    achievementKeys.map((k) => [k, null]),
-  ) as Record<AchievementKey, string | null>;
+): Got {
+  const got: Got = {};
   const give = (key: AchievementKey, date: string) => {
     got[key] ??= date;
   };
 
   let run = 0;
   let afterRelapse = false; // текущая серия началась сразу после дня срыва
-  days.forEach(({ date, sober }, i) => {
+  days.forEach(({ date, sober }) => {
     if (!sober) {
       run = 0;
       afterRelapse = true;
       return;
     }
+
     run++;
-    for (const n of streakGoals) if (run === n) give(`days${n}`, date);
-    if (afterRelapse && run === 7) give('comeback7', date);
+
+    for (const n of streakGoals) {
+      if (run === n) {
+        give(`days${n}`, date);
+      }
+    }
+
+    if (afterRelapse && run === 7) {
+      give('comeback7', date);
+    }
 
     // пятница и выходные засчитываются, только когда день закончился
-    if (date >= today) return;
-    const weekday = parse(date).getDay();
-    if (weekday === FRIDAY) give('friday', date);
+    if (date >= today) {
+      return;
+    }
+
+    const weekday = dayDate(date).getDay();
+
+    if (weekday === FRIDAY) {
+      give('friday', date);
+    }
+
     // дни идут подряд, поэтому серия от 3 в воскресенье = трезвые пт, сб и вс
-    if (weekday === SUNDAY && run >= 3) give('weekend', date);
+    if (weekday === SUNDAY && run >= 3) {
+      give('weekend', date);
+    }
   });
 
   let row = 0;
   let prev: string | null = null;
+
   for (const date of [...new Set(reviewDates)].sort()) {
     row = prev !== null && nextDay(prev) === date ? row + 1 : 1;
-    if (row === 7) give('reviews7', date);
+
+    if (row === 7) {
+      give('reviews7', date);
+    }
+
     prev = date;
   }
 
   const evenings = companyEvenings(days, company);
-  for (const n of companyGoals)
-    if (evenings.length >= n) give(`company${n}`, evenings[n - 1]!);
+
+  for (const n of companyGoals) {
+    const date = evenings[n - 1];
+
+    if (date) {
+      give(`company${n}`, date);
+    }
+  }
 
   return got;
 }
@@ -107,34 +128,47 @@ export type MedalState = { state: 'got' } | { state: 'next'; left?: number }; //
 // Серии: стрик и компания; остальные достижения - серии из одной медали.
 // Первая неполученная в серии - следующая, дальше по серии медали скрыты: ключа в ответе нет
 export function medalStates(
-  got: Record<AchievementKey, string | null>,
+  got: Got,
   currentRun: number, // текущая серия трезвых дней, streak().current
   evenings: number, // засчитанных вечеров в компании
 ): Partial<Record<AchievementKey, MedalState>> {
   const states: Partial<Record<AchievementKey, MedalState>> = {};
-  const series = (
-    keys: readonly AchievementKey[],
-    left?: (i: number) => number,
-  ) => {
+  const series = (items: readonly { key: AchievementKey; left?: number }[]) => {
     let found = false;
-    keys.forEach((k, i) => {
-      if (got[k]) states[k] = { state: 'got' };
-      else if (!found) {
+
+    for (const { key, left } of items) {
+      if (got[key]) {
+        states[key] = { state: 'got' };
+      } else if (!found) {
         found = true;
-        states[k] = { state: 'next', left: left?.(i) };
+        states[key] = { state: 'next', left };
       }
-    });
+    }
   };
-  const streakKeys = streakGoals.map((n) => `days${n}` as const);
-  const companyKeys = companyGoals.map((n) => `company${n}` as const);
-  series(streakKeys, (i) => streakGoals[i]! - currentRun);
-  series(companyKeys, (i) => companyGoals[i]! - evenings);
-  const inSeries = new Set<AchievementKey>([...streakKeys, ...companyKeys]);
+  const streakSeries = streakGoals.map((n) => ({
+    key: `days${n}` as const,
+    left: n - currentRun,
+  }));
+  const companySeries = companyGoals.map((n) => ({
+    key: `company${n}` as const,
+    left: n - evenings,
+  }));
+  series(streakSeries);
+  series(companySeries);
+  const inSeries = new Set<AchievementKey>(
+    [...streakSeries, ...companySeries].map((s) => s.key),
+  );
+
   for (const k of achievementKeys) {
     // возвращение после срыва скрыто до получения: цель не должна подталкивать к срыву
     if (k === 'comeback7') {
-      if (got[k]) states[k] = { state: 'got' };
-    } else if (!inSeries.has(k)) series([k]);
+      if (got[k]) {
+        states[k] = { state: 'got' };
+      }
+    } else if (!inSeries.has(k)) {
+      series([{ key: k }]);
+    }
   }
+
   return states;
 }

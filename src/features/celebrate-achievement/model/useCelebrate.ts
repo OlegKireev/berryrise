@@ -17,7 +17,10 @@ let running = false;
 export function useCelebrate() {
   const db = useSQLiteContext();
   const check = useCallback(() => {
-    if (running) return;
+    if (running) {
+      return;
+    }
+
     running = true;
     (async () => {
       const now = Date.now();
@@ -27,16 +30,25 @@ export function useCelebrate() {
         getSeen(db),
         hasRelapseBetween(db, from, to),
       ]);
-      if (!loaded) return;
+
+      if (!loaded) {
+        return;
+      }
+
       const r = celebrate(loaded.got, seen, relapseToday);
-      if (seen === null || r.seen.join() !== seen.join())
+
+      if (seen === null || r.seen.join() !== seen.join()) {
         await saveSeen(db, r.seen);
+      }
+
       const [key, ...queue] = r.show;
-      if (key)
+
+      if (key) {
         router.push({
           pathname: '/achievement/[key]',
           params: { key, celebrate: '1', queue: queue.join(',') },
         });
+      }
     })().finally(() => {
       running = false;
     });

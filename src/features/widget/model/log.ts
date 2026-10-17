@@ -13,9 +13,14 @@ const pad = (n: number) => String(n).padStart(2, '0');
 export function logWidget(line: string) {
   const d = new Date();
   const at = `${pad(d.getDate())}.${pad(d.getMonth() + 1)} ${d.toTimeString().slice(0, 8)}`;
+
   try {
     const file = logFile();
-    if (!file.exists) file.create();
+
+    if (!file.exists) {
+      file.create();
+    }
+
     file.write(`${at} ${line}\n`, { append: true });
   } catch {
     // журнал не должен ломать виджет
@@ -25,7 +30,11 @@ export function logWidget(line: string) {
 // false - журнала еще нет
 export async function shareWidgetLog() {
   const file = logFile();
-  if (!file.exists) return false;
+
+  if (!file.exists) {
+    return false;
+  }
+
   await Sharing.shareAsync(file.uri, { mimeType: 'text/plain' });
   return true;
 }
@@ -36,7 +45,11 @@ export function useWidgetLog(lines = 40) {
   useFocusEffect(
     useCallback(() => {
       const file = logFile();
-      if (!file.exists) return setText('');
+
+      if (!file.exists) {
+        return setText('');
+      }
+
       file
         .text()
         .then((s) =>

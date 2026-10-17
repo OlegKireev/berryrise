@@ -8,7 +8,7 @@ import { t } from '../i18n';
 
 type Props = {
   achievement: AchievementKey;
-  date: string | null;
+  date: string | undefined;
   state: MedalState;
   onPress: () => void;
 };
@@ -16,7 +16,7 @@ type Props = {
 // Подпись под медалью: у полученной дата, у следующей - сколько осталось
 export function medalHint(
   achievement: AchievementKey,
-  date: string | null,
+  date: string | undefined,
   state: MedalState,
 ) {
   const left =

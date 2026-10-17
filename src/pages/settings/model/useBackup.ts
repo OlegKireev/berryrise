@@ -13,7 +13,10 @@ export function useBackup() {
   const db = useSQLiteContext();
 
   const onImported = async () => {
-    if (anyOn(await getPrefs(db))) await ensurePermission();
+    if (anyOn(await getPrefs(db))) {
+      await ensurePermission();
+    }
+
     await syncNotifications(db);
     router.dismissTo('/');
   };

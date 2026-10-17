@@ -25,7 +25,10 @@ export async function loadAchievements(db: SQLiteDatabase, now: number) {
       listSoberPartyStarts(db),
       listCompanyDates(db),
     ]);
-  if (!habit) return null;
+
+  if (!habit) {
+    return null;
+  }
 
   const relapseAts = relapses.map((r) => r.at);
   const days = soberDays(habit.startAt, relapseAts, now);

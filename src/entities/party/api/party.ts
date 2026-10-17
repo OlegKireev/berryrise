@@ -1,6 +1,7 @@
 import type { SQLiteDatabase } from 'expo-sqlite';
 
 import { newRow } from '@/shared/db';
+import { isString, parseList } from '@/shared/lib';
 
 import type { Party, PartyDrink } from '../model/types';
 
@@ -22,17 +23,22 @@ export const getParty = (db: SQLiteDatabase, id: string) =>
 // Проверка и вставка в одной транзакции: эффект в dev может отработать дважды,
 // и без нее получились бы две вечеринки
 export async function startParty(db: SQLiteDatabase): Promise<Party> {
-  let party: Party | null = null;
+  // объект, а не let: присваивание внутри колбэка TS видит только у свойства
+  const result: { party?: Party } = {};
   await db.withExclusiveTransactionAsync(async (tx) => {
-    party = await getActiveParty(tx);
-    if (party) return;
+    result.party = (await getActiveParty(tx)) ?? undefined;
+
+    if (result.party) {
+      return;
+    }
+
     const last = await tx.getFirstAsync<
       Pick<Party, 'drinkKeys' | 'drinkCustoms'>
     >(
       'SELECT drinkKeys, drinkCustoms FROM party WHERE deletedAt IS NULL ORDER BY startAt DESC LIMIT 1',
     );
     const r = newRow();
-    party = {
+    const party: Party = {
       ...r,
       startAt: r.createdAt,
       expectedEndAt: r.createdAt + DEFAULT_LENGTH,
@@ -51,8 +57,14 @@ export async function startParty(db: SQLiteDatabase): Promise<Party> {
       party.drinkKeys,
       party.drinkCustoms,
     );
+    result.party = party;
   });
-  return party!;
+
+  if (!result.party) {
+    throw new Error('startParty: вечеринка не создана');
+  }
+
+  return result.party;
 }
 
 const update = (
@@ -157,7 +169,7 @@ export const listCustomDrinks = async (db: SQLiteDatabase) => {
     'SELECT value FROM settings WHERE key = ?',
     CUSTOM_DRINKS,
   );
-  return row ? (JSON.parse(row.value) as string[]) : [];
+  return parseList(row?.value ?? null, isString);
 };
 
 const saveCustomDrinks = (db: SQLiteDatabase, list: string[]) =>
@@ -169,7 +181,10 @@ const saveCustomDrinks = (db: SQLiteDatabase, list: string[]) =>
 
 export async function addCustomDrink(db: SQLiteDatabase, name: string) {
   const list = await listCustomDrinks(db);
-  if (!list.includes(name)) await saveCustomDrinks(db, [...list, name]);
+
+  if (!list.includes(name)) {
+    await saveCustomDrinks(db, [...list, name]);
+  }
 }
 
 export const deleteCustomDrink = async (db: SQLiteDatabase, name: string) =>

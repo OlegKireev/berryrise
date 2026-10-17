@@ -7,7 +7,11 @@ const CUTOFF_HOUR = 18;
 
 export function reviewDay(now: number): string {
   const d = new Date(now);
+
   // setDate, а не минус 24ч: переход на летнее время не сбивает день
-  if (d.getHours() < CUTOFF_HOUR) d.setDate(d.getDate() - 1);
+  if (d.getHours() < CUTOFF_HOUR) {
+    d.setDate(d.getDate() - 1);
+  }
+
   return toDay(d.getTime());
 }

@@ -2,16 +2,14 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
-import {
-  achievementKeys,
-  type AchievementKey,
+import type {
+  AchievementKey,
+  Got,
 } from '../../../entities/habit/model/achievements.ts';
 import { celebrate } from './celebrate.ts';
 
-const gotOf = (keys: AchievementKey[]) =>
-  Object.fromEntries(
-    achievementKeys.map((k) => [k, keys.includes(k) ? '2026-10-10' : null]),
-  ) as Record<AchievementKey, string | null>;
+const gotOf = (keys: AchievementKey[]): Got =>
+  Object.fromEntries(keys.map((k) => [k, '2026-10-10']));
 
 test('celebrate: первый запуск - все полученные молча в показанные', () => {
   const r = celebrate(gotOf(['days1', 'days3', 'friday']), null, false);

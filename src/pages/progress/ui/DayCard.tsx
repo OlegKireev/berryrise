@@ -1,7 +1,7 @@
 import { router } from 'expo-router';
 import { View } from 'react-native';
 
-import { achievementKeys, type AchievementKey } from '@/entities/habit';
+import { achievementKeys, type Got } from '@/entities/habit';
 import { Text } from '@/shared/ui';
 
 import { Answer } from './Answer';
@@ -17,7 +17,7 @@ type Props = {
   date: string; // YYYY-MM-DD, какой день грузить
   start: string; // день старта
   today: string;
-  got: Record<AchievementKey, string | null>;
+  got: Got;
   // срыв удален: календарь, стрик и достижения пора пересчитать
   onChanged: () => void;
 };
@@ -29,6 +29,7 @@ export function DayCard({ date, start, today, got, onChanged }: Props) {
   if (!data) {
     return null;
   }
+
   // рисуем по дате загруженных данных: пока грузится новый день, виден прежний целиком
   const day = data.date;
 

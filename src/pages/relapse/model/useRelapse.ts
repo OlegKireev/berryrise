@@ -27,15 +27,19 @@ export function useRelapse() {
 
   useEffect(() => {
     getHabit(db).then(setHabit);
+
     // Вечеринка уже кончилась - по умолчанию срыв в ее конце
-    if (partyId)
+    if (partyId) {
       getParty(db, partyId).then(
         (p) =>
           p && p.expectedEndAt < Date.now() && setAt(new Date(p.expectedEndAt)),
       );
+    }
   }, [db, partyId]);
 
-  if (!habit) return null;
+  if (!habit) {
+    return null;
+  }
 
   const save = async () => {
     setSaving(true);
@@ -50,7 +54,11 @@ export function useRelapse() {
     await (partyId
       ? logPartyRelapse(db, partyId, data)
       : insertRelapse(db, data));
-    if (partyId) syncNotifications(db);
+
+    if (partyId) {
+      syncNotifications(db);
+    }
+
     router.back();
   };
 

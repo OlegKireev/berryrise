@@ -15,6 +15,7 @@ export function lastWeek(days: Day[], now: number): WeekDay[] {
   day.setDate(day.getDate() - 6);
 
   const week: WeekDay[] = [];
+
   // setDate, а не 24ч: переход на летнее время не сбивает шаг
   for (let i = 0; i < 7; i++, day.setDate(day.getDate() + 1)) {
     const date = toDay(day.getTime());
@@ -25,5 +26,6 @@ export function lastWeek(days: Day[], now: number): WeekDay[] {
       status: s === undefined ? null : s ? 'sober' : 'relapse',
     });
   }
+
   return week;
 }

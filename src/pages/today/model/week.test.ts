@@ -30,7 +30,7 @@ test('срыв позавчера', () => {
 
 test('старт вчера: закрашено только сегодня', () => {
   assert.deepEqual(statuses(oct(12), [], oct(13)), [
-    ...Array(6).fill(null),
+    ...Array<null>(6).fill(null),
     'sober',
   ]);
 });

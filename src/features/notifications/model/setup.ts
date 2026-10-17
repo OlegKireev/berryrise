@@ -17,18 +17,22 @@ const action = (identifier: string, buttonTitle: string) => ({
 // системный диалог не появится
 export async function setupNotifications() {
   Notifications.setNotificationHandler({
-    handleNotification: async () => ({
-      shouldShowBanner: true,
-      shouldShowList: true,
-      shouldPlaySound: true,
-      shouldSetBadge: false,
-    }),
+    handleNotification: () =>
+      Promise.resolve({
+        shouldShowBanner: true,
+        shouldShowList: true,
+        shouldPlaySound: true,
+        shouldSetBadge: false,
+      }),
   });
-  if (Platform.OS === 'android')
+
+  if (Platform.OS === 'android') {
     await Notifications.setNotificationChannelAsync(CHANNEL, {
       name: t('channel'),
       importance: Notifications.AndroidImportance.HIGH,
     });
+  }
+
   await Promise.all([
     Notifications.setNotificationCategoryAsync('dayReview', [
       action('fill', t('notify.dayReview.fill')),
@@ -46,8 +50,12 @@ export async function setupNotifications() {
 // Разрешение просим, только если оно еще не спрошено
 export async function ensurePermission() {
   const { status } = await Notifications.getPermissionsAsync();
-  if (status === 'undetermined') await Notifications.requestPermissionsAsync();
+
+  if (status === Notifications.PermissionStatus.UNDETERMINED) {
+    await Notifications.requestPermissionsAsync();
+  }
 }
 
 export const permissionDenied = async () =>
-  (await Notifications.getPermissionsAsync()).status === 'denied';
+  (await Notifications.getPermissionsAsync()).status ===
+  Notifications.PermissionStatus.DENIED;

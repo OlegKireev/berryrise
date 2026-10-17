@@ -17,6 +17,7 @@ export {
   companyEvenings,
   medalStates,
   type AchievementKey,
+  type Got,
   type MedalState,
 } from './model/achievements';
 export { dict as habitDict } from './i18n';

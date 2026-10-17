@@ -2,7 +2,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
-import { HORIZON_DAYS, isStale, plan } from './plan.ts';
+import { HORIZON_DAYS, isStale, parseNotificationData, plan } from './plan.ts';
 import { defaultPrefs, type NotificationPrefs } from './types.ts';
 
 // 2026-10-14 - среда. Месяц с нуля, как в Date
@@ -84,7 +84,11 @@ test('как прошло только на будущий конец идуще
 test('переход на летнее время не сдвигает 21:00', () => {
   // 29 марта 2026 в Europe/Berlin часы переводятся вперед
   const out = plan(reviewOn, new Date(2026, 2, 27, 12).getTime(), none);
-  for (const p of out) assert.equal(new Date(p.at).getHours(), 21);
+
+  for (const p of out) {
+    assert.equal(new Date(p.at).getHours(), 21);
+  }
+
   assert.equal(new Date(out[2]?.at ?? 0).getDate(), 29);
 });
 
@@ -106,4 +110,17 @@ test('как прошло в шторке устарело, когда вече�
   const activeParty = { id: 'p1', expectedEndAt: oct(14, 23) };
   assert.equal(isStale(n, { ...none, activeParty }), false);
   assert.equal(isStale(n, none), true);
+});
+
+test('data уведомления: неизвестный вид - null, лишнее отбрасываем', () => {
+  assert.equal(parseNotificationData({ kind: 'other' }), null);
+  assert.equal(parseNotificationData(null), null);
+  assert.deepEqual(
+    parseNotificationData({ kind: 'risk', day: '2026-10-16', partyId: 1 }),
+    {
+      kind: 'risk',
+      day: '2026-10-16',
+      partyId: undefined,
+    },
+  );
 });

@@ -17,7 +17,11 @@ export function useCalendar(startAt: number, now: number, days: Day[]) {
   const sober = new Map(days.map((d) => [d.date, d.sober]));
   const status = (date: string): DayStatus => {
     const s = sober.get(date);
-    if (s === undefined) return null;
+
+    if (s === undefined) {
+      return null;
+    }
+
     return s ? 'sober' : 'relapse';
   };
 

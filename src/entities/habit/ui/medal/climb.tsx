@@ -7,6 +7,7 @@ import {
   LinearGradient,
   Stop,
 } from 'react-native-svg';
+import { at } from '@/shared/lib';
 
 import { ink, mix } from './palette';
 import { Arc, Circ, Poly } from './primitives';
@@ -37,7 +38,7 @@ const skies = [
 ] as const;
 
 function Sky({ step }: { step: number }) {
-  const [top, bottom] = skies[step]!;
+  const [top, bottom] = at(skies, step);
   const id = `sky${step}`;
   return (
     <>
@@ -941,18 +942,20 @@ export function Day180() {
         r={4}
       />
       {/* облака внизу слева */}
-      {[
-        [10, 66, 5],
-        [18, 64, 6],
-        [27, 66, 5],
-        [14, 70, 6],
-        [24, 70, 6],
-      ].map(([x, y, r], k) => (
+      {(
+        [
+          [10, 66, 5],
+          [18, 64, 6],
+          [27, 66, 5],
+          [14, 70, 6],
+          [24, 70, 6],
+        ] as const
+      ).map(([x, y, r], k) => (
         <Circ
           key={k}
-          cx={x!}
-          cy={y!}
-          r={r!}
+          cx={x}
+          cy={y}
+          r={r}
           fill={k > 2 ? ink.cloud : mix(ink.cloud, '#FFFFFF', 0.5)}
         />
       ))}

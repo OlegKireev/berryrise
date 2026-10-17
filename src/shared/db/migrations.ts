@@ -77,19 +77,37 @@ export async function restoreDatabase(
     const tables = await tx.getAllAsync<{ name: string }>(
       "SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%'",
     );
-    for (const { name } of tables) await tx.execAsync(`DROP TABLE "${name}"`);
-    for (const sql of migrations.slice(0, version)) await tx.execAsync(sql);
+
+    for (const { name } of tables) {
+      await tx.execAsync(`DROP TABLE "${name}"`);
+    }
+
+    for (const sql of migrations.slice(0, version)) {
+      await tx.execAsync(sql);
+    }
+
     await fill(tx);
-    for (const sql of migrations.slice(version)) await tx.execAsync(sql);
+
+    for (const sql of migrations.slice(version)) {
+      await tx.execAsync(sql);
+    }
+
     await tx.execAsync(`PRAGMA user_version = ${migrations.length}`);
   });
 }
 
 // onInit для SQLiteProvider: применяет миграции новее user_version, каждую в своей транзакции
 export async function migrate(db: SQLiteDatabase) {
-  const { user_version } = (await db.getFirstAsync<{ user_version: number }>(
+  const row = await db.getFirstAsync<{ user_version: number }>(
     'PRAGMA user_version',
-  ))!;
+  );
+
+  if (!row) {
+    throw new Error('migrate: PRAGMA user_version ничего не вернул');
+  }
+
+  const { user_version } = row;
+
   for (const [i, sql] of migrations.slice(user_version).entries()) {
     await db.withExclusiveTransactionAsync(async (tx) => {
       await tx.execAsync(sql);

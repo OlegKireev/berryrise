@@ -10,6 +10,7 @@ import {
   Rect,
   Stop,
 } from 'react-native-svg';
+import { at } from '@/shared/lib';
 
 import { ink, mix, type Metal } from './palette';
 import { Shine } from './shine';
@@ -61,7 +62,7 @@ function Facets({ shape, metal }: { shape: Shape; metal: Metal }) {
       lit > 0.5
         ? mix(metal.base, metal.light, (lit - 0.5) * 2)
         : mix(metal.dark, metal.base, lit * 2);
-    const facet = toPoints([p, o[next]!, i[next]!, i[k]!]);
+    const facet = toPoints([p, at(o, next), at(i, next), at(i, k)]);
     return (
       <G key={k}>
         <Polygon
@@ -121,8 +122,6 @@ function Sheen({ shape, color }: { shape: Shape; color: string }) {
         </LinearGradient>
       </Defs>
       <Rect
-        x={0}
-        y={0}
         width={VIEW_W}
         height={VIEW_H}
         fill="url(#sheen)"

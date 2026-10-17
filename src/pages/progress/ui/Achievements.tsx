@@ -4,6 +4,7 @@ import { View } from 'react-native';
 import {
   achievementKeys,
   type AchievementKey,
+  type Got,
   type MedalState,
 } from '@/entities/habit';
 import { Button, Text } from '@/shared/ui';
@@ -15,7 +16,7 @@ import { pickMedals } from '../model/medals';
 import { t } from '../i18n';
 
 type Props = {
-  got: Record<AchievementKey, string | null>;
+  got: Got;
   states: Partial<Record<AchievementKey, MedalState>>;
   gotCount: number;
 };
@@ -41,20 +42,25 @@ export function Achievements({ got, states, gotCount }: Props) {
         />
       </View>
       <View style={{ flexDirection: 'row', gap: 8 }}>
-        {pickMedals(got, states).map((k) => (
-          <MedalTile
-            key={k}
-            achievement={k}
-            date={got[k]}
-            state={states[k]!}
-            onPress={() =>
-              router.push({
-                pathname: '/achievement/[key]',
-                params: { key: k },
-              })
-            }
-          />
-        ))}
+        {pickMedals(got, states).map((k) => {
+          const state = states[k];
+          return (
+            state && (
+              <MedalTile
+                key={k}
+                achievement={k}
+                date={got[k]}
+                state={state}
+                onPress={() =>
+                  router.push({
+                    pathname: '/achievement/[key]',
+                    params: { key: k },
+                  })
+                }
+              />
+            )
+          );
+        })}
       </View>
     </View>
   );

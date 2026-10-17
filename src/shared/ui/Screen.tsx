@@ -37,7 +37,10 @@ export function Screen({ children, footer }: Props) {
   // слушаем только на экране в фокусе, иначе скроллит и экран под модалкой
   useFocusEffect(
     useCallback(() => {
-      if (Platform.OS !== 'android') return;
+      if (Platform.OS !== 'android') {
+        return;
+      }
+
       const show = Keyboard.addListener('keyboardDidShow', (e) => {
         // screenY считается от верха экрана, а measureInWindow от низа статус-бара
         pendingKeyboardTop.current =
@@ -65,15 +68,23 @@ export function Screen({ children, footer }: Props) {
   const scrollFocusedIntoView = () => {
     const keyboardTop = pendingKeyboardTop.current;
     const input = TextInput.State.currentlyFocusedInput();
-    if (keyboardTop === null || !input) return;
+
+    // в типах RN поле в фокусе всегда есть, на деле его может не быть
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if (keyboardTop === null || !input) {
+      return;
+    }
+
     pendingKeyboardTop.current = null;
     const scrollTo = (limit: number) =>
       input.measureInWindow((_x, y, _w, h) => {
         const overlap = y + h + GAP - limit;
+
         if (overlap > 0) {
           scrollRef.current?.scrollTo({ y: scrollY.current + overlap });
         }
       });
+
     if (footerRef.current) {
       footerRef.current.measureInWindow((_x, y) => scrollTo(y));
     } else {

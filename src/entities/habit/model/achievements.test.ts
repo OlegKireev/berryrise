@@ -8,6 +8,7 @@ import {
   achievementKeys,
   medalStates,
   type AchievementKey,
+  type Got,
 } from './achievements.ts';
 import { soberDays } from './streak.ts';
 
@@ -37,7 +38,7 @@ test('первый день в полночь', () => {
 test('дни кусками не складываются', () => {
   const a = get(oct(1), [oct(6), oct(11)], oct(14));
   assert.equal(a.days3, day(4));
-  assert.equal(a.days7, null);
+  assert.equal(a.days7, undefined);
 });
 
 test('дата по первой серии, срыв не забирает', () => {
@@ -46,12 +47,12 @@ test('дата по первой серии, срыв не забирает', ()
 });
 
 test('пятница засчитывается, когда прошла', () => {
-  assert.equal(get(oct(12), [], oct(16, 23)).friday, null);
+  assert.equal(get(oct(12), [], oct(16, 23)).friday, undefined);
   assert.equal(get(oct(12), [], oct(17, 0)).friday, day(16));
 });
 
 test('трезвые пт-вс', () => {
-  assert.equal(get(oct(12), [], oct(18, 23)).weekend, null);
+  assert.equal(get(oct(12), [], oct(18, 23)).weekend, undefined);
   assert.equal(get(oct(12), [], oct(19)).weekend, day(18));
 });
 
@@ -61,8 +62,8 @@ test('срыв в субботу переносит выходные на сле
 
 test('старт в субботу: первые выходные не считаются', () => {
   const a = get(oct(17), [], oct(19));
-  assert.equal(a.weekend, null);
-  assert.equal(a.friday, null);
+  assert.equal(a.weekend, undefined);
+  assert.equal(a.friday, undefined);
 });
 
 test('итоги дня 7 дней подряд', () => {
@@ -72,7 +73,7 @@ test('итоги дня 7 дней подряд', () => {
 
 test('пропуск в итогах дня', () => {
   const dates = [1, 2, 3, 5, 6, 7, 8].map(day);
-  assert.equal(get(oct(1), [], oct(14), dates).reviews7, null);
+  assert.equal(get(oct(1), [], oct(14), dates).reviews7, undefined);
 });
 
 test('итоги дня подряд через переход на зимнее время', () => {
@@ -81,25 +82,24 @@ test('итоги дня подряд через переход на зимнее
 });
 
 test('вернулся после срыва и продержался 7 дней', () => {
-  assert.equal(get(oct(1), [oct(5)], oct(11)).comeback7, null);
+  assert.equal(get(oct(1), [oct(5)], oct(11)).comeback7, undefined);
   assert.equal(get(oct(1), [oct(5)], oct(12)).comeback7, day(12));
 });
 
 test('без срывов восстановления нет', () => {
-  assert.equal(get(oct(1), [], oct(31)).comeback7, null);
+  assert.equal(get(oct(1), [], oct(31)).comeback7, undefined);
 });
 
 test('сводный пример со спеки: 5 из 20', () => {
   const a = get(oct(1), [], oct(9));
-  const done = Object.entries(a).filter(([, d]) => d !== null);
-  assert.deepEqual(Object.fromEntries(done), {
+  assert.deepEqual(a, {
     days1: day(2),
     days3: day(4),
     days7: day(8),
     friday: day(2),
     weekend: day(4),
   });
-  assert.equal(Object.keys(a).length, 20);
+  assert.equal(achievementKeys.length, 20);
 });
 
 test('первая трезвая вечеринка', () => {
@@ -109,7 +109,7 @@ test('первая трезвая вечеринка', () => {
 test('вечеринка и место в один день - один вечер', () => {
   const a = get(oct(1), [], oct(31), [], [oct(16, 19)], [day(16), day(17)]);
   assert.equal(a.company1, day(16));
-  assert.equal(a.company5, null);
+  assert.equal(a.company5, undefined);
 });
 
 test('5 вечеров только по местам в итогах', () => {
@@ -117,13 +117,13 @@ test('5 вечеров только по местам в итогах', () => {
   const a = get(oct(1), [], new Date(2026, 10, 2).getTime(), [], [], dates);
   assert.equal(a.company1, day(3));
   assert.equal(a.company5, day(31));
-  assert.equal(a.company10, null);
+  assert.equal(a.company10, undefined);
 });
 
 test('место в день срыва не засчитывается', () => {
   assert.equal(
     get(oct(1), [oct(16)], oct(20), [], [], [day(16)]).company1,
-    null,
+    undefined,
   );
 });
 
@@ -139,17 +139,17 @@ test('два года', () => {
   const a = get(oct(1), [], now);
   assert.equal(a.days365, '2027-10-01');
   assert.equal(a.days730, '2028-09-30'); // 2028 високосный, 730-й день на день раньше
-  assert.equal(a.days1095, null);
+  assert.equal(a.days1095, undefined);
 });
 
-const none = () =>
-  Object.fromEntries(achievementKeys.map((k) => [k, null])) as Record<
-    AchievementKey,
-    string | null
-  >;
+const none = (): Got => ({});
 const gotUpTo = (...keys: AchievementKey[]) => {
   const g = none();
-  for (const k of keys) g[k] = '2026-10-01';
+
+  for (const k of keys) {
+    g[k] = '2026-10-01';
+  }
+
   return g;
 };
 

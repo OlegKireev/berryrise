@@ -30,15 +30,21 @@ export function useNotificationsStep() {
     submit: async () => {
       setSaving(true);
       const on = anyOn(prefs);
+
       // ошибка разрешения не должна запереть в онбординге
       try {
         await savePrefs(db, prefs);
+
         // системный диалог только после шага и только если есть что показывать
-        if (on) await ensurePermission();
+        if (on) {
+          await ensurePermission();
+        }
+
         await syncNotifications(db);
       } catch (e) {
         console.warn(e);
       }
+
       // подсказка про автозапуск нужна, только если что-то включено
       router.replace(on && needsAutostartHint ? '/onboarding/autostart' : '/');
     },

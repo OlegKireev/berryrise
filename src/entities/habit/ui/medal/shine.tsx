@@ -77,7 +77,10 @@ export function Shine({ outer }: { outer: string }) {
       <G clipPath="url(#shine)">
         <G transform="rotate(20 50 54)">
           <Rect
+            // в типах x/y помечены deprecated из-за пропсов View, у SVG-прямоугольника это его координаты
+            // eslint-disable-next-line @typescript-eslint/no-deprecated
             x={pos}
+            // eslint-disable-next-line @typescript-eslint/no-deprecated
             y={-30}
             width={BAND}
             // с запасом на поворот: viewBox медали 100x108

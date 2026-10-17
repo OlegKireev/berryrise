@@ -1,6 +1,7 @@
 import type { SQLiteDatabase } from 'expo-sqlite';
 
-import type { AchievementKey } from '@/entities/habit';
+import { achievementKeys, type AchievementKey } from '@/entities/habit';
+import { isOneOf, parseList } from '@/shared/lib';
 
 const KEY = 'seenAchievements';
 
@@ -12,7 +13,7 @@ export const getSeen = async (
     'SELECT value FROM settings WHERE key = ?',
     KEY,
   );
-  return row ? JSON.parse(row.value) : null;
+  return row ? parseList(row.value, isOneOf(achievementKeys)) : null;
 };
 
 export const saveSeen = (db: SQLiteDatabase, seen: AchievementKey[]) =>

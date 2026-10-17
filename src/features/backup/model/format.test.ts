@@ -51,6 +51,8 @@ test('parseBackup: не наш файл - notBackup', () => {
     file({ tables: [] }),
     file({ tables: { habit: {} } }),
     file({ tables: { habit: [1] } }),
-  ])
+    file({ tables: { habit: [{ id: { nested: true } }] } }),
+  ]) {
     assert.equal(parseBackup(text, 1), 'notBackup', text);
+  }
 });

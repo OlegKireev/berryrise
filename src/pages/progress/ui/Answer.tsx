@@ -7,6 +7,7 @@ export function Answer({ title, value }: Props) {
   if (!value) {
     return null;
   }
+
   return (
     <Text>
       <Text variant="hint">{title}: </Text>

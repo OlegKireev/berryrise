@@ -7,7 +7,7 @@ import { toDay } from '@/shared/lib';
 
 import { getPrefs } from '../api/prefs';
 import { t } from '../i18n';
-import { isStale, plan, type NotificationData } from './plan';
+import { isStale, parseNotificationData, plan } from './plan';
 import { CHANNEL } from './setup';
 
 const DAY = 24 * 60 * 60 * 1000;
@@ -32,8 +32,8 @@ async function run(db: SQLiteDatabase) {
   await Promise.all(
     presented
       .filter((n) => {
-        const d = n.request.content.data as Partial<NotificationData>;
-        return d.kind && isStale(d as NotificationData, data);
+        const d = parseNotificationData(n.request.content.data);
+        return d !== null && isStale(d, data);
       })
       .map((n) => Notifications.dismissNotificationAsync(n.request.identifier)),
   );

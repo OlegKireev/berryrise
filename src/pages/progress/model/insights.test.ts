@@ -108,9 +108,15 @@ test('настроение: сколько дней было каждое', () =
 
 test('топ 3: по убыванию, равенство по порядку вопроса', () => {
   const reviews = [
-    ...Array(9).fill(review('d', { hardships: ['stress'] })),
-    ...Array(5).fill(review('d', { hardships: ['boredom', 'fatigue'] })),
-    ...Array(2).fill(review('d', { hardships: ['loneliness'] })),
+    ...Array<ReturnType<typeof review>>(9).fill(
+      review('2026-10-01', { hardships: ['stress'] }),
+    ),
+    ...Array<ReturnType<typeof review>>(5).fill(
+      review('2026-10-01', { hardships: ['boredom', 'fatigue'] }),
+    ),
+    ...Array<ReturnType<typeof review>>(2).fill(
+      review('2026-10-01', { hardships: ['loneliness'] }),
+    ),
   ];
   assert.deepEqual(run({ reviews }).hardships, [
     { key: 'stress', count: 9 },
@@ -122,8 +128,8 @@ test('топ 3: по убыванию, равенство по порядку в
 test('топ без "ничего" и "ничего не понадобилось"', () => {
   const r = run({
     reviews: [
-      review('d', { hardships: ['nothing'], helpers: ['notNeeded'] }),
-      review('d', { hardships: ['nothing'], helpers: ['sleep'] }),
+      review('2026-10-01', { hardships: ['nothing'], helpers: ['notNeeded'] }),
+      review('2026-10-01', { hardships: ['nothing'], helpers: ['sleep'] }),
     ],
   });
   assert.deepEqual(r.hardships, []);

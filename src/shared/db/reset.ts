@@ -7,7 +7,10 @@ export async function resetDatabase(db: SQLiteDatabase) {
     "SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%'",
   );
   await db.withExclusiveTransactionAsync(async (tx) => {
-    for (const { name } of tables) await tx.execAsync(`DROP TABLE "${name}"`);
+    for (const { name } of tables) {
+      await tx.execAsync(`DROP TABLE "${name}"`);
+    }
+
     await tx.execAsync('PRAGMA user_version = 0');
   });
 }

@@ -1,3 +1,4 @@
+import { at } from '@/shared/lib';
 // Палитра медалей. Медаль - иллюстрация со своим фоном и рамкой, одинаковая в обеих темах,
 // поэтому цвета здесь константами, а не из useColors() (единственное такое место)
 
@@ -72,7 +73,7 @@ export function mix(a: string, b: string, t: number) {
     '#' +
     ca
       .map((c, i) =>
-        Math.round(c + (cb[i]! - c) * t)
+        Math.round(c + (at(cb, i) - c) * t)
           .toString(16)
           .padStart(2, '0'),
       )

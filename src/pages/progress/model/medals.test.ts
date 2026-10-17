@@ -3,17 +3,12 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
 import {
-  achievementKeys,
-  type AchievementKey,
+  type Got,
   medalStates,
 } from '../../../entities/habit/model/achievements.ts';
 import { pickMedals } from './medals.ts';
 
-const none = () =>
-  Object.fromEntries(achievementKeys.map((k) => [k, null])) as Record<
-    AchievementKey,
-    string | null
-  >;
+const none = (): Got => ({});
 
 test('pickMedals: последние полученные, при равной дате дальше в порядке', () => {
   const got = {

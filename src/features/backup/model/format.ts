@@ -1,7 +1,11 @@
+import { isRecord } from '../../../shared/lib/utils/json.ts';
+
 // Маркер файла - bundle id: он не меняется, в отличие от названия приложения
 export const APP = 'com.berryrise.app';
 
-export type Tables = Record<string, Record<string, unknown>[]>;
+// Ячейка - то, что SQLite отдает и принимает из JSON
+export type Cell = string | number | boolean | null;
+export type Tables = Record<string, Record<string, Cell>[]>;
 export type Backup = { version: number; tables: Tables };
 
 const pad = (n: number) => String(n).padStart(2, '0');
@@ -13,8 +17,47 @@ export function backupFileName(d: Date) {
   return `berryrise-${[...date, ...time].join('-')}.json`;
 }
 
-const isObject = (v: unknown): v is Record<string, unknown> =>
-  typeof v === 'object' && v !== null && !Array.isArray(v);
+const isCell = (v: unknown): v is Cell =>
+  v === null || ['string', 'number', 'boolean'].includes(typeof v);
+
+// Таблицы из файла: объект массивов строк с простыми ячейками, иначе null
+function parseTables(v: unknown): Tables | null {
+  if (!isRecord(v)) {
+    return null;
+  }
+
+  const tables: Tables = {};
+
+  for (const [name, rows] of Object.entries(v)) {
+    if (!Array.isArray(rows)) {
+      return null;
+    }
+
+    const list: Record<string, Cell>[] = [];
+
+    for (const row of rows) {
+      if (!isRecord(row)) {
+        return null;
+      }
+
+      const cells: Record<string, Cell> = {};
+
+      for (const [k, c] of Object.entries(row)) {
+        if (!isCell(c)) {
+          return null;
+        }
+
+        cells[k] = c;
+      }
+
+      list.push(cells);
+    }
+
+    tables[name] = list;
+  }
+
+  return tables;
+}
 
 // Проверяет обертку файла. Содержимое записей проверяет схема при вставке
 export function parseBackup(
@@ -22,22 +65,36 @@ export function parseBackup(
   currentVersion: number,
 ): Backup | 'notBackup' | 'tooNew' {
   let data: unknown;
+
   try {
     data = JSON.parse(text);
   } catch {
     return 'notBackup';
   }
-  if (!isObject(data) || data.app !== APP) return 'notBackup';
-  const { schemaVersion: version, tables } = data;
-  if (typeof version !== 'number' || !Number.isInteger(version) || version < 1)
+
+  if (!isRecord(data) || data.app !== APP) {
     return 'notBackup';
-  if (version > currentVersion) return 'tooNew';
+  }
+
+  const { schemaVersion: version } = data;
+
   if (
-    !isObject(tables) ||
-    !Object.values(tables).every(
-      (rows) => Array.isArray(rows) && rows.every(isObject),
-    )
-  )
+    typeof version !== 'number' ||
+    !Number.isInteger(version) ||
+    version < 1
+  ) {
     return 'notBackup';
-  return { version, tables: tables as Tables };
+  }
+
+  if (version > currentVersion) {
+    return 'tooNew';
+  }
+
+  const tables = parseTables(data.tables);
+
+  if (!tables) {
+    return 'notBackup';
+  }
+
+  return { version, tables };
 }

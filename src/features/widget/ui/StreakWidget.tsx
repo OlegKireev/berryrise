@@ -12,6 +12,9 @@ import { palette } from '@/shared/ui';
 
 export type WidgetVariant = 'card' | 'ink';
 
+// Токены палитры - hex-строки, а библиотека хочет тип `#${string}`: собираем его из той же строки
+const hex = (color: string): HexColor => `#${color.replace(/^#/, '')}`;
+
 // Цвета иконки (assets/src/icon.svg): иллюстрация, одинаковая в обеих темах, как медали
 const ink = { bg: '#1C1A18', glow: '#8E3040', text: '#F4F1EA' } as const;
 const berry = '#E0475B';
@@ -29,12 +32,14 @@ function background(
   const d = iconMask() ?? fallbackMask;
   const wrap = (body: string) =>
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">${body}</svg>`;
+
   if (variant === 'ink') {
     return wrap(
       `<defs><radialGradient id="g" cx=".5" cy=".5" r=".6"><stop offset="0" stop-color="${ink.glow}" stop-opacity=".85"/><stop offset="1" stop-color="${ink.glow}" stop-opacity="0"/></radialGradient></defs>` +
         `<path d="${d}" fill="${ink.bg}"/><path d="${d}" fill="url(#g)"/>`,
     );
   }
+
   // рамка 1dp: та же форма цветом рамки, сверху уменьшенная цветом карточки
   const c = palette[scheme];
   const k = 1 - 2 / size;
@@ -61,10 +66,7 @@ export function StreakWidget({
   size: number;
 }) {
   const text = String(count);
-  // токены палитры - hex-строки, библиотека хочет их литеральным типом
-  const color = (
-    variant === 'ink' ? ink.text : palette[scheme].text
-  ) as HexColor;
+  const color = hex(variant === 'ink' ? ink.text : palette[scheme].text);
   return (
     <FlexWidget
       clickAction="OPEN_APP"

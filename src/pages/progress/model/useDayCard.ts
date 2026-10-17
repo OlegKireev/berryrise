@@ -5,10 +5,12 @@ import { useCallback, useState } from 'react';
 import { getDayReview } from '@/entities/day-review';
 import { getPartyOn } from '@/entities/party';
 import { listRelapsesBetween } from '@/entities/relapse';
-import type { Hardship, Helper, Place } from '@/shared/config';
-import { dayRange } from '@/shared/lib';
+import { hardships, helpers, places } from '@/shared/config';
+import { dayRange, isOneOf, parseList } from '@/shared/lib';
 
-const list = <T>(json: string | null): T[] => (json ? JSON.parse(json) : []);
+const isPlace = isOneOf(places);
+const isHardship = isOneOf(hardships);
+const isHelper = isOneOf(helpers);
 
 const load = async (db: SQLiteDatabase, date: string) => {
   const { from, to } = dayRange(date);
@@ -23,17 +25,17 @@ const load = async (db: SQLiteDatabase, date: string) => {
       id: r.id,
       at: r.at,
       mood: r.mood,
-      places: list<Place>(r.places),
-      hardships: list<Hardship>(r.hardships),
+      places: parseList(r.places, isPlace),
+      hardships: parseList(r.hardships, isHardship),
       note: r.note,
     })),
     party: party && { result: party.result },
     review: review && {
       mood: review.mood,
       craving: review.craving,
-      places: list<Place>(review.places),
-      hardships: list<Hardship>(review.hardships),
-      helpers: list<Helper>(review.helpers),
+      places: parseList(review.places, isPlace),
+      hardships: parseList(review.hardships, isHardship),
+      helpers: parseList(review.helpers, isHelper),
       note: review.note,
     },
   };

@@ -1,5 +1,6 @@
 import { Fragment } from 'react';
 import { Defs, G, LinearGradient, Stop } from 'react-native-svg';
+import { at } from '@/shared/lib';
 
 import { Fir, Peak, Stars } from './climb';
 import { ink, mix } from './palette';
@@ -81,7 +82,7 @@ function Garland({
   to: Pt;
   bulbs: number;
 }) {
-  const at = (t: number): Pt => [
+  const point = (t: number): Pt => [
     (1 - t) ** 2 * from[0] + 2 * (1 - t) * t * via[0] + t ** 2 * to[0],
     (1 - t) ** 2 * from[1] + 2 * (1 - t) * t * via[1] + t ** 2 * to[1],
   ];
@@ -94,7 +95,7 @@ function Garland({
         width={0.6}
       />
       {Array.from({ length: bulbs }, (_, k) => {
-        const [x, y] = at((k + 0.5) / bulbs);
+        const [x, y] = point((k + 0.5) / bulbs);
         return (
           <Fragment key={k}>
             <Circ
@@ -108,7 +109,7 @@ function Garland({
               cx={x}
               cy={y + 1}
               r={1.1}
-              fill={colors[k % colors.length]!}
+              fill={at(colors, k % colors.length)}
             />
           </Fragment>
         );
@@ -490,7 +491,7 @@ function Burst({
         const a = (k / rays) * Math.PI * 2;
         const long = k % 2 ? 1 : 0.75;
         const [c, s] = [Math.cos(a), Math.sin(a)];
-        const color = colors[k % colors.length]!;
+        const color = at(colors, k % colors.length);
         return (
           <Fragment key={k}>
             <Arc
@@ -755,22 +756,24 @@ export function Friday() {
           [52, 30],
         ]}
       />
-      {[
-        [22, 8, 56],
-        [30, 7, 50],
-        [37, 9, 58],
-        [46, 6, 53],
-        [52, 9, 60],
-        [61, 7, 52],
-        [68, 10, 57],
-      ].map(([x, w, top], k) => (
+      {(
+        [
+          [22, 8, 56],
+          [30, 7, 50],
+          [37, 9, 58],
+          [46, 6, 53],
+          [52, 9, 60],
+          [61, 7, 52],
+          [68, 10, 57],
+        ] as const
+      ).map(([x, w, top], k) => (
         <Fragment key={k}>
           <Poly
-            points={rect(x!, top!, w!, 72 - top!)}
+            points={rect(x, top, w, 72 - top)}
             fill={k % 2 ? '#3A3F68' : '#33395F'}
           />
           <Poly
-            points={rect(x! + 2, top! + 3, 1.6, 2)}
+            points={rect(x + 2, top + 3, 1.6, 2)}
             fill={k % 3 ? light.warm : light.glow}
           />
         </Fragment>
@@ -785,7 +788,7 @@ export function Friday() {
         fill="#E8DCCB"
       />
       <Poly
-        points={`${rect(20, 14, 60, 2.4)}`}
+        points={rect(20, 14, 60, 2.4)}
         fill="#E8DCCB"
       />
       {/* шторы */}
@@ -948,17 +951,19 @@ export function Weekend() {
         fill={ink.waterLight}
       />
       {/* дальний берег с елями */}
-      {[
-        [12, 58, 10],
-        [18, 58, 13],
-        [86, 58, 12],
-        [92, 58, 9],
-      ].map(([x, base, h], k) => (
+      {(
+        [
+          [12, 58, 10],
+          [18, 58, 13],
+          [86, 58, 12],
+          [92, 58, 9],
+        ] as const
+      ).map(([x, base, h], k) => (
         <Fir
           key={k}
-          x={x!}
-          base={base!}
-          h={h!}
+          x={x}
+          base={base}
+          h={h}
         />
       ))}
       {/* луг */}
@@ -1194,17 +1199,19 @@ export function Comeback7() {
         points="60,77 80,80 70,86"
         fill="#4E3E48"
       />
-      {[
-        [30, 84],
-        [46, 86],
-        [56, 83],
-        [68, 88],
-        [38, 90],
-      ].map(([x, y], k) => (
+      {(
+        [
+          [30, 84],
+          [46, 86],
+          [56, 83],
+          [68, 88],
+          [38, 90],
+        ] as const
+      ).map(([x, y], k) => (
         <Circ
           key={k}
-          cx={x!}
-          cy={y!}
+          cx={x}
+          cy={y}
           r={0.9}
           fill={ink.ember}
         />
@@ -1255,14 +1262,18 @@ const JITTER: Pt[] = [
 ];
 
 function wingNode(i: number, j: number): Pt {
-  const u = US[i]!;
-  const v = VS[j]!;
+  const u = at(US, i);
+  const v = at(VS, j);
   const l = bezier(LEAD, u);
   const t = bezier(TRAIL, u);
   const p: Pt = [l[0] + (t[0] - l[0]) * v, l[1] + (t[1] - l[1]) * v];
   const inner = i > 0 && i < US.length - 1 && j > 0 && j < VS.length - 1;
-  if (!inner) return p;
-  const [dx, dy] = JITTER[(i * 3 + j) % JITTER.length]!;
+
+  if (!inner) {
+    return p;
+  }
+
+  const [dx, dy] = at(JITTER, (i * 3 + j) % JITTER.length);
   return [p[0] + dx, p[1] + dy];
 }
 
@@ -1270,16 +1281,30 @@ function wingNode(i: number, j: number): Pt {
 // к заднему краю ярче и теплее, у кончика коралл
 function facetColor(i: number, j: number, half: number) {
   const odd = (i + j + half) % 2 === 1;
-  if (j === 0 && i < 3) return odd ? fire.orange : fire.yellow;
-  if (i >= US.length - 3) return odd ? fire.coral : fire.bright;
-  if (j === 0) return odd ? fire.dark : fire.wine;
-  if (j === 1) return odd ? fire.wine : fire.red;
+
+  if (j === 0 && i < 3) {
+    return odd ? fire.orange : fire.yellow;
+  }
+
+  if (i >= US.length - 3) {
+    return odd ? fire.coral : fire.bright;
+  }
+
+  if (j === 0) {
+    return odd ? fire.dark : fire.wine;
+  }
+
+  if (j === 1) {
+    return odd ? fire.wine : fire.red;
+  }
+
   return odd ? fire.bright : fire.coral;
 }
 
 type Tri = { points: Pt[]; color: string };
 
 const wingFacets: Tri[] = [];
+
 for (let i = 0; i < US.length - 1; i++) {
   for (let j = 0; j < VS.length - 1; j++) {
     const a = wingNode(i, j);
@@ -1292,6 +1317,7 @@ for (let i = 0; i < US.length - 1; i++) {
     );
   }
 }
+
 // кончик крыла
 wingFacets.push({
   points: [
@@ -1304,6 +1330,7 @@ wingFacets.push({
 
 // Зубцы по заднему краю и у кончика: наружу от крыла и чуть вниз
 const wingSpikes: Tri[] = [];
+
 for (let k = 0; k < 12; k++) {
   const u = 0.04 + k * 0.08;
   const a = bezier(TRAIL, u - 0.035);
@@ -1321,6 +1348,7 @@ for (let k = 0; k < 12; k++) {
     color: k % 2 ? fire.orange : fire.yellow,
   });
 }
+
 for (const [u, size] of [
   [0.78, 5],
   [0.88, 6],

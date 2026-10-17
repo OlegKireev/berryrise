@@ -41,10 +41,12 @@ export function useNotificationSettings() {
     change: async (p: NotificationPrefs) => {
       setPrefs(p);
       await savePrefs(db, p);
+
       if (anyOn(p)) {
         await ensurePermission();
         await checkPermission();
       }
+
       await syncNotifications(db);
     },
   };

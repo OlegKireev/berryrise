@@ -7,7 +7,7 @@ import {
   type LayoutChangeEvent,
 } from 'react-native';
 
-import { useReduceMotion } from '@/shared/lib';
+import { at, useReduceMotion } from '@/shared/lib';
 
 // Вход первого шага: иконка из центра экрана (где она была на сплэше) уезжает
 // на место, потом по очереди появляются строки. При "уменьшить движение" сразу все
@@ -21,7 +21,10 @@ export function useIntroEntrance(items: number) {
   const [offset, setOffset] = useState<number | null>(null);
 
   const onIconLayout = (e: LayoutChangeEvent) => {
-    if (offset !== null) return;
+    if (offset !== null) {
+      return;
+    }
+
     e.currentTarget.measureInWindow((_x, y, _w, h) => {
       // measureInWindow считает от низа статус-бара, а сплэш центрирован по экрану
       const center =
@@ -33,12 +36,16 @@ export function useIntroEntrance(items: number) {
   const ready = reduce !== null && offset !== null;
 
   useEffect(() => {
-    if (!ready) return;
+    if (!ready) {
+      return;
+    }
+
     if (reduce) {
       icon.setValue(1);
       rows.forEach((r) => r.setValue(1));
       return;
     }
+
     const anim = Animated.sequence([
       Animated.timing(icon, {
         toValue: 1,
@@ -77,10 +84,10 @@ export function useIntroEntrance(items: number) {
       ],
     },
     rowStyle: (i: number) => ({
-      opacity: rows[i]!,
+      opacity: at(rows, i),
       transform: [
         {
-          translateY: rows[i]!.interpolate({
+          translateY: at(rows, i).interpolate({
             inputRange: [0, 1],
             outputRange: [12, 0],
           }),

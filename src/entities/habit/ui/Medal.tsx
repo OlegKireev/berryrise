@@ -17,6 +17,7 @@ const t = createT(dict);
 
 // подпись на ленте есть только у стрика
 type StreakKey = Extract<AchievementKey, `days${number}`>;
+const isStreakKey = (k: AchievementKey): k is StreakKey => k.startsWith('days');
 
 type Props = {
   achievement: AchievementKey;
@@ -37,7 +38,8 @@ export const Medal = memo(function Medal({
   const m = medals[achievement];
   const height = (size * VIEW_H) / VIEW_W;
   const label = m.shape === 'hex';
-  const text = label ? t(`medal.${achievement as StreakKey}`) : '';
+  const text =
+    label && isStreakKey(achievement) ? t(`medal.${achievement}`) : '';
   // лента высотой 17 из 108: цифры должны влезать с запасом
   const fontSize = size * (text.length > 3 ? 0.095 : 0.125);
   return (

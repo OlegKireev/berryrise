@@ -57,8 +57,13 @@ export default function TabsLayout() {
     getHabit(db).then((habit) => setOnboarded(habit !== null));
   }, [db]);
 
-  if (onboarded === null) return null;
-  if (!onboarded) return <Redirect href="/onboarding" />;
+  if (onboarded === null) {
+    return null;
+  }
+
+  if (!onboarded) {
+    return <Redirect href="/onboarding" />;
+  }
 
   return (
     <Tabs

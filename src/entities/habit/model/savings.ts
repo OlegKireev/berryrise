@@ -1,5 +1,5 @@
 // Чистая логика экономии, без React Native: ее гоняет node:test.
-import type { Drink } from './types.ts';
+import { drinks as drinkKeys, type Drink } from './types.ts';
 
 // Примерные ккал на порцию: пиво 0,5, бокал вина 150 мл, шот 40 мл, коктейль
 export const drinkKcal: Record<Drink, number> = {
@@ -23,10 +23,11 @@ export function savings(
   drinks: Partial<Record<Drink, number>>,
 ): Savings {
   const perDays = (perWeek: number) => Math.floor((perWeek * total) / 7);
-  const entries = Object.entries(drinks) as [Drink, number][];
+  const sum = (weight: (k: Drink) => number) =>
+    drinkKeys.reduce((s, k) => s + (drinks[k] ?? 0) * weight(k), 0);
   return {
     money: weeklySpend === null ? null : perDays(weeklySpend),
-    portions: perDays(entries.reduce((sum, [, n]) => sum + n, 0)),
-    kcal: perDays(entries.reduce((sum, [k, n]) => sum + n * drinkKcal[k], 0)),
+    portions: perDays(sum(() => 1)),
+    kcal: perDays(sum((k) => drinkKcal[k])),
   };
 }
