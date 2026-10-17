@@ -5,12 +5,12 @@ import { t } from '../i18n';
 
 export const CHANNEL = 'reminders';
 
-// Все кнопки открывают приложение: без него ответ некому обработать.
-// "Пропустить" нет: смахнуть уведомление можно и так
-const action = (identifier: string, buttonTitle: string) => ({
+// Кнопки с ответом открывают приложение: без него ответ некому обработать.
+// "Не иду" ничего не записывает, приложение ему не нужно
+const action = (identifier: string, buttonTitle: string, opens = true) => ({
   identifier,
   buttonTitle,
-  options: { opensAppToForeground: true },
+  options: { opensAppToForeground: opens },
 });
 
 // Канал и кнопки. Канал нужен до запроса разрешения: на Android 13 без него
@@ -39,6 +39,7 @@ export async function setupNotifications() {
     ]),
     Notifications.setNotificationCategoryAsync('risk', [
       action('company', t('notify.risk.company')),
+      action('skip', t('notify.risk.skip'), false),
     ]),
     Notifications.setNotificationCategoryAsync('party', [
       action('sober', t('notify.party.sober')),

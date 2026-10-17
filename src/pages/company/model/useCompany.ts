@@ -1,19 +1,22 @@
+import { router } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useEffect, useState } from 'react';
 
 import {
   addCustomDrink,
+  cancelParty,
   deleteCustomDrink,
   listCustomDrinks,
   setPartyDrinks,
   setPartyEnd,
+  setPartyResult,
   startParty,
   type Party,
   type PartyDrink,
 } from '@/entities/party';
 import { listReasons, type ReasonRow } from '@/entities/reason';
 import { syncNotifications } from '@/features/notifications';
-import { toggle } from '@/shared/lib';
+import { toDay, toggle } from '@/shared/lib';
 
 // Режим "иду в компанию". null - еще грузим
 export function useCompany() {
@@ -55,6 +58,18 @@ export function useCompany() {
   return {
     party,
     reasons,
+    // "Уже ушел": вечер закрыт без срыва, дальше итоги за день начала.
+    // replace - чтобы после итогов вернуться на "Сегодня", а не в режим
+    leave: async () => {
+      await setPartyResult(db, party.id, 'sober');
+      await syncNotifications(db);
+      router.replace(`/day-review?day=${toDay(party.startAt)}`);
+    },
+    cancel: async () => {
+      await cancelParty(db, party.id);
+      await syncNotifications(db);
+      router.back();
+    },
     changeEnd: (d: Date) => {
       setParty({ ...party, expectedEndAt: d.getTime() });
       setPartyEnd(db, party.id, d.getTime()).then(() => syncNotifications(db));

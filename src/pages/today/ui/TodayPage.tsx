@@ -4,6 +4,7 @@ import { Button, Screen } from '@/shared/ui';
 
 import { DayReviewButton } from './DayReviewButton';
 import { PartyCard } from './PartyCard';
+import { PartyGoing } from './PartyGoing';
 import { ReasonOfDay } from './ReasonOfDay';
 import { Savings } from './Savings';
 import { StreakSummary } from './StreakSummary';
@@ -38,12 +39,13 @@ export function TodayPage() {
         done={today.reviewDone}
         beforeStart={today.beforeStart}
       />
-      {party ? (
+      {party && today.partyEnded ? (
         <PartyCard
           party={party}
           onSober={() => today.markPartySober(party.id)}
-          onCancel={() => today.cancelParty(party.id)}
         />
+      ) : party ? (
+        <PartyGoing party={party} />
       ) : (
         <Button
           variant="primary"

@@ -1,6 +1,8 @@
-// Обработчик виджета регистрируется до старта приложения: его зовет фоновая задача без UI
+// Обработчики виджета и кнопок уведомлений регистрируются до старта приложения:
+// их зовут фоновые задачи без UI
 import { registerWidgetTaskHandler } from 'react-native-android-widget';
 
+import { registerNotificationTask } from '@/features/notifications';
 import { widgetTaskHandler } from '@/features/widget';
 import { logError, trimLog } from '@/shared/lib';
 
@@ -17,3 +19,4 @@ ErrorUtils.setGlobalHandler((e, isFatal) => {
 });
 
 registerWidgetTaskHandler(widgetTaskHandler);
+registerNotificationTask();

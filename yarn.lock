@@ -4201,6 +4201,7 @@ __metadata:
     expo-sqlite: "npm:~57.0.4"
     expo-status-bar: "npm:~57.0.1"
     expo-system-ui: "npm:~57.0.4"
+    expo-task-manager: "npm:~57.0.21"
     jest: "npm:~29.7.0"
     jest-expo: "npm:~57.0.6"
     knip: "npm:^6.41.0"
@@ -6263,6 +6264,18 @@ __metadata:
     react-native-web:
       optional: true
   checksum: 10c0/33e6826c915cc656722451f3c5c98af6bdc09241aaf3ea9e5b61fdd8fc30bf523b046b0775ed2c27505d37134edad078282bafe4cd8eb93a8330c004c3e5b563
+  languageName: node
+  linkType: hard
+
+"expo-task-manager@npm:~57.0.21":
+  version: 57.0.21
+  resolution: "expo-task-manager@npm:57.0.21"
+  dependencies:
+    unimodules-app-loader: "npm:~57.0.2"
+  peerDependencies:
+    expo: "*"
+    react-native: "*"
+  checksum: 10c0/76f2efb534e88bb37069317d920f6dc0aecbed504ce97f82d5dfa5a7c7bc8488b6fd3eb268e44c53b8986043a71cb802a48e9fb17c886e89105e0cfbf95f2510
   languageName: node
   linkType: hard
 
@@ -12034,6 +12047,13 @@ __metadata:
   version: 2.2.0
   resolution: "unicode-property-aliases-ecmascript@npm:2.2.0"
   checksum: 10c0/b338529831c988ac696f2bdbcd4579d1c5cc844b24eda7269973c457fa81989bdb49a366af37a448eb1a60f1dae89559ea2a5854db2797e972a0162eee0778c6
+  languageName: node
+  linkType: hard
+
+"unimodules-app-loader@npm:~57.0.2":
+  version: 57.0.2
+  resolution: "unimodules-app-loader@npm:57.0.2"
+  checksum: 10c0/67abf8e778b4360e43d787289359c6771c30f084ce3693d57ac4943ecf53c711ba66254bc4cbf44015b5a39994b40795598b26257ffb4aff747dda8e7813765d
   languageName: node
   linkType: hard
 

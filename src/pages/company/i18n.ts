@@ -14,6 +14,8 @@ export const t = createT(
       customReply: 'Свой ответ',
       leaveEarly:
         'Можно просто уйти, это нормально. Никто не обязан сидеть до конца.',
+      leave: 'Уже ушел',
+      notGoing: 'Не пошел',
     },
     en: {
       partyEnd: 'Until about',
@@ -25,6 +27,8 @@ export const t = createT(
       customReply: 'Your own answer',
       leaveEarly:
         "You can just leave, that's okay. Nobody has to stay till the end.",
+      leave: "I've left",
+      notGoing: "Didn't go",
     },
   },
   { party: partyDict, reply: replyDict },

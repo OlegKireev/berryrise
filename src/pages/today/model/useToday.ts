@@ -14,12 +14,7 @@ import {
   streak,
   type Habit,
 } from '@/entities/habit';
-import {
-  cancelParty,
-  getActiveParty,
-  setPartyResult,
-  type Party,
-} from '@/entities/party';
+import { getActiveParty, setPartyResult, type Party } from '@/entities/party';
 import { listReasons, reasonOfDay, type ReasonRow } from '@/entities/reason';
 import { listRelapses } from '@/entities/relapse';
 import { useCelebrate } from '@/features/celebrate-achievement';
@@ -112,6 +107,8 @@ export function useToday() {
     currency: habit.currency,
     hasDrinks: Object.keys(habit.drinks).length > 0,
     party,
+    // вечер закончился по времени: пора спросить "как прошло?"
+    partyEnded: !!party && party.expectedEndAt <= now,
     // итоги дня
     reviewDay: day,
     isToday: day === toDay(now),
@@ -119,6 +116,5 @@ export function useToday() {
     beforeStart: day < toDay(habit.startAt),
     markPartySober: (id: string) =>
       setPartyResult(db, id, 'sober').then(afterParty),
-    cancelParty: (id: string) => cancelParty(db, id).then(afterParty),
   };
 }

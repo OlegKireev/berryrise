@@ -34,7 +34,7 @@ export function useNotificationResponse() {
       if (kind === 'dayReview') {
         // ровно тот день, о котором напомнили: в 18:30 reviewDay уже сегодняшний
         router.push(day ? `/day-review?day=${day}` : '/day-review');
-      } else if (kind === 'risk') {
+      } else if (kind === 'risk' && action !== 'skip') {
         router.push('/company');
       } else if (kind === 'party') {
         // старое уведомление после ответа на карточке ничего не меняет

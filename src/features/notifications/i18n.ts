@@ -11,8 +11,9 @@ export const t = createT({
       },
       risk: {
         title: 'Вечер впереди',
-        body: 'Идешь туда, где будут пить?',
-        company: 'Иду в компанию',
+        body: 'Идешь в компанию? Возьми с собой поддержку',
+        company: 'Иду',
+        skip: 'Не иду',
       },
       party: {
         title: 'Как прошло?',
@@ -44,8 +45,9 @@ export const t = createT({
       },
       risk: {
         title: 'Evening ahead',
-        body: 'Going somewhere people will drink?',
-        company: 'Going out',
+        body: 'Going out tonight? Take some support with you',
+        company: "I'm going",
+        skip: 'Not going',
       },
       party: {
         title: 'How did it go?',

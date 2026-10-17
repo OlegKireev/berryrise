@@ -1,6 +1,6 @@
 import { ReasonList } from '@/entities/reason';
 import { DAY_MS } from '@/shared/lib';
-import { DateTimeField, Screen, Text } from '@/shared/ui';
+import { Button, DateTimeField, Screen, Text } from '@/shared/ui';
 
 import { DrinksSection } from './DrinksSection';
 import { RepliesSection } from './RepliesSection';
@@ -19,7 +19,22 @@ export function CompanyPage() {
   const { party } = company;
 
   return (
-    <Screen>
+    <Screen
+      footer={
+        <>
+          <Button
+            variant="primary"
+            title={t('leave')}
+            onPress={company.leave}
+          />
+          <Button
+            variant="quiet"
+            title={t('notGoing')}
+            onPress={company.cancel}
+          />
+        </>
+      }
+    >
       <ReasonList reasons={company.reasons} />
 
       <Text variant="label">{t('partyEnd')}</Text>
