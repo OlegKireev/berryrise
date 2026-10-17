@@ -1,4 +1,5 @@
-import { SpendingForm } from '@/features/edit-spending';
+import type { Habit } from '@/entities/habit';
+import { SpendingForm, useSpendingForm } from '@/features/edit-spending';
 import { DateTimeField, Screen, Text } from '@/shared/ui';
 
 import { useSettings } from '../model/useSettings';
@@ -20,7 +21,12 @@ export function StartSpendingPage() {
         onChange={settings.changeStart}
         max={new Date(settings.maxStart)}
       />
-      <SpendingForm habit={settings.habit} />
+      <Spending habit={settings.habit} />
     </Screen>
   );
+}
+
+// Хуку формы нужна загруженная привычка, поэтому отдельный компонент
+function Spending({ habit }: { habit: Habit }) {
+  return <SpendingForm form={useSpendingForm(habit)} />;
 }

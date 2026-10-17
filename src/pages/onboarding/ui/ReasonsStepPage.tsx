@@ -5,8 +5,8 @@ import { Button, Screen, Text } from '@/shared/ui';
 
 import { t } from '../i18n';
 
-// Шаг после старта: привычка уже есть, поэтому шаг необязательный и назад не ведет.
-// Выбор сохраняется сразу, "Дальше" только переходит
+// Шаг после старта: привычка уже есть, поэтому шаг необязательный.
+// Выбор сохраняется сразу, "Дальше" только переходит, "Пропустить" снимает выбор
 export function ReasonsStepPage() {
   const picker = useReasonPicker();
 
@@ -17,11 +17,21 @@ export function ReasonsStepPage() {
   return (
     <Screen
       footer={
-        <Button
-          variant="primary"
-          title={t('next')}
-          onPress={() => router.replace('/onboarding/notifications')}
-        />
+        <>
+          <Button
+            variant="primary"
+            title={t('next')}
+            href="/onboarding/notifications"
+          />
+          <Button
+            variant="quiet"
+            title={t('skip')}
+            onPress={() => {
+              picker.clear();
+              router.push('/onboarding/notifications');
+            }}
+          />
+        </>
       }
     >
       <Text variant="title">{t('reasonsStepTitle')}</Text>

@@ -46,9 +46,28 @@ export function useNotificationsStep() {
         logError('onboarding', e);
       }
 
+      // с автозапуска можно вернуться назад, кнопки должны снова работать
+      setSaving(false);
+
       // подсказка про автозапуск нужна, только если что-то включено
-      router.replace(on && needsAutostartHint ? '/onboarding/autostart' : '/');
+      if (on && needsAutostartHint) {
+        router.push('/onboarding/autostart');
+      } else {
+        router.replace('/');
+      }
     },
-    skip: () => router.replace('/'),
+    skip: async () => {
+      setSaving(true);
+
+      // после "назад" с автозапуска выбор уже сохранен, пропуск его выключает
+      try {
+        await savePrefs(db, defaultPrefs);
+        await syncNotifications(db);
+      } catch (e) {
+        logError('onboarding', e);
+      }
+
+      router.replace('/');
+    },
   };
 }

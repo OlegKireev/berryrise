@@ -100,6 +100,14 @@ export function useReasonPicker() {
       );
       setText('');
     },
+    // Снимает весь выбор, свои формулировки остаются в списке
+    clear: () => {
+      setState({ ...state, keys: [], customs: [] });
+      write(
+        ...state.keys.map((k) => select({ key: k }, false)),
+        ...state.customs.map((c) => select({ customText: c }, false)),
+      );
+    },
     // Убирает свою совсем, вместе с выбором
     forget: (c: string) => {
       const library = state.library.filter((x) => x !== c);

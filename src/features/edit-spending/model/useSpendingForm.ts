@@ -56,5 +56,9 @@ export function useSpendingForm(habit: Habit) {
     setCurrency: (currency: string) => change({ currency }),
     setCount: (d: Drink, s: string) =>
       change({ counts: { ...form.counts, [d]: digits(s) } }),
+    // Траты не указаны. Валюту оставляем: без суммы она ни на что не влияет
+    clear: () => change({ amount: '', counts: {} }),
   };
 }
+
+export type SpendingFormState = ReturnType<typeof useSpendingForm>;
