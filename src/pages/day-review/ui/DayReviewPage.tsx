@@ -1,3 +1,4 @@
+import { cutoffTime } from '@/entities/day-review';
 import { ReasonList } from '@/entities/reason';
 import { cravings, hardships, helpers, moods, places } from '@/shared/config';
 import { formatDay } from '@/shared/i18n';
@@ -19,7 +20,9 @@ export function DayReviewPage() {
   if (form.beforeStart) {
     return (
       <Screen>
-        <Text>{t('review.later')}</Text>
+        <Text>
+          {t('review.later')} {cutoffTime}
+        </Text>
       </Screen>
     );
   }

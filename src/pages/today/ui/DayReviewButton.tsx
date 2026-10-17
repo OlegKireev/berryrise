@@ -1,5 +1,6 @@
 import { View } from 'react-native';
 
+import { cutoffTime } from '@/entities/day-review';
 import { formatDay } from '@/shared/i18n';
 import { Button, Text, useColors } from '@/shared/ui';
 
@@ -16,8 +17,16 @@ type Props = {
 export function DayReviewButton({ day, isToday, done, beforeStart }: Props) {
   const colors = useColors();
 
-  if (beforeStart) {
-    return <Text variant="hint">{t('review.later')}</Text>;
+  // утром плашка нужна, только чтобы догнать пропущенный вечер
+  if (beforeStart || (!isToday && done)) {
+    return (
+      <Text
+        variant="hint"
+        style={{ paddingVertical: 12, textAlign: 'center' }}
+      >
+        {t('review.later')} {cutoffTime}
+      </Text>
+    );
   }
 
   const fg = { color: colors.onSecondary };
