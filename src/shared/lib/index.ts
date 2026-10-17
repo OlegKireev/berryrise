@@ -1,4 +1,5 @@
 export { at } from './utils/at';
+export { addDays } from './utils/addDays';
 export { dayDate } from './utils/dayDate';
 export { dayRange } from './utils/dayRange';
 export {

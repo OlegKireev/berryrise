@@ -10,7 +10,7 @@ import {
   type Mood,
   type Place,
 } from '@/shared/config';
-import { dayRange, toDay } from '@/shared/lib';
+import { addDays, dayDate, toDay } from '@/shared/lib';
 
 import { monthIndex } from './calendar';
 
@@ -41,12 +41,8 @@ export function periodDays(period: Period, now: number): string[] {
     );
   }
 
-  const d = new Date(now);
-  return Array.from({ length: 30 }, (_, i) =>
-    toDay(
-      new Date(d.getFullYear(), d.getMonth(), d.getDate() - 29 + i).getTime(),
-    ),
-  );
+  const today = toDay(now);
+  return Array.from({ length: 30 }, (_, i) => addDays(today, i - 29));
 }
 
 export type Top<K> = { key: K; count: number }[];
@@ -67,8 +63,7 @@ const top3 = <K extends string>(
 // День недели с понедельника: 0 - понедельник
 // день недели как у Date.getDay()
 const weekdayList = [0, 1, 2, 3, 4, 5, 6] as const;
-const weekdayOf = (date: string) =>
-  (new Date(dayRange(date).from).getDay() + 6) % 7;
+const weekdayOf = (date: string) => (dayDate(date).getDay() + 6) % 7;
 
 type Input = {
   reviews: {

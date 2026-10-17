@@ -1,7 +1,7 @@
 // Чистая логика стрика, без React Native.
 // Трезвый день - локальный календарный день строго после дня старта без срывов.
 
-import { toDay } from '@/shared/lib';
+import { addDays, toDay } from '@/shared/lib';
 
 export type Day = { date: string; sober: boolean }; // date: YYYY-MM-DD
 
@@ -26,17 +26,15 @@ export function soberDays(
     relapsesInRange(startAt, relapseAts, now).map(toDay),
   );
 
-  const day = new Date(startAt);
-  day.setHours(0, 0, 0, 0);
-  day.setDate(day.getDate() + 1);
-  const today = new Date(now);
-  today.setHours(0, 0, 0, 0);
-
+  const today = toDay(now);
   const days: Day[] = [];
 
-  // setDate, а не +24ч: переход на летнее время не сбивает шаг
-  for (; day <= today; day.setDate(day.getDate() + 1)) {
-    const date = toDay(day.getTime());
+  // строки YYYY-MM-DD сравниваются лексикографически
+  for (
+    let date = addDays(toDay(startAt), 1);
+    date <= today;
+    date = addDays(date, 1)
+  ) {
     days.push({ date, sober: !relapseDays.has(date) });
   }
 

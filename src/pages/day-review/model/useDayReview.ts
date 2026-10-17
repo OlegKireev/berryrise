@@ -18,6 +18,7 @@ import {
   type Place,
 } from '@/shared/config';
 import {
+  addDays,
   dayRange,
   isOneOf,
   parseList,
@@ -36,13 +37,12 @@ export function useDayReview() {
   const [{ day, when }] = useState(() => {
     const now = Date.now();
     const day = params.day ?? reviewDay(now);
-    const yesterday = new Date(now);
-    yesterday.setDate(yesterday.getDate() - 1);
+    const today = toDay(now);
     // из карточки дня может прийти и более старый день
     const when =
-      day === toDay(now)
+      day === today
         ? ('today' as const)
-        : day === toDay(yesterday.getTime())
+        : day === addDays(today, -1)
           ? ('yesterday' as const)
           : null;
     return { day, when };
