@@ -7,7 +7,7 @@ import {
   type Drink,
   type Habit,
 } from '@/entities/habit';
-import { getLocale, logError, parseCounts } from '@/shared/lib';
+import { getLocale, logError } from '@/shared/lib';
 
 // ponytail: короткий список частых валют, расширим по запросу
 export const currencies = [
@@ -42,10 +42,7 @@ export function useSpendingForm(habit: Habit) {
     amount: habit.weeklySpend?.toString() ?? '',
     currency: habit.currency ?? (getLocale() === 'ru' ? 'RUB' : 'USD'),
     counts: Object.fromEntries(
-      Object.entries(parseCounts(habit.drinks, drinks)).map(([k, n]) => [
-        k,
-        String(n),
-      ]),
+      Object.entries(habit.drinks).map(([k, n]) => [k, String(n)]),
     ),
   }));
 

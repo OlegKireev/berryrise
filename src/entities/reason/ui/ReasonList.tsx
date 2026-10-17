@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { Text } from '@/shared/ui';
 
 import { reasonLabel } from '../model/reasonLabel';
-import type { ReasonRow } from '../model/types';
+import type { ReasonRow } from '../model/schema';
 
 import { t } from '../i18n';
 

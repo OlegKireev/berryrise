@@ -1,13 +1,10 @@
 import { randomUUID } from 'expo-crypto';
+import type { z } from 'zod';
 
-// Служебные поля всех таблиц, кроме settings. Время в epoch ms, булевы как 0/1,
-// JSON-колонки приходят строкой (тип после JSON.parse указан в комментарии у поля).
-export type Row = {
-  id: string;
-  createdAt: number;
-  updatedAt: number;
-  deletedAt: number | null;
-};
+import type { rowSchema } from './schema';
+
+// Служебные поля всех таблиц, кроме settings
+export type Row = z.infer<typeof rowSchema>;
 
 // Строка таблицы settings, value в JSON
 /** @public */

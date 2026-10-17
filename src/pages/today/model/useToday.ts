@@ -12,7 +12,6 @@ import {
   savings,
   soberDays,
   streak,
-  drinks,
   type Habit,
 } from '@/entities/habit';
 import {
@@ -25,7 +24,7 @@ import { listReasons, reasonOfDay, type ReasonRow } from '@/entities/reason';
 import { listRelapses } from '@/entities/relapse';
 import { useCelebrate } from '@/features/celebrate-achievement';
 import { syncNotifications } from '@/features/notifications';
-import { HOURS_PER_DAY, parseCounts, toDay } from '@/shared/lib';
+import { HOURS_PER_DAY, toDay } from '@/shared/lib';
 
 import { lastWeek } from './week';
 
@@ -109,13 +108,9 @@ export function useToday() {
     // null - причин нет
     reason: reasonOfDay(data.reasons, toDay(now)),
     week: lastWeek(soberDays(habit.startAt, data.relapseAts, now), now),
-    saved: savings(
-      s.total,
-      habit.weeklySpend,
-      parseCounts(habit.drinks, drinks),
-    ),
+    saved: savings(s.total, habit.weeklySpend, habit.drinks),
     currency: habit.currency,
-    hasDrinks: habit.drinks !== '{}',
+    hasDrinks: Object.keys(habit.drinks).length > 0,
     party,
     // итоги дня
     reviewDay: day,

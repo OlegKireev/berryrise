@@ -66,12 +66,14 @@ const migrations: string[] = [
 export const schemaVersion = migrations.length;
 
 // Восстановление из бэкапа одной транзакцией: схема строится до версии файла,
-// fill вставляет его строки, остальные миграции доводят их до текущей версии.
+// fill вставляет его строки, остальные миграции доводят их до текущей версии,
+// check проверяет уже приведенные к ней данные.
 // Любая ошибка откатывает все, включая DROP TABLE
 export async function restoreDatabase(
   db: SQLiteDatabase,
   version: number,
   fill: (tx: SQLiteDatabase) => Promise<void>,
+  check?: (tx: SQLiteDatabase) => Promise<void>,
 ) {
   await db.withExclusiveTransactionAsync(async (tx) => {
     const tables = await tx.getAllAsync<{ name: string }>(
@@ -92,6 +94,7 @@ export async function restoreDatabase(
       await tx.execAsync(sql);
     }
 
+    await check?.(tx);
     await tx.execAsync(`PRAGMA user_version = ${migrations.length}`);
   });
 }

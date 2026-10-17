@@ -1,22 +1,30 @@
 import type { SQLiteDatabase } from 'expo-sqlite';
 
-import { newRow } from '@/shared/db';
+import { newRow, parseRow, parseRows } from '@/shared/db';
 import { HOUR_MS, isString, parseList } from '@/shared/lib';
 
-import type { Party, PartyDrink } from '../model/types';
+import { partySchema, type Party } from '../model/schema';
+import type { PartyDrink } from '../model/types';
 
 const DEFAULT_HOURS = 4;
 
 // Идущая вечеринка - неудаленная и без ответа "как прошло?"
 const ACTIVE = 'result IS NULL AND deletedAt IS NULL';
 
-export const getActiveParty = (db: SQLiteDatabase) =>
-  db.getFirstAsync<Party>(
-    `SELECT * FROM party WHERE ${ACTIVE} ORDER BY startAt DESC LIMIT 1`,
+// Читаем всегда SELECT * и проверяем строку целиком: сломанная вечеринка пропускается везде одинаково
+const parse = (rows: unknown[]) =>
+  parseRows('party', partySchema, rows, 'skip');
+const parseOne = (row: unknown) => parseRow('party', partySchema, row, 'skip');
+
+export const getActiveParty = async (db: SQLiteDatabase) =>
+  parseOne(
+    await db.getFirstAsync(
+      `SELECT * FROM party WHERE ${ACTIVE} ORDER BY startAt DESC LIMIT 1`,
+    ),
   );
 
-export const getParty = (db: SQLiteDatabase, id: string) =>
-  db.getFirstAsync<Party>('SELECT * FROM party WHERE id = ?', id);
+export const getParty = async (db: SQLiteDatabase, id: string) =>
+  parseOne(await db.getFirstAsync('SELECT * FROM party WHERE id = ?', id));
 
 // Идущая вечеринка или новая с концом через 4 часа и напитком из прошлой.
 // Проверка и вставка в одной транзакции: эффект в dev может отработать дважды,
@@ -31,18 +39,18 @@ export async function startParty(db: SQLiteDatabase): Promise<Party> {
       return;
     }
 
-    const last = await tx.getFirstAsync<
-      Pick<Party, 'drinkKeys' | 'drinkCustoms'>
-    >(
-      'SELECT drinkKeys, drinkCustoms FROM party WHERE deletedAt IS NULL ORDER BY startAt DESC LIMIT 1',
+    const last = parseOne(
+      await tx.getFirstAsync(
+        'SELECT * FROM party WHERE deletedAt IS NULL ORDER BY startAt DESC LIMIT 1',
+      ),
     );
     const r = newRow();
     const party: Party = {
       ...r,
       startAt: r.createdAt,
       expectedEndAt: r.createdAt + DEFAULT_HOURS * HOUR_MS,
-      drinkKeys: last?.drinkKeys ?? '[]',
-      drinkCustoms: last?.drinkCustoms ?? '[]',
+      drinkKeys: last?.drinkKeys ?? [],
+      drinkCustoms: last?.drinkCustoms ?? [],
       result: null,
       relapseId: null,
     };
@@ -53,8 +61,8 @@ export async function startParty(db: SQLiteDatabase): Promise<Party> {
       r.updatedAt,
       party.startAt,
       party.expectedEndAt,
-      party.drinkKeys,
-      party.drinkCustoms,
+      JSON.stringify(party.drinkKeys),
+      JSON.stringify(party.drinkCustoms),
     );
     result.party = party;
   });
@@ -121,19 +129,25 @@ export const hasPartyOn = async (
   ));
 
 // Последняя неудаленная вечеринка с началом в [from, to), для карточки дня
-export const getPartyOn = (db: SQLiteDatabase, from: number, to: number) =>
-  db.getFirstAsync<Party>(
-    'SELECT * FROM party WHERE deletedAt IS NULL AND startAt >= ? AND startAt < ? ORDER BY startAt DESC LIMIT 1',
-    from,
-    to,
+export const getPartyOn = async (
+  db: SQLiteDatabase,
+  from: number,
+  to: number,
+) =>
+  parseOne(
+    await db.getFirstAsync(
+      'SELECT * FROM party WHERE deletedAt IS NULL AND startAt >= ? AND startAt < ? ORDER BY startAt DESC LIMIT 1',
+      from,
+      to,
+    ),
   );
 
 // Начала вечеринок с ответом "без алкоголя", для достижений
 export const listSoberPartyStarts = async (db: SQLiteDatabase) =>
-  (
-    await db.getAllAsync<Pick<Party, 'startAt'>>(
-      "SELECT startAt FROM party WHERE deletedAt IS NULL AND result = 'sober'",
-    )
+  parse(
+    await db.getAllAsync(
+      "SELECT * FROM party WHERE deletedAt IS NULL AND result = 'sober'",
+    ),
   ).map((p) => p.startAt);
 
 // Ответы неудаленных вечеринок с ответом и началом в [from, to), для статистики
@@ -142,21 +156,21 @@ export const listPartyResultsBetween = async (
   from: number,
   to: number,
 ) =>
-  (
-    await db.getAllAsync<{ result: 'sober' | 'drank' }>(
-      'SELECT result FROM party WHERE deletedAt IS NULL AND result IS NOT NULL AND startAt >= ? AND startAt < ?',
+  parse(
+    await db.getAllAsync(
+      'SELECT * FROM party WHERE deletedAt IS NULL AND result IS NOT NULL AND startAt >= ? AND startAt < ?',
       from,
       to,
-    )
-  ).map((p) => p.result);
+    ),
+  ).flatMap((p) => (p.result ? [p.result] : []));
 
 // Начала неудаленных вечеринок с from, для расписания уведомлений
 export const listPartyStartsSince = async (db: SQLiteDatabase, from: number) =>
-  (
-    await db.getAllAsync<Pick<Party, 'startAt'>>(
-      'SELECT startAt FROM party WHERE deletedAt IS NULL AND startAt >= ?',
+  parse(
+    await db.getAllAsync(
+      'SELECT * FROM party WHERE deletedAt IS NULL AND startAt >= ?',
       from,
-    )
+    ),
   ).map((p) => p.startAt);
 
 // Свои напитки - общий список для всех вечеринок, в settings одним JSON-массивом.

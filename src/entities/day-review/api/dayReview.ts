@@ -1,45 +1,51 @@
 import type { SQLiteDatabase } from 'expo-sqlite';
 
 import type { Craving, Hardship, Helper, Mood, Place } from '@/shared/config';
-import { newRow } from '@/shared/db';
+import { newRow, parseRow, parseRows } from '@/shared/db';
 
-import type { DayReview } from '../model/types';
+import { dayReviewSchema } from '../model/schema';
+
+// Читаем всегда SELECT * и проверяем строку целиком: сломанные итоги пропускаются везде одинаково
+const parse = (rows: unknown[]) =>
+  parseRows('dayReview', dayReviewSchema, rows, 'skip');
 
 // Неудаленные итоги за день YYYY-MM-DD или null
-export const getDayReview = (db: SQLiteDatabase, date: string) =>
-  db.getFirstAsync<DayReview>(
-    'SELECT * FROM dayReview WHERE date = ? AND deletedAt IS NULL',
-    date,
+export const getDayReview = async (db: SQLiteDatabase, date: string) =>
+  parseRow(
+    'dayReview',
+    dayReviewSchema,
+    await db.getFirstAsync(
+      'SELECT * FROM dayReview WHERE date = ? AND deletedAt IS NULL',
+      date,
+    ),
+    'skip',
   );
 
 // Даты всех неудаленных итогов дня, для достижений
 export const listDayReviewDates = async (db: SQLiteDatabase) =>
-  (
-    await db.getAllAsync<Pick<DayReview, 'date'>>(
-      'SELECT date FROM dayReview WHERE deletedAt IS NULL',
-    )
+  parse(
+    await db.getAllAsync('SELECT * FROM dayReview WHERE deletedAt IS NULL'),
   ).map((r) => r.date);
 
 // Неудаленные итоги за дни с fromDate по toDate включительно, YYYY-MM-DD. Для статистики
-export const listDayReviewsBetween = (
+export const listDayReviewsBetween = async (
   db: SQLiteDatabase,
   fromDate: string,
   toDate: string,
 ) =>
-  db.getAllAsync<DayReview>(
-    'SELECT * FROM dayReview WHERE deletedAt IS NULL AND date >= ? AND date <= ?',
-    fromDate,
-    toDate,
+  parse(
+    await db.getAllAsync(
+      'SELECT * FROM dayReview WHERE deletedAt IS NULL AND date >= ? AND date <= ?',
+      fromDate,
+      toDate,
+    ),
   );
 
 // Даты итогов, где в местах есть компания или бар: там обычно пьют. Для достижений
 export const listCompanyDates = async (db: SQLiteDatabase) =>
-  (
-    await db.getAllAsync<Pick<DayReview, 'date'>>(
-      `SELECT date FROM dayReview WHERE deletedAt IS NULL
-       AND EXISTS (SELECT 1 FROM json_each(places) WHERE value IN ('company', 'bar'))`,
-    )
-  ).map((r) => r.date);
+  parse(await db.getAllAsync('SELECT * FROM dayReview WHERE deletedAt IS NULL'))
+    .filter((r) => r.places.some((p) => p === 'company' || p === 'bar'))
+    .map((r) => r.date);
 
 type DayReviewData = {
   date: string;

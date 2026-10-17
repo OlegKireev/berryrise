@@ -33,26 +33,3 @@ export function parseList<T>(
   const v = parseJson(json);
   return Array.isArray(v) ? v.filter(isItem) : [];
 }
-
-// Объект "ключ из списка -> число" из JSON, остальные поля отбрасываем
-export function parseCounts<K extends string>(
-  json: string | null,
-  keys: readonly K[],
-): Partial<Record<K, number>> {
-  const v = parseJson(json);
-  const out: Partial<Record<K, number>> = {};
-
-  if (!isRecord(v)) {
-    return out;
-  }
-
-  for (const k of keys) {
-    const n = v[k];
-
-    if (typeof n === 'number') {
-      out[k] = n;
-    }
-  }
-
-  return out;
-}

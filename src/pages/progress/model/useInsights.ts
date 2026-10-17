@@ -6,16 +6,11 @@ import { listDayReviewsBetween } from '@/entities/day-review';
 import { getHabit } from '@/entities/habit';
 import { listPartyResultsBetween } from '@/entities/party';
 import { listRelapsesBetween } from '@/entities/relapse';
-import { hardships, helpers, places } from '@/shared/config';
-import { at, dayRange, isOneOf, parseList } from '@/shared/lib';
+import { at, dayRange } from '@/shared/lib';
 
 import { insights, periodDays, periods } from './insights';
 
 // index - номер периода в списке: 0 - последние 30 дней, дальше месяцы назад
-const isPlace = isOneOf(places);
-const isHardship = isOneOf(hardships);
-const isHelper = isOneOf(helpers);
-
 const load = async (db: SQLiteDatabase, index: number) => {
   const habit = await getHabit(db);
 
@@ -47,12 +42,12 @@ const load = async (db: SQLiteDatabase, index: number) => {
         date: r.date,
         mood: r.mood,
         craving: r.craving,
-        hardships: parseList(r.hardships, isHardship),
-        helpers: parseList(r.helpers, isHelper),
+        hardships: r.hardships,
+        helpers: r.helpers,
       })),
       relapses: relapses.map((r) => ({
-        places: parseList(r.places, isPlace),
-        hardships: parseList(r.hardships, isHardship),
+        places: r.places,
+        hardships: r.hardships,
       })),
       partyResults,
     }),

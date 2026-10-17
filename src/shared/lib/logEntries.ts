@@ -9,7 +9,8 @@ export type LogTag =
   | 'notifications'
   | 'reasons'
   | 'spending'
-  | 'onboarding';
+  | 'onboarding'
+  | 'db';
 
 const levels = ['error', 'info'] as const;
 type LogLevel = (typeof levels)[number];

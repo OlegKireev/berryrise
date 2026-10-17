@@ -6,7 +6,6 @@ export {
   isOneOf,
   isRecord,
   isString,
-  parseCounts,
   parseJson,
   parseList,
 } from './utils/json';

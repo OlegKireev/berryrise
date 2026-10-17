@@ -1,14 +1,20 @@
 import type { SQLiteDatabase } from 'expo-sqlite';
 
-import { newRow } from '@/shared/db';
+import { newRow, parseRows } from '@/shared/db';
 import { isString, parseList } from '@/shared/lib';
 
-import type { Reason, ReasonRow } from '../model/types';
+import { reasonSchema } from '../model/schema';
+import type { Reason } from '../model/types';
 
-// Неудаленные причины в порядке добавления
-export const listReasons = (db: SQLiteDatabase) =>
-  db.getAllAsync<ReasonRow>(
-    'SELECT * FROM reason WHERE deletedAt IS NULL ORDER BY "order"',
+// Неудаленные причины в порядке добавления, сломанные пропускаются
+export const listReasons = async (db: SQLiteDatabase) =>
+  parseRows(
+    'reason',
+    reasonSchema,
+    await db.getAllAsync(
+      'SELECT * FROM reason WHERE deletedAt IS NULL ORDER BY "order"',
+    ),
+    'skip',
   );
 
 // Готовая причина или своя, текст своей уже без лишних пробелов

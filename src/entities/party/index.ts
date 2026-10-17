@@ -15,5 +15,6 @@ export {
   setPartyResult,
   startParty,
 } from './api/party';
-export { partyDrinks, type Party, type PartyDrink } from './model/types';
+export { partySchema, type Party } from './model/schema';
+export { partyDrinks, type PartyDrink } from './model/types';
 export { dict as partyDict } from './i18n';

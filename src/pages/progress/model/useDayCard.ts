@@ -5,12 +5,7 @@ import { useCallback, useState } from 'react';
 import { getDayReview } from '@/entities/day-review';
 import { getPartyOn } from '@/entities/party';
 import { listRelapsesBetween } from '@/entities/relapse';
-import { hardships, helpers, places } from '@/shared/config';
-import { dayRange, isOneOf, parseList } from '@/shared/lib';
-
-const isPlace = isOneOf(places);
-const isHardship = isOneOf(hardships);
-const isHelper = isOneOf(helpers);
+import { dayRange } from '@/shared/lib';
 
 const load = async (db: SQLiteDatabase, date: string) => {
   const { from, to } = dayRange(date);
@@ -25,17 +20,17 @@ const load = async (db: SQLiteDatabase, date: string) => {
       id: r.id,
       at: r.at,
       mood: r.mood,
-      places: parseList(r.places, isPlace),
-      hardships: parseList(r.hardships, isHardship),
+      places: r.places,
+      hardships: r.hardships,
       note: r.note,
     })),
     party: party && { result: party.result },
     review: review && {
       mood: review.mood,
       craving: review.craving,
-      places: parseList(review.places, isPlace),
-      hardships: parseList(review.hardships, isHardship),
-      helpers: parseList(review.helpers, isHelper),
+      places: review.places,
+      hardships: review.hardships,
+      helpers: review.helpers,
       note: review.note,
     },
   };

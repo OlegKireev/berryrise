@@ -1,13 +1,20 @@
 import type { SQLiteDatabase } from 'expo-sqlite';
 
-import { newRow } from '@/shared/db';
+import { newRow, parseRow } from '@/shared/db';
 
-import type { Drink, Habit } from '../model/types';
+import { habitSchema } from '../model/schema';
+import type { Drink } from '../model/types';
 
-// ponytail: привычка пока одна (алкоголь), берем первую неудаленную
-export const getHabit = (db: SQLiteDatabase) =>
-  db.getFirstAsync<Habit>(
-    'SELECT * FROM habit WHERE deletedAt IS NULL LIMIT 1',
+// ponytail: привычка пока одна (алкоголь), берем первую неудаленную.
+// Сломанная строка роняет чтение: без нее стрик и экономия соврали бы
+export const getHabit = async (db: SQLiteDatabase) =>
+  parseRow(
+    'habit',
+    habitSchema,
+    await db.getFirstAsync(
+      'SELECT * FROM habit WHERE deletedAt IS NULL LIMIT 1',
+    ),
+    'throw',
   );
 
 export async function createHabit(db: SQLiteDatabase, startAt: number) {

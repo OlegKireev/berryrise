@@ -8,9 +8,6 @@ import { hasPartyOn } from '@/entities/party';
 import { listReasons, type ReasonRow } from '@/entities/reason';
 import { syncNotifications } from '@/features/notifications';
 import {
-  hardships as hardshipKeys,
-  helpers as helperKeys,
-  places as placeKeys,
   type Craving,
   type Hardship,
   type Helper,
@@ -20,8 +17,6 @@ import {
 import {
   addDays,
   dayRange,
-  isOneOf,
-  parseList,
   toDay,
   toggle,
   toggleExclusive,
@@ -70,9 +65,9 @@ export function useDayReview() {
       if (existing) {
         setMood(existing.mood);
         setCraving(existing.craving);
-        setPlaces(parseList(existing.places, isOneOf(placeKeys)));
-        setHardships(parseList(existing.hardships, isOneOf(hardshipKeys)));
-        setHelpers(parseList(existing.helpers, isOneOf(helperKeys)));
+        setPlaces(existing.places);
+        setHardships(existing.hardships);
+        setHelpers(existing.helpers);
         setNote(existing.note ?? '');
       } else {
         // Была вечеринка в этот день - заранее выбираем место "в компании"

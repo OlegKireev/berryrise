@@ -1,13 +1,18 @@
 import type { SQLiteDatabase } from 'expo-sqlite';
 
-import { newRow } from '@/shared/db';
+import { newRow, parseRows } from '@/shared/db';
 
-import type { ReplyRow } from '../model/types';
+import { replySchema } from '../model/schema';
 
-// Свои заготовки в порядке добавления. Готовые живут в коде (replies), в базе их нет
-export const listReplies = (db: SQLiteDatabase) =>
-  db.getAllAsync<ReplyRow>(
-    'SELECT * FROM reply WHERE deletedAt IS NULL ORDER BY "order"',
+// Свои заготовки в порядке добавления, сломанные пропускаются. Готовые живут в коде (replies), в базе их нет
+export const listReplies = async (db: SQLiteDatabase) =>
+  parseRows(
+    'reply',
+    replySchema,
+    await db.getAllAsync(
+      'SELECT * FROM reply WHERE deletedAt IS NULL ORDER BY "order"',
+    ),
+    'skip',
   );
 
 // В конец списка. order считаем и по удаленным, чтобы не повторялся
