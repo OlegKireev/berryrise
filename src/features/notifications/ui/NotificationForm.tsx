@@ -1,10 +1,11 @@
 import { weekdays } from '@/shared/i18n';
 import { DAYS_PER_WEEK } from '@/shared/lib';
-import { Chip, ChipRow, Row, Switch, Text, TimeField } from '@/shared/ui';
+import { Chip, ChipRow, Row, TimeField } from '@/shared/ui';
 
 import { RISK_TIME, type NotificationPrefs } from '../model/types';
 
 import { t } from '../i18n';
+import { NotificationGroup } from './NotificationGroup';
 
 type Props = {
   value: NotificationPrefs;
@@ -27,15 +28,14 @@ export function NotificationForm({ value, onChange }: Props) {
 
   return (
     <>
-      <Row label={t('form.dayReview')}>
-        <Switch
-          value={dayReview.on}
-          onValueChange={(on) =>
-            onChange({ ...value, dayReview: { ...dayReview, on } })
-          }
-        />
-      </Row>
-      {dayReview.on && (
+      <NotificationGroup
+        title={t('form.dayReview')}
+        hint={t('form.dayReviewHint')}
+        on={dayReview.on}
+        onToggle={(on) =>
+          onChange({ ...value, dayReview: { ...dayReview, on } })
+        }
+      >
         <Row label={t('form.time')}>
           <TimeField
             value={dayReview.time}
@@ -44,54 +44,48 @@ export function NotificationForm({ value, onChange }: Props) {
             }
           />
         </Row>
-      )}
+      </NotificationGroup>
 
-      <Row label={t('form.risk')}>
-        <Switch
-          value={risk.on}
-          onValueChange={(on) => onChange({ ...value, risk: { ...risk, on } })}
-        />
-      </Row>
-      {risk.on && (
-        <>
-          <Text variant="hint">{t('form.riskHint')}</Text>
-          <ChipRow>
-            {weekdays.map((name, i) => (
-              <Chip
+      <NotificationGroup
+        title={t('form.risk')}
+        hint={t('form.riskHint')}
+        on={risk.on}
+        onToggle={(on) => onChange({ ...value, risk: { ...risk, on } })}
+      >
+        <ChipRow>
+          {weekdays.map((name, i) => (
+            <Chip
+              key={name}
+              label={name}
+              selected={risk.days[dayOf(i)] !== undefined}
+              onPress={() => toggleDay(dayOf(i))}
+            />
+          ))}
+        </ChipRow>
+        {weekdays.map((name, i) => {
+          const time = risk.days[dayOf(i)];
+          return (
+            time !== undefined && (
+              <Row
                 key={name}
                 label={name}
-                selected={risk.days[dayOf(i)] !== undefined}
-                onPress={() => toggleDay(dayOf(i))}
-              />
-            ))}
-          </ChipRow>
-          {weekdays.map((name, i) => {
-            const time = risk.days[dayOf(i)];
-            return (
-              time !== undefined && (
-                <Row
-                  key={name}
-                  label={name}
-                >
-                  <TimeField
-                    value={time}
-                    onChange={(m) =>
-                      setRiskDays({ ...risk.days, [dayOf(i)]: m })
-                    }
-                  />
-                </Row>
-              )
-            );
-          })}
-        </>
-      )}
+              >
+                <TimeField
+                  value={time}
+                  onChange={(m) => setRiskDays({ ...risk.days, [dayOf(i)]: m })}
+                />
+              </Row>
+            )
+          );
+        })}
+      </NotificationGroup>
 
-      <Row label={t('form.party')}>
-        <Switch
-          value={party.on}
-          onValueChange={(on) => onChange({ ...value, party: { on } })}
-        />
-      </Row>
+      <NotificationGroup
+        title={t('form.party')}
+        hint={t('form.partyHint')}
+        on={party.on}
+        onToggle={(on) => onChange({ ...value, party: { on } })}
+      />
     </>
   );
 }

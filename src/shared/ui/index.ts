@@ -5,6 +5,7 @@ export { Card } from './Card';
 export { Chip } from './Chip';
 export { ChipRow } from './ChipRow';
 export { Choices } from './Choices';
+export { Collapse } from './Collapse';
 export { DateTimeField } from './DateTimeField';
 export { Icon } from './Icon';
 export { Input } from './Input';

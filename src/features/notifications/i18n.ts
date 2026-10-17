@@ -24,9 +24,14 @@ export const t = createT({
     },
     form: {
       dayReview: 'Итоги дня',
+      dayReviewHint:
+        'Вечером спрошу, как прошел день: настроение, тяга, что помогло. Это 15 секунд.',
       risk: 'Дни риска',
-      riskHint: 'Напомню перед вечером, у каждого дня свое время',
-      party: 'Как прошло после компании',
+      riskHint:
+        'Дни, когда обычно зовут выпить. Перед вечером спрошу, идешь ли ты в компанию. Если да, открою поддержку на вечер: что пить вместо алкоголя и что ответить, если спросят.',
+      party: 'Как прошло?',
+      partyHint:
+        'Собираешься в компанию - отметь это на "Сегодня" и укажи, до скольки примерно вечер. В это время спрошу, как прошло.',
       time: 'Время',
     },
     autostart: {
@@ -58,9 +63,14 @@ export const t = createT({
     },
     form: {
       dayReview: 'Day review',
+      dayReviewHint:
+        "In the evening I'll ask how your day went: mood, cravings, what helped. Takes 15 seconds.",
       risk: 'Risky days',
-      riskHint: 'A reminder before the evening, each day has its own time',
-      party: 'How did it go after going out',
+      riskHint:
+        "Days when you usually get invited for drinks. Before the evening I'll ask if you're going out. If so, I'll open support for the night: what to drink instead and what to say if someone asks.",
+      party: 'How did it go?',
+      partyHint:
+        "Going out? Mark it on Today and set roughly when the evening ends. I'll ask how it went then.",
       time: 'Time',
     },
     autostart: {
