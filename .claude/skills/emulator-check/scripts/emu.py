@@ -164,8 +164,25 @@ def dismiss_dev_ui():
         time.sleep(0.5)
 
 
+FAB_PREFS = 'shared_prefs/expo.modules.devmenu.sharedpreferences.xml'
+
+
+def place_dev_fab():
+    """Ставит кнопку dev-меню справа ниже шапки, чтобы не перекрывала шестеренку настроек.
+    expo-dev-menu хранит позицию долями 0..1 в своих SharedPreferences, конфигом ее не задать."""
+    xml = subprocess.run([ADB, 'exec-out', 'run-as', PKG, 'cat', FAB_PREFS], capture_output=True).stdout.decode()
+    if '<map' not in xml:
+        xml = "<?xml version='1.0' encoding='utf-8' standalone='yes' ?>\n<map>\n</map>\n"
+    xml = re.sub(r'\s*<float name="fabPosition[XY]"[^>]*/>', '', xml)
+    xml = xml.replace('</map>', '    <float name="fabPositionX" value="1.0" />\n'
+                      '    <float name="fabPositionY" value="0.2" />\n</map>')
+    sh(f'run-as {PKG} mkdir -p shared_prefs')
+    subprocess.run([ADB, 'shell', f"run-as {PKG} sh -c 'cat > {FAB_PREFS}'"], input=xml.encode(), check=True)
+
+
 def launch(wait_for=None):
     sh(f'am force-stop {PKG}')
+    place_dev_fab()
     adb('reverse', 'tcp:8081', 'tcp:8081')
     adb('logcat', '-c', check=False)
     sh(f'am start -a android.intent.action.VIEW -d "{DEEPLINK}"')
