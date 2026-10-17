@@ -75,7 +75,12 @@ export const widgetTaskHandler: WidgetTaskHandler = async (props) => {
   let result = 'no habit';
   try {
     // ponytail: только чтение, без миграций; до первого запуска таблиц нет - это ошибка
-    const db = await openDatabaseAsync('berryrise.db');
+    // Свое соединение: без него при живом приложении expo-sqlite отдает из кэша
+    // нативный объект SQLiteProvider, и сборка мусора нашего JS-объекта закрывает
+    // базу приложению (все запросы дальше падают, экраны с загрузкой пустые)
+    const db = await openDatabaseAsync('berryrise.db', {
+      useNewConnection: true,
+    });
     try {
       count = await currentStreak(db);
       if (count !== null) result = String(count);
