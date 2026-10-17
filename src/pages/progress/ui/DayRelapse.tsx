@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import { DeleteRelapseButton } from '@/features/delete-relapse';
 import type { Hardship, Mood, Place } from '@/shared/config';
 import { formatTime } from '@/shared/i18n';
+import { minutesOfDay } from '@/shared/lib';
 import { Text } from '@/shared/ui';
 
 import { Answer } from './Answer';
@@ -27,7 +28,7 @@ export function DayRelapse({ relapse: r, onDeleted }: Props) {
   return (
     <View style={{ gap: 4 }}>
       <Text weight="semibold">
-        {t('relapseAt')} {formatTime(at.getHours() * 60 + at.getMinutes())}
+        {t('relapseAt')} {formatTime(minutesOfDay(at))}
       </Text>
       <Answer
         title={t('option.titles.mood')}

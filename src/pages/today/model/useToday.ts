@@ -2,7 +2,11 @@ import { useFocusEffect } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback, useEffect, useState } from 'react';
 
-import { reviewDay, getDayReview } from '@/entities/day-review';
+import {
+  REVIEW_CUTOFF_HOUR,
+  reviewDay,
+  getDayReview,
+} from '@/entities/day-review';
 import {
   getHabit,
   savings,
@@ -21,7 +25,7 @@ import { listReasons, reasonOfDay, type ReasonRow } from '@/entities/reason';
 import { listRelapses } from '@/entities/relapse';
 import { useCelebrate } from '@/features/celebrate-achievement';
 import { syncNotifications } from '@/features/notifications';
-import { parseCounts, toDay } from '@/shared/lib';
+import { HOURS_PER_DAY, parseCounts, toDay } from '@/shared/lib';
 
 import { lastWeek } from './week';
 
@@ -72,7 +76,12 @@ export function useToday() {
   // В полночь прибавляется день, в 18:00 итоги переключаются на сегодня
   useEffect(() => {
     const next = new Date(now);
-    next.setHours(next.getHours() < 18 ? 18 : 24, 0, 0, 0);
+    next.setHours(
+      next.getHours() < REVIEW_CUTOFF_HOUR ? REVIEW_CUTOFF_HOUR : HOURS_PER_DAY,
+      0,
+      0,
+      0,
+    );
     const id = setTimeout(
       () => setNow(Date.now()),
       next.getTime() - Date.now(),

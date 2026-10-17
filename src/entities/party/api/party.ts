@@ -1,12 +1,11 @@
 import type { SQLiteDatabase } from 'expo-sqlite';
 
 import { newRow } from '@/shared/db';
-import { isString, parseList } from '@/shared/lib';
+import { HOUR_MS, isString, parseList } from '@/shared/lib';
 
 import type { Party, PartyDrink } from '../model/types';
 
-const HOUR = 60 * 60 * 1000;
-const DEFAULT_LENGTH = 4 * HOUR;
+const DEFAULT_HOURS = 4;
 
 // Идущая вечеринка - неудаленная и без ответа "как прошло?"
 const ACTIVE = 'result IS NULL AND deletedAt IS NULL';
@@ -41,7 +40,7 @@ export async function startParty(db: SQLiteDatabase): Promise<Party> {
     const party: Party = {
       ...r,
       startAt: r.createdAt,
-      expectedEndAt: r.createdAt + DEFAULT_LENGTH,
+      expectedEndAt: r.createdAt + DEFAULT_HOURS * HOUR_MS,
       drinkKeys: last?.drinkKeys ?? '[]',
       drinkCustoms: last?.drinkCustoms ?? '[]',
       result: null,

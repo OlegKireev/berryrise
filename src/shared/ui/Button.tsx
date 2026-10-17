@@ -42,6 +42,14 @@ type Props = Content &
     style?: StyleProp<ViewStyle>;
   };
 
+// Заливные кнопки (primary, secondary, scrim) крупнее текстовых
+const sizes = {
+  filled: { paddingVertical: 16, fontSize: 17 },
+  text: { paddingVertical: 8, fontSize: 16 },
+};
+const DISABLED_OPACITY = 0.4;
+const PRESSED_OPACITY = 0.6;
+
 export function Button({
   title,
   icon,
@@ -55,6 +63,7 @@ export function Button({
 }: Props) {
   const colors = useColors();
   const filled = variant !== 'quiet' && variant !== 'ghost';
+  const size = filled ? sizes.filled : sizes.text;
   const fg = {
     primary: colors.onPrimary,
     secondary: colors.onSecondary,
@@ -82,7 +91,7 @@ export function Button({
       }
       style={({ pressed }) => [
         {
-          paddingVertical: filled ? 16 : 8,
+          paddingVertical: size.paddingVertical,
           paddingHorizontal: 16,
           borderRadius: 10,
           overflow: 'hidden',
@@ -90,7 +99,11 @@ export function Button({
           backgroundColor: bg,
           borderWidth: variant === 'scrim' ? 1 : 0,
           borderColor: fg,
-          opacity: disabled ? 0.4 : variant === 'ghost' && pressed ? 0.6 : 1,
+          opacity: disabled
+            ? DISABLED_OPACITY
+            : variant === 'ghost' && pressed
+              ? PRESSED_OPACITY
+              : 1,
         },
         style,
       ]}
@@ -106,7 +119,7 @@ export function Button({
           weight={filled ? 'semibold' : 'medium'}
           style={{
             color: fg,
-            fontSize: filled ? 17 : 16,
+            fontSize: size.fontSize,
             textAlign: 'center',
             textDecorationLine: variant === 'quiet' ? 'underline' : 'none',
           }}

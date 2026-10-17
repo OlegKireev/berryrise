@@ -1,6 +1,6 @@
 import { View } from 'react-native';
 
-import type { Mood } from '@/shared/config';
+import { moods, type Mood } from '@/shared/config';
 import { Text, useColors } from '@/shared/ui';
 
 import { t } from '../i18n';
@@ -8,7 +8,9 @@ import { t } from '../i18n';
 type Props = { counts: { mood: Mood; count: number }[] };
 
 // Чем лучше настроение, тем насыщеннее цвет: от "ужасно" бледным до "отлично" полным
-const opacity = (mood: Mood) => 0.3 + (mood - 1) * 0.175;
+const MIN_OPACITY = 0.3;
+const opacity = (mood: Mood) =>
+  MIN_OPACITY + ((mood - 1) * (1 - MIN_OPACITY)) / (moods.length - 1);
 
 // Доли дней с каждым настроением одной полосой, слева "отлично". Под ней легенда с числом дней
 export function MoodChart({ counts }: Props) {

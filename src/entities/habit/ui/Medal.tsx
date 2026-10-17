@@ -15,6 +15,15 @@ import { Silhouette } from './medal/primitives';
 
 const t = createT(dict);
 
+// Подпись на ленте в долях размера медали: до трех знаков крупнее, длиннее мельче
+const SHORT_LABEL = 3;
+const FONT_SHARE = 0.125;
+const LONG_FONT_SHARE = 0.095;
+// высота блока подписи и подъем его верха над центром ленты
+const LABEL_HEIGHT = 0.3;
+const LABEL_RISE = 0.165;
+const LINE_HEIGHT = 1.2;
+
 // подпись на ленте есть только у стрика
 type StreakKey = Extract<AchievementKey, `days${number}`>;
 const isStreakKey = (k: AchievementKey): k is StreakKey => k.startsWith('days');
@@ -41,7 +50,8 @@ export const Medal = memo(function Medal({
   const text =
     label && isStreakKey(achievement) ? t(`medal.${achievement}`) : '';
   // лента высотой 17 из 108: цифры должны влезать с запасом
-  const fontSize = size * (text.length > 3 ? 0.095 : 0.125);
+  const fontSize =
+    size * (text.length > SHORT_LABEL ? LONG_FONT_SHARE : FONT_SHARE);
   return (
     <View style={{ width: size, height }}>
       <Svg
@@ -68,8 +78,8 @@ export const Medal = memo(function Medal({
             right: 0,
             // центр подписи на ленте. У Manrope цифры сидят ниже середины строки,
             // поэтому чуть выше центра
-            top: (height * RIBBON_Y) / VIEW_H - size * 0.165,
-            height: size * 0.3,
+            top: (height * RIBBON_Y) / VIEW_H - size * LABEL_RISE,
+            height: size * LABEL_HEIGHT,
             alignItems: 'center',
             justifyContent: 'center',
           }}
@@ -78,7 +88,7 @@ export const Medal = memo(function Medal({
             weight="bold"
             style={{
               fontSize,
-              lineHeight: fontSize * 1.2,
+              lineHeight: fontSize * LINE_HEIGHT,
               includeFontPadding: false,
               color: ink.paper,
             }}

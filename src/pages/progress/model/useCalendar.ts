@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import type { Day, DayStatus } from '@/entities/habit';
+import { MONTHS_PER_YEAR } from '@/shared/lib';
 
 import { monthIndex, monthWeeks } from './calendar';
 
@@ -11,8 +12,8 @@ export function useCalendar(startAt: number, now: number, days: Day[]) {
   const first = monthIndex(startAt);
   const last = monthIndex(now);
   const index = Math.min(Math.max(shown, first), last);
-  const year = Math.floor(index / 12);
-  const month = index % 12;
+  const year = Math.floor(index / MONTHS_PER_YEAR);
+  const month = index % MONTHS_PER_YEAR;
 
   const sober = new Map(days.map((d) => [d.date, d.sober]));
   const status = (date: string): DayStatus => {

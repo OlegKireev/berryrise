@@ -12,6 +12,17 @@ export {
 } from './utils/json';
 export { getLocale, type Locale } from './utils/getLocale';
 export { pluralize, type PluralForms } from './utils/pluralize';
+export {
+  DAY_MS,
+  DAYS_PER_WEEK,
+  HOUR_MS,
+  HOURS_PER_DAY,
+  MINUTES_PER_HOUR,
+  MONTHS_PER_YEAR,
+  minutesOfDay,
+  timeOfDay,
+  weekdayFromMonday,
+} from './utils/time';
 export { toDay } from './utils/toDay';
 export { toggle, toggleExclusive } from './utils/toggle';
 export { iconMask } from './iconMask';

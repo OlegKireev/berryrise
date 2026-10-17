@@ -1,4 +1,6 @@
 // Чистая логика экономии, без React Native.
+import { DAYS_PER_WEEK } from '@/shared/lib';
+
 import { drinks as drinkKeys, type Drink } from './types';
 
 // Примерные ккал на порцию: пиво 0,5, бокал вина 150 мл, шот 40 мл, коктейль
@@ -22,7 +24,8 @@ export function savings(
   weeklySpend: number | null,
   drinks: Partial<Record<Drink, number>>,
 ): Savings {
-  const perDays = (perWeek: number) => Math.floor((perWeek * total) / 7);
+  const perDays = (perWeek: number) =>
+    Math.floor((perWeek * total) / DAYS_PER_WEEK);
   const sum = (weight: (k: Drink) => number) =>
     drinkKeys.reduce((s, k) => s + (drinks[k] ?? 0) * weight(k), 0);
   return {

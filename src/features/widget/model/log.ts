@@ -12,7 +12,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
 
 export function logWidget(line: string) {
   const d = new Date();
-  const at = `${pad(d.getDate())}.${pad(d.getMonth() + 1)} ${d.toTimeString().slice(0, 8)}`;
+  const at = `${pad(d.getDate())}.${pad(d.getMonth() + 1)} ${d.toTimeString().split(' ')[0] ?? ''}`;
 
   try {
     const file = logFile();

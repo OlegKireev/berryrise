@@ -2,6 +2,7 @@
 // Ключи одной сущности (напитки, причины, ответы) лежат в ее слайсе в entities/.
 // Порядок в массиве = порядок на экране; для mood и craving еще и сила.
 
+// eslint-disable-next-line @typescript-eslint/no-magic-numbers -- ключи вариантов, числа и есть данные
 export const moods = [1, 2, 3, 4, 5] as const;
 export type Mood = (typeof moods)[number];
 

@@ -1,6 +1,8 @@
 // Причина дня: одна на календарный день, по кругу в порядке списка.
 // Чистая логика
 
+import { DAY_MS } from '@/shared/lib';
+
 // day: локальная дата YYYY-MM-DD. Номер дня от эпохи растет на 1 каждый день,
 // поэтому в соседние дни берутся соседние причины
 export function reasonOfDay<T>(list: T[], day: string): T | null {
@@ -9,6 +11,6 @@ export function reasonOfDay<T>(list: T[], day: string): T | null {
   }
 
   // строка без времени разбирается как полночь UTC, без сдвигов часового пояса
-  const n = Date.parse(day) / 86400000;
+  const n = Date.parse(day) / DAY_MS;
   return list[n % list.length] ?? null;
 }

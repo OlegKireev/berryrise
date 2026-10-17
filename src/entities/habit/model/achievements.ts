@@ -4,11 +4,13 @@
 import { dayDate, toDay } from '@/shared/lib';
 import type { Day } from './streak';
 
+/* eslint-disable @typescript-eslint/no-magic-numbers -- таблицы порогов, числа и есть данные */
 // после года - шаг в год, до 5 лет
 const streakGoals = [
   1, 3, 7, 14, 30, 60, 90, 180, 365, 730, 1095, 1460, 1825,
 ] as const;
 const companyGoals = [1, 5, 10] as const;
+/* eslint-enable @typescript-eslint/no-magic-numbers */
 
 // Порядок в массиве = порядок на экране
 export const achievementKeys = [
@@ -28,6 +30,11 @@ const nextDay = (date: string) => toDay(dayDate(date, 1).getTime());
 
 const FRIDAY = 5;
 const SUNDAY = 0;
+// серия после срыва для comeback7 и итоги дня подряд для reviews7
+const COMEBACK_RUN = 7;
+const REVIEWS_ROW = 7;
+// пт, сб и вс
+const WEEKEND_RUN = 3;
 
 type Company = {
   soberParties: number[]; // начала вечеринок с ответом "без алкоголя"
@@ -75,7 +82,7 @@ export function achievements(
       }
     }
 
-    if (afterRelapse && run === 7) {
+    if (afterRelapse && run === COMEBACK_RUN) {
       give('comeback7', date);
     }
 
@@ -90,8 +97,8 @@ export function achievements(
       give('friday', date);
     }
 
-    // дни идут подряд, поэтому серия от 3 в воскресенье = трезвые пт, сб и вс
-    if (weekday === SUNDAY && run >= 3) {
+    // дни идут подряд, поэтому серия от WEEKEND_RUN в воскресенье = трезвые пт, сб и вс
+    if (weekday === SUNDAY && run >= WEEKEND_RUN) {
       give('weekend', date);
     }
   });
@@ -102,7 +109,7 @@ export function achievements(
   for (const date of [...new Set(reviewDates)].sort()) {
     row = prev !== null && nextDay(prev) === date ? row + 1 : 1;
 
-    if (row === 7) {
+    if (row === REVIEWS_ROW) {
       give('reviews7', date);
     }
 

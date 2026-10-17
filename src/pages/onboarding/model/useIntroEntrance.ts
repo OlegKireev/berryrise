@@ -9,6 +9,10 @@ import {
 
 import { at, useReduceMotion } from '@/shared/lib';
 
+// пауза между появлением строк и их подъем снизу
+const STAGGER_MS = 120;
+const ROW_RISE = 12;
+
 // Вход первого шага: иконка из центра экрана (где она была на сплэше) уезжает
 // на место, потом по очереди появляются строки. При "уменьшить движение" сразу все
 export function useIntroEntrance(items: number) {
@@ -54,7 +58,7 @@ export function useIntroEntrance(items: number) {
         useNativeDriver: true,
       }),
       Animated.stagger(
-        120,
+        STAGGER_MS,
         rows.map((r) =>
           Animated.timing(r, {
             toValue: 1,
@@ -89,7 +93,7 @@ export function useIntroEntrance(items: number) {
         {
           translateY: at(rows, i).interpolate({
             inputRange: [0, 1],
-            outputRange: [12, 0],
+            outputRange: [ROW_RISE, 0],
           }),
         },
       ],

@@ -50,8 +50,18 @@ function background(
 }
 
 // Кегль - доля стороны по числу цифр: три влезают и в круг, четыре (1000+ дней) мельче
-const fontShare = (digits: number) =>
-  digits <= 2 ? 0.5 : digits === 3 ? 0.375 : 0.275;
+const fontShares: Partial<Record<number, number>> = {
+  1: 0.5,
+  2: 0.5,
+  3: 0.375,
+};
+const LONG_FONT_SHARE = 0.275;
+const fontShare = (digits: number) => fontShares[digits] ?? LONG_FONT_SHARE;
+
+// Ягодная черта в долях стороны, толщина не тоньше 2 px
+const LINE_WIDTH = 0.24;
+const LINE_HEIGHT = 0.04;
+const MIN_LINE_HEIGHT = 2;
 
 // Виджет 1x1: только число в квадрате по центру ячейки, вокруг прозрачно
 export function StreakWidget({
@@ -108,8 +118,11 @@ export function StreakWidget({
             // ягодная черта - горизонт с иконки
             <FlexWidget
               style={{
-                width: Math.round(size * 0.24),
-                height: Math.max(2, Math.round(size * 0.04)),
+                width: Math.round(size * LINE_WIDTH),
+                height: Math.max(
+                  MIN_LINE_HEIGHT,
+                  Math.round(size * LINE_HEIGHT),
+                ),
                 borderRadius: size,
                 backgroundColor: berry,
               }}

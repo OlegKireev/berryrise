@@ -10,12 +10,23 @@ import {
   type Mood,
   type Place,
 } from '@/shared/config';
-import { addDays, dayDate, toDay } from '@/shared/lib';
+import {
+  addDays,
+  dayDate,
+  DAYS_PER_WEEK,
+  MONTHS_PER_YEAR,
+  toDay,
+  weekdayFromMonday,
+} from '@/shared/lib';
 
 import { monthIndex } from './calendar';
 
 // Сколько итогов дня в периоде нужно, чтобы показать графики из них
 export const REVIEWS_NEEDED = 7;
+
+// Длина периода last30 в днях
+const LAST_DAYS = 30;
+const TOP_SIZE = 3;
 
 export type Period =
   { kind: 'last30' } | { kind: 'month'; year: number; month: number };
@@ -25,7 +36,11 @@ export function periods(startAt: number, now: number): Period[] {
   const out: Period[] = [{ kind: 'last30' }];
 
   for (let i = monthIndex(now) - 1; i >= monthIndex(startAt); i--) {
-    out.push({ kind: 'month', year: Math.floor(i / 12), month: i % 12 });
+    out.push({
+      kind: 'month',
+      year: Math.floor(i / MONTHS_PER_YEAR),
+      month: i % MONTHS_PER_YEAR,
+    });
   }
 
   return out;
@@ -42,7 +57,9 @@ export function periodDays(period: Period, now: number): string[] {
   }
 
   const today = toDay(now);
-  return Array.from({ length: 30 }, (_, i) => addDays(today, i - 29));
+  return Array.from({ length: LAST_DAYS }, (_, i) =>
+    addDays(today, i - LAST_DAYS + 1),
+  );
 }
 
 export type Top<K> = { key: K; count: number }[];
@@ -58,12 +75,13 @@ const top3 = <K extends string>(
     .map((key) => ({ key, count: lists.filter((l) => l.includes(key)).length }))
     .filter((c) => c.count > 0)
     .sort((a, b) => b.count - a.count)
-    .slice(0, 3);
+    .slice(0, TOP_SIZE);
 
 // День недели с понедельника: 0 - понедельник
 // день недели как у Date.getDay()
+// eslint-disable-next-line @typescript-eslint/no-magic-numbers -- список ключей, числа и есть данные
 const weekdayList = [0, 1, 2, 3, 4, 5, 6] as const;
-const weekdayOf = (date: string) => (dayDate(date).getDay() + 6) % 7;
+const weekdayOf = (date: string) => weekdayFromMonday(dayDate(date));
 
 type Input = {
   reviews: {
@@ -79,8 +97,8 @@ type Input = {
 
 // Все блоки статистики за период
 export function insights({ reviews, relapses, partyResults }: Input) {
-  const sums = Array<number>(7).fill(0);
-  const counts = Array<number>(7).fill(0);
+  const sums = Array<number>(DAYS_PER_WEEK).fill(0);
+  const counts = Array<number>(DAYS_PER_WEEK).fill(0);
 
   for (const r of reviews) {
     const wd = weekdayOf(r.date);

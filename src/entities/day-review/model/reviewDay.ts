@@ -3,9 +3,11 @@
 
 import { addDays, toDay } from '@/shared/lib';
 
-const CUTOFF_HOUR = 18;
+export const REVIEW_CUTOFF_HOUR = 18;
 
 export function reviewDay(now: number): string {
   const today = toDay(now);
-  return new Date(now).getHours() < CUTOFF_HOUR ? addDays(today, -1) : today;
+  return new Date(now).getHours() < REVIEW_CUTOFF_HOUR
+    ? addDays(today, -1)
+    : today;
 }

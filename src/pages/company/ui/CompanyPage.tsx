@@ -1,4 +1,5 @@
 import { ReasonList } from '@/entities/reason';
+import { DAY_MS } from '@/shared/lib';
 import { DateTimeField, Screen, Text } from '@/shared/ui';
 
 import { DrinksSection } from './DrinksSection';
@@ -7,8 +8,6 @@ import { RepliesSection } from './RepliesSection';
 import { useCompany } from '../model/useCompany';
 
 import { t } from '../i18n';
-
-const DAY = 24 * 60 * 60 * 1000;
 
 export function CompanyPage() {
   const company = useCompany();
@@ -28,7 +27,7 @@ export function CompanyPage() {
         value={new Date(party.expectedEndAt)}
         onChange={company.changeEnd}
         min={new Date(party.startAt)}
-        max={new Date(party.startAt + DAY)}
+        max={new Date(party.startAt + DAY_MS)}
       />
 
       <DrinksSection drinks={company.drinks} />

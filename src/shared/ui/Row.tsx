@@ -18,12 +18,19 @@ type Props = {
   href?: Href;
 };
 
+// Отступ после иконки раздела шире
+const gaps = { icon: 12, plain: 8 };
+
 // Строка списка: подпись слева, справа значение или действие
 export function Row({ label, icon, children, style, onPress, href }: Props) {
   const colors = useColors();
   const press = href ? () => router.push(href) : onPress;
   const rowStyle: StyleProp<ViewStyle> = [
-    { flexDirection: 'row', alignItems: 'center', gap: icon ? 12 : 8 },
+    {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: icon ? gaps.icon : gaps.plain,
+    },
     style,
   ];
   const content = (

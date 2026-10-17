@@ -1,4 +1,5 @@
 import { weekdays } from '@/shared/i18n';
+import { DAYS_PER_WEEK } from '@/shared/lib';
 import { Chip, ChipRow, Row, Switch, Text, TimeField } from '@/shared/ui';
 
 import { RISK_TIME, type NotificationPrefs } from '../model/types';
@@ -11,7 +12,7 @@ type Props = {
 };
 
 // weekdays идут с понедельника, getDay считает с воскресенья
-const dayOf = (i: number) => (i + 1) % 7;
+const dayOf = (i: number) => (i + 1) % DAYS_PER_WEEK;
 
 // Переключатели и время напоминаний: одна форма для онбординга и настроек
 export function NotificationForm({ value, onChange }: Props) {

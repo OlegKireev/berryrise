@@ -1,16 +1,21 @@
-import { toDay } from '@/shared/lib';
+import {
+  DAYS_PER_WEEK,
+  MONTHS_PER_YEAR,
+  toDay,
+  weekdayFromMonday,
+} from '@/shared/lib';
 
 // Номер месяца от нулевого года, чтобы листать и сравнивать месяцы одним числом
 export const monthIndex = (ms: number) => {
   const d = new Date(ms);
-  return d.getFullYear() * 12 + d.getMonth();
+  return d.getFullYear() * MONTHS_PER_YEAR + d.getMonth();
 };
 
 // Недели месяца с понедельника, null - добивка до полной недели
 export function monthWeeks(year: number, month: number): (string | null)[][] {
   const first = new Date(year, month, 1);
   const length = new Date(year, month + 1, 0).getDate();
-  const cells: (string | null)[] = Array<null>((first.getDay() + 6) % 7).fill(
+  const cells: (string | null)[] = Array<null>(weekdayFromMonday(first)).fill(
     null,
   );
 
@@ -18,11 +23,11 @@ export function monthWeeks(year: number, month: number): (string | null)[][] {
     cells.push(toDay(new Date(year, month, d).getTime()));
   }
 
-  while (cells.length % 7) {
+  while (cells.length % DAYS_PER_WEEK) {
     cells.push(null);
   }
 
-  return Array.from({ length: cells.length / 7 }, (_, i) =>
-    cells.slice(i * 7, i * 7 + 7),
+  return Array.from({ length: cells.length / DAYS_PER_WEEK }, (_, i) =>
+    cells.slice(i * DAYS_PER_WEEK, (i + 1) * DAYS_PER_WEEK),
   );
 }

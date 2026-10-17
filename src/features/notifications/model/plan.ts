@@ -57,8 +57,8 @@ export function plan(
       today.getFullYear(),
       today.getMonth(),
       today.getDate() + i,
-      Math.floor(minutes / 60),
-      minutes % 60,
+      0,
+      minutes,
     ).getTime();
 
   for (let i = 0; i < HORIZON_DAYS; i++) {

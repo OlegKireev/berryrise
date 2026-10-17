@@ -2,6 +2,8 @@ import { View } from 'react-native';
 
 import { useColors } from '@/shared/ui';
 
+const PERCENT = 100;
+
 // Горизонтальная полоска доли 0..1 на дорожке
 export function Bar({ share }: { share: number }) {
   const colors = useColors();
@@ -17,7 +19,7 @@ export function Bar({ share }: { share: number }) {
     >
       <View
         style={{
-          width: `${Math.min(share, 1) * 100}%`,
+          width: `${Math.min(share, 1) * PERCENT}%`,
           height: '100%',
           backgroundColor: colors.special,
         }}

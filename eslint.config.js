@@ -53,6 +53,35 @@ module.exports = defineConfig([
     },
   },
   {
+    // числа даем по имени: константа, единица из shared/lib (DAYS_PER_WEEK, DAY_MS) или поле объекта.
+    // Значения в объектах (стили, конфиги анимаций) правило не трогает
+    files: ['src/**/*.{ts,tsx}'],
+    ignores: [
+      // в тестах числа - сами данные
+      '**/*.test.ts',
+      // иллюстрации: координаты сцен медалей и кривые анимации
+      'src/entities/habit/ui/medal/**',
+      'src/entities/habit/ui/MedalMagic.tsx',
+      // числа и есть правило склонения
+      'src/shared/lib/utils/pluralize.ts',
+    ],
+    rules: {
+      '@typescript-eslint/no-magic-numbers': [
+        'error',
+        {
+          ignore: [-1, 0, 1, 2],
+          ignoreArrayIndexes: true,
+          ignoreDefaultValues: true,
+          ignoreEnums: true,
+          ignoreNumericLiteralTypes: true,
+          ignoreReadonlyClassProperties: true,
+          ignoreTypeIndexes: true,
+          enforceConst: true,
+        },
+      ],
+    },
+  },
+  {
     files: ['*.js'],
     languageOptions: { globals: { __dirname: 'readonly' } },
   },

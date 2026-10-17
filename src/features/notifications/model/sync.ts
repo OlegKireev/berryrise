@@ -3,21 +3,19 @@ import type { SQLiteDatabase } from 'expo-sqlite';
 
 import { listDayReviewDates } from '@/entities/day-review';
 import { getActiveParty, listPartyStartsSince } from '@/entities/party';
-import { toDay } from '@/shared/lib';
+import { DAY_MS, toDay } from '@/shared/lib';
 
 import { getPrefs } from '../api/prefs';
 import { t } from '../i18n';
 import { isStale, parseNotificationData, plan } from './plan';
 import { CHANNEL } from './setup';
 
-const DAY = 24 * 60 * 60 * 1000;
-
 async function run(db: SQLiteDatabase) {
   const now = Date.now();
   const [prefs, reviewDates, partyStarts, party] = await Promise.all([
     getPrefs(db),
     listDayReviewDates(db),
-    listPartyStartsSince(db, now - DAY),
+    listPartyStartsSince(db, now - DAY_MS),
     getActiveParty(db),
   ]);
   const data = {

@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+// поля экрана, они же зазор между полем в фокусе и кнопками внизу
 const GAP = 16;
 
 type Props = {
@@ -96,8 +97,8 @@ export function Screen({ children, footer }: Props) {
     <ScrollView
       ref={scrollRef}
       contentContainerStyle={{
-        padding: 16,
-        paddingBottom: 16 + (footer ? 0 : keyboardHeight),
+        padding: GAP,
+        paddingBottom: GAP + (footer ? 0 : keyboardHeight),
         gap: 12,
       }}
       keyboardShouldPersistTaps="handled"
@@ -121,9 +122,9 @@ export function Screen({ children, footer }: Props) {
       <View
         ref={footerRef}
         style={{
-          paddingHorizontal: 16,
+          paddingHorizontal: GAP,
           paddingTop: 8,
-          paddingBottom: 16 + (keyboardHeight || insets.bottom),
+          paddingBottom: GAP + (keyboardHeight || insets.bottom),
           gap: 12,
         }}
       >

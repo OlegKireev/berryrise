@@ -2,6 +2,7 @@ import {
   dayDate,
   getLocale,
   pluralize,
+  timeOfDay,
   type Locale,
   type PluralForms,
 } from '@/shared/lib';
@@ -106,7 +107,7 @@ const dateTime = new Intl.DateTimeFormat(locale, {
 export const formatDateTime = (ms: number) => dateTime.format(ms);
 
 // 24 часа в любой локали: пикер времени открывается так же
-const timeOfDay = new Intl.DateTimeFormat(locale, {
+const timeFormat = new Intl.DateTimeFormat(locale, {
   hour: '2-digit',
   minute: '2-digit',
   hour12: false,
@@ -114,9 +115,7 @@ const timeOfDay = new Intl.DateTimeFormat(locale, {
 
 // "21:00" из минут от полуночи
 export const formatTime = (minutes: number) =>
-  timeOfDay.format(
-    new Date(2026, 0, 1, Math.floor(minutes / 60), minutes % 60),
-  );
+  timeFormat.format(timeOfDay(minutes));
 
 const longDate = new Intl.DateTimeFormat(locale, {
   day: 'numeric',
@@ -159,10 +158,10 @@ export const formatMonth = (year: number, month: number) => {
   return s.charAt(0).toUpperCase() + s.slice(1);
 };
 
-// Короткие дни недели с понедельника: 12.10.2026 - понедельник
+// Короткие дни недели с понедельника: 2026-10-12 - понедельник
 const weekday = new Intl.DateTimeFormat(locale, { weekday: 'short' });
 export const weekdays = Array.from({ length: 7 }, (_, i) => {
-  const s = weekday.format(new Date(2026, 9, 12 + i));
+  const s = weekday.format(dayDate('2026-10-12', i));
   return s.charAt(0).toUpperCase() + s.slice(1);
 });
 

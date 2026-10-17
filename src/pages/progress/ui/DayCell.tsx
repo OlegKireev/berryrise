@@ -1,6 +1,7 @@
 import { Pressable, View } from 'react-native';
 
 import { DayCircle, type DayStatus } from '@/entities/habit';
+import { dayDate } from '@/shared/lib';
 
 type Props = {
   date: string | null; // null - пустая клетка до начала или после конца месяца
@@ -25,7 +26,7 @@ export function DayCell({ date, status, today, reviewed, onPress }: Props) {
       style={{ flex: 1 }}
     >
       <DayCircle
-        label={String(Number(date.slice(8)))}
+        label={String(dayDate(date).getDate())}
         status={status}
         today={today}
         dot={reviewed}
