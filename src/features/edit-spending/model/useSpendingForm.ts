@@ -7,21 +7,9 @@ import {
   type Drink,
   type Habit,
 } from '@/entities/habit';
-import { getLocale, logError } from '@/shared/lib';
+import { logError } from '@/shared/lib';
 
-// ponytail: короткий список частых валют, расширим по запросу
-export const currencies = [
-  'RUB',
-  'USD',
-  'EUR',
-  'GEL',
-  'KZT',
-  'UAH',
-  'BYN',
-  'GBP',
-  'TRY',
-  'AMD',
-];
+import { defaultCurrency } from './currency';
 
 const digits = (s: string) => s.replace(/\D/g, '');
 const toInt = (s: string) => (s === '' ? null : Number(s));
@@ -40,7 +28,7 @@ export function useSpendingForm(habit: Habit) {
 
   const [form, setForm] = useState<Form>(() => ({
     amount: habit.weeklySpend?.toString() ?? '',
-    currency: habit.currency ?? (getLocale() === 'ru' ? 'RUB' : 'USD'),
+    currency: habit.currency ?? defaultCurrency(),
     counts: Object.fromEntries(
       Object.entries(habit.drinks).map(([k, n]) => [k, String(n)]),
     ),

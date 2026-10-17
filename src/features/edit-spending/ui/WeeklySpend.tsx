@@ -1,7 +1,7 @@
 import { currencySymbol } from '@/shared/i18n';
 import { Choices, Input, Text } from '@/shared/ui';
 
-import { currencies } from '../model/useSpendingForm';
+import { currencies } from '../model/currency';
 
 import { t } from '../i18n';
 
