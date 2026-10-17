@@ -13,7 +13,9 @@
       // NODE_ENV: без него @expo/env пишет в лог, что не знает режим для .env (а .env у нас нет)
       "env": {
         "ORG_GRADLE_PROJECT_reactNativeArchitectures": "arm64-v8a",
-        "NODE_ENV": "development"
+        "NODE_ENV": "development",
+        // отдельный пакет com.berryrise.app.dev, см. app.config.ts
+        "APP_VARIANT": "development"
       }
     },
     "preview": {

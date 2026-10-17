@@ -23,7 +23,7 @@ DEEPLINK = 'exp+berryrise://expo-development-client/?url=http%3A%2F%2Flocalhost%
 DB = 'files/SQLite/berryrise.db'
 APK = ROOT / 'android/app/build/outputs/apk/debug/app-debug.apk'
 # ponytail: нативное изменение = поменялся один из этих файлов, пересборку можно форсировать up --build
-NATIVE_INPUTS = ['package.json', 'app.json', 'yarn.lock', 'eas.json']
+NATIVE_INPUTS = ['package.json', 'app.json', 'app.config.ts', 'yarn.lock', 'eas.json']
 NATIVE_HASH = APK.parent / 'native-inputs.sha256'
 SDK = Path(os.environ.get('ANDROID_HOME', Path.home() / 'Library/Android/sdk'))
 ADB = str(SDK / 'platform-tools/adb')
