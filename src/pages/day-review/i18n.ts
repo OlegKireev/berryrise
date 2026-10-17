@@ -8,11 +8,13 @@ export const t = createT(
       forToday: 'За сегодня',
       forYesterday: 'За вчера',
       forDay: 'За',
+      done: 'День записан',
     },
     en: {
       forToday: 'For today',
       forYesterday: 'For yesterday',
       forDay: 'For',
+      done: 'Day saved',
     },
   },
   { review: dayReviewDict, option: optionDict },

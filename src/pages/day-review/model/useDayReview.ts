@@ -22,6 +22,9 @@ import {
   toggleExclusive,
 } from '@/shared/lib';
 
+// сколько держим награду перед закрытием
+const DONE_MS = 300;
+
 // Форма итогов дня. null - еще грузим
 export function useDayReview() {
   const db = useSQLiteContext();
@@ -53,6 +56,7 @@ export function useDayReview() {
   const [helpers, setHelpers] = useState<Helper[]>([]);
   const [note, setNote] = useState('');
   const [saving, setSaving] = useState(false);
+  const [done, setDone] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -105,7 +109,8 @@ export function useDayReview() {
       note,
     });
     syncNotifications(db);
-    router.back();
+    setDone(true);
+    setTimeout(() => router.back(), DONE_MS);
   };
 
   return {
@@ -126,6 +131,7 @@ export function useDayReview() {
       setHelpers(toggleExclusive(helpers, h, 'notNeeded')),
     note,
     setNote,
+    done,
     canSave: !saving && mood !== null && craving !== null,
     save,
   };

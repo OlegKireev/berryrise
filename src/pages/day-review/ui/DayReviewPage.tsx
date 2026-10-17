@@ -1,11 +1,13 @@
 import { ReasonList } from '@/entities/reason';
 import { cravings, hardships, helpers, moods, places } from '@/shared/config';
 import { formatDay } from '@/shared/i18n';
-import { Button, Choices, Input, Screen, Text } from '@/shared/ui';
+import { Choices, Input, Screen, Text } from '@/shared/ui';
 
 import { useDayReview } from '../model/useDayReview';
 
 import { t } from '../i18n';
+
+import { SaveButton } from './SaveButton';
 
 export function DayReviewPage() {
   const form = useDayReview();
@@ -25,10 +27,9 @@ export function DayReviewPage() {
   return (
     <Screen
       footer={
-        <Button
-          variant="primary"
-          title={t('save')}
+        <SaveButton
           disabled={!form.canSave}
+          done={form.done}
           onPress={form.save}
         />
       }

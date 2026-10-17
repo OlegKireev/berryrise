@@ -1,10 +1,12 @@
 export { AddField } from './AddField';
+export { Burst, Spark } from './Burst';
 export { Button } from './Button';
 export { Card } from './Card';
 export { Chip } from './Chip';
 export { ChipRow } from './ChipRow';
 export { Choices } from './Choices';
 export { DateTimeField } from './DateTimeField';
+export { Icon } from './Icon';
 export { Input } from './Input';
 export { Row } from './Row';
 export { Screen } from './Screen';

@@ -4,6 +4,7 @@ import { Animated, Easing, View } from 'react-native';
 import Svg, { Circle, Defs, RadialGradient, Stop } from 'react-native-svg';
 
 import { useReduceMotion } from '@/shared/lib';
+import { Burst, Spark } from '@/shared/ui';
 
 import type { AchievementKey, MedalState } from '../model/achievements';
 
@@ -27,28 +28,6 @@ const rnd = (i: number, k: number) => {
   const v = Math.sin(i * 12.9898 + k * 78.233) * 43758.5453;
   return v - Math.floor(v);
 };
-
-// Искра: четыре луча из двух вытянутых ромбов
-function Spark({ size, color }: { size: number; color: string }) {
-  const ray = { position: 'absolute', backgroundColor: color } as const;
-  return (
-    <View
-      style={{
-        width: size,
-        height: size,
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-    >
-      <View
-        style={[ray, { width: size * 0.2, height: size, borderRadius: size }]}
-      />
-      <View
-        style={[ray, { width: size, height: size * 0.2, borderRadius: size }]}
-      />
-    </View>
-  );
-}
 
 // Медаль с магией в духе золотых карт: свечение, блик по рамке, летающая пыль.
 // У силуэта следующей медали магии нет. Все на Animated, без пересборки
@@ -245,44 +224,15 @@ export function MedalMagic({ achievement, state, size, entrance }: Props) {
         />
       </Animated.View>
 
-      {entrance &&
-        magic &&
-        Array.from({ length: BURST }, (_, i) => {
-          const a = (i / BURST) * 2 * Math.PI;
-          const r = size * (0.7 + (i % 3) * 0.12);
-          return (
-            <Animated.View
-              key={`b${i}`}
-              pointerEvents="none"
-              style={{
-                position: 'absolute',
-                opacity: burst.interpolate({
-                  inputRange: [0, 0.1, 1],
-                  outputRange: [0, 1, 0],
-                }),
-                transform: [
-                  {
-                    translateX: burst.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [0, Math.cos(a) * r],
-                    }),
-                  },
-                  {
-                    translateY: burst.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [0, Math.sin(a) * r],
-                    }),
-                  },
-                ],
-              }}
-            >
-              <Spark
-                size={i % 2 ? 8 : 12}
-                color={i % 2 ? metal.light : '#FFFFFF'}
-              />
-            </Animated.View>
-          );
-        })}
+      {entrance && magic && (
+        <Burst
+          progress={burst}
+          count={BURST}
+          from={{ x: 0, y: 0 }}
+          to={{ x: size * 0.7, y: size * 0.7 }}
+          colors={['#FFFFFF', metal.light]}
+        />
+      )}
 
       {magic &&
         reduce === false &&

@@ -62,6 +62,7 @@ module.exports = defineConfig([
       // иллюстрации: координаты сцен медалей и кривые анимации
       'src/entities/habit/ui/medal/**',
       'src/entities/habit/ui/MedalMagic.tsx',
+      'src/shared/ui/Burst.tsx',
       // числа и есть правило склонения
       'src/shared/lib/utils/pluralize.ts',
     ],
