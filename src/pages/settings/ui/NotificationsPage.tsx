@@ -1,10 +1,6 @@
 import { Linking } from 'react-native';
 
-import {
-  AutostartHint,
-  NotificationForm,
-  needsAutostartHint,
-} from '@/features/notifications';
+import { AutostartHint, NotificationForm } from '@/features/notifications';
 import { Button, Screen, Text } from '@/shared/ui';
 
 import { useNotificationSettings } from '../model/useNotificationSettings';
@@ -33,7 +29,7 @@ export function NotificationsPage() {
         value={settings.prefs}
         onChange={settings.change}
       />
-      {needsAutostartHint && <AutostartHint />}
+      {settings.autostartHint && <AutostartHint />}
     </Screen>
   );
 }

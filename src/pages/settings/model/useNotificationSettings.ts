@@ -1,11 +1,13 @@
 import { useFocusEffect } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { AppState } from 'react-native';
 
 import {
   anyOn,
   ensurePermission,
   getPrefs,
+  needsAutostartHint,
   permissionDenied,
   savePrefs,
   syncNotifications,
@@ -18,14 +20,29 @@ export function useNotificationSettings() {
 
   const [prefs, setPrefs] = useState<NotificationPrefs | null>(null);
   const [denied, setDenied] = useState(false);
+  const [autostartHint, setAutostartHint] = useState(needsAutostartHint);
 
   const checkPermission = () => permissionDenied().then(setDenied);
+
+  // Автозапуск включают из подсказки в системе: возврат оттуда не дает фокуса экрану
+  useEffect(() => {
+    const sub = AppState.addEventListener('change', (s) => {
+      if (s === 'active') {
+        setAutostartHint(needsAutostartHint());
+      }
+    });
+
+    return () => {
+      sub.remove();
+    };
+  }, []);
 
   // Разрешение могли поменять в системе, пока экран был закрыт
   useFocusEffect(
     useCallback(() => {
       getPrefs(db).then(setPrefs);
       checkPermission();
+      setAutostartHint(needsAutostartHint());
     }, [db]),
   );
 
@@ -37,6 +54,7 @@ export function useNotificationSettings() {
     prefs,
     // выключено в системе, а у нас что-то включено
     denied: denied && anyOn(prefs),
+    autostartHint,
     // Сохраняем сразу, как и старт
     change: async (p: NotificationPrefs) => {
       setPrefs(p);

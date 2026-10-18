@@ -50,7 +50,7 @@ export function useNotificationsStep() {
       setSaving(false);
 
       // подсказка про автозапуск нужна, только если что-то включено
-      if (on && needsAutostartHint) {
+      if (on && needsAutostartHint()) {
         router.push('/onboarding/autostart');
       } else {
         router.replace('/');
