@@ -8,6 +8,8 @@ import type { DayStatus } from '../model/types';
 
 // тонкий пунктир в 1 px теряется
 const DASHED_WIDTH = 1.5;
+// цветное кольцо дня без итогов толще серого, чтобы пустой день был заметен
+const RING_WIDTH = 2;
 
 type Props = {
   label: string;
@@ -15,20 +17,26 @@ type Props = {
   today?: boolean;
   // без size кружок занимает ширину родителя
   size?: number;
-  // точка внизу кружка: итоги дня подведены
-  dot?: boolean;
+  // итоги дня подведены: кружок закрашен, иначе кольцо
+  reviewed?: boolean;
 };
 
-// День кружком: полоска недели и календарь месяца выглядят одинаково
-export function DayCircle({ label, status, today, size, dot }: Props) {
+// День кружком: полоска недели и календарь месяца выглядят одинаково.
+// Цвет - статус дня, заливка - итоги дня
+export function DayCircle({ label, status, today, size, reviewed }: Props) {
   const color = useDayColor();
   const colors = useColors();
-  // сегодня закрашиваем только срыв: трезвым день станет, когда закончится
-  const filled = status === 'relapse' || (!today && status !== null);
-  // на закрашенном цифра и точка цветом фона, иначе в темной теме сливаются
-  const fg = filled ? colors.background : today ? colors.text : colors.muted;
-  // идущий трезвый день: пунктир цветом трезвого, в цвет рамки его не видно
-  const dashed = today && !filled;
+  const filled = !!reviewed;
+  // идущий трезвый день без итогов: пунктир, трезвым он станет, когда закончится
+  const dashed = today && !filled && status !== 'relapse';
+  // на цветной заливке цифра цветом фона, иначе в темной теме сливается;
+  // нейтральная заливка светлая, на ней цифра цветом текста
+  const fg =
+    filled && status !== null
+      ? colors.background
+      : filled || today || status !== null
+        ? colors.text
+        : colors.muted;
   return (
     <View
       style={{
@@ -38,24 +46,18 @@ export function DayCircle({ label, status, today, size, dot }: Props) {
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: filled ? color(status) : 'transparent',
-        borderWidth: filled ? 0 : dashed ? DASHED_WIDTH : 1,
-        borderColor: dashed ? colors.sober : colors.border,
+        borderWidth: filled
+          ? 0
+          : dashed
+            ? DASHED_WIDTH
+            : status === null
+              ? 1
+              : RING_WIDTH,
+        borderColor: dashed ? colors.sober : color(status),
         borderStyle: dashed ? 'dashed' : 'solid',
       }}
     >
       <Text style={{ fontSize: 14, color: fg }}>{label}</Text>
-      {dot && (
-        <View
-          style={{
-            position: 'absolute',
-            bottom: '14%',
-            width: 4,
-            height: 4,
-            borderRadius: 2,
-            backgroundColor: fg,
-          }}
-        />
-      )}
     </View>
   );
 }

@@ -29,7 +29,7 @@ export function DayCell({ date, status, today, reviewed, onPress }: Props) {
         label={String(dayDate(date).getDate())}
         status={status}
         today={today}
-        dot={reviewed}
+        reviewed={reviewed}
       />
     </Pressable>
   );

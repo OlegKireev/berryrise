@@ -10,6 +10,7 @@ import Info from 'lucide-react-native/icons/info';
 import Lock from 'lucide-react-native/icons/lock';
 import Moon from 'lucide-react-native/icons/moon';
 import Settings from 'lucide-react-native/icons/settings';
+import Star from 'lucide-react-native/icons/star';
 import Wallet from 'lucide-react-native/icons/wallet';
 
 import { useColors } from './theme';
@@ -26,6 +27,7 @@ const icons = {
   lock: Lock,
   moon: Moon,
   settings: Settings,
+  star: Star,
   wallet: Wallet,
 };
 
@@ -35,16 +37,19 @@ type Props = {
   name: IconName;
   size?: number;
   color?: string;
+  // заливка контура, по умолчанию нет
+  fill?: string;
 };
 
 // Единственное место, которое знает про Lucide. Толщина линии одна на все размеры
-export function Icon({ name, size = 24, color }: Props) {
+export function Icon({ name, size = 24, color, fill = 'none' }: Props) {
   const colors = useColors();
   const Component = icons[name];
   return (
     <Component
       size={size}
       color={color ?? colors.text}
+      fill={fill}
       strokeWidth={1.75}
       nonScalingStroke
       accessible={false}

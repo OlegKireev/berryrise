@@ -33,7 +33,7 @@ export function WeekStrip({ week }: { week: WeekDay[] }) {
             label={at(weekdays, d.weekday)}
             status={d.status}
             today={i === week.length - 1}
-            dot={d.reviewed}
+            reviewed={d.reviewed}
             size={36}
           />
         </Pressable>

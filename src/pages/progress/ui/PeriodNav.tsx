@@ -1,6 +1,6 @@
 import { View } from 'react-native';
 
-import { Button, Text } from '@/shared/ui';
+import { Button, Icon, Text, useColors } from '@/shared/ui';
 
 type Props = {
   label: string;
@@ -10,6 +10,8 @@ type Props = {
   canNext: boolean;
   prev: () => void;
   next: () => void;
+  // знак у подписи (собранный месяц), строка - что он значит, для диктора
+  mark?: string;
 };
 
 // Подпись периода и стрелки листания: месяц в календаре, день в модалке дня
@@ -21,7 +23,9 @@ export function PeriodNav({
   canNext,
   prev,
   next,
+  mark,
 }: Props) {
+  const colors = useColors();
   return (
     <View
       style={{
@@ -36,7 +40,21 @@ export function PeriodNav({
         disabled={!canPrev}
         onPress={prev}
       />
-      <Text variant="label">{label}</Text>
+      <View
+        accessible
+        accessibilityLabel={mark ? `${label}, ${mark}` : label}
+        style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}
+      >
+        <Text variant="label">{label}</Text>
+        {mark && (
+          <Icon
+            name="star"
+            size={18}
+            color={colors.special}
+            fill={colors.special}
+          />
+        )}
+      </View>
       <Button
         icon="chevronRight"
         accessibilityLabel={nextLabel}

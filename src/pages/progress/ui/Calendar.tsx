@@ -5,10 +5,12 @@ import { formatMonth, weekdays } from '@/shared/i18n';
 import { toDay } from '@/shared/lib';
 import { Text } from '@/shared/ui';
 
+import { Bar } from './Bar';
 import { DayCell } from './DayCell';
 import { Legend } from './Legend';
 import { PeriodNav } from './PeriodNav';
 
+import { monthReviews } from '../model/calendar';
 import { useCalendar } from '../model/useCalendar';
 
 import { t } from '../i18n';
@@ -31,6 +33,7 @@ export function Calendar({ startAt, now, days, reviewDates, onOpen }: Props) {
   );
   const today = toDay(now);
   const start = toDay(startAt);
+  const reviews = monthReviews(year, month, start, now, reviewDates);
 
   return (
     <View style={{ gap: 8 }}>
@@ -38,6 +41,7 @@ export function Calendar({ startAt, now, days, reviewDates, onOpen }: Props) {
         label={formatMonth(year, month)}
         prevLabel={t('prevMonth')}
         nextLabel={t('nextMonth')}
+        mark={reviews.collected ? t('monthCollected') : undefined}
         {...nav}
       />
       <View style={week}>
@@ -72,6 +76,17 @@ export function Calendar({ startAt, now, days, reviewDates, onOpen }: Props) {
           ))}
         </View>
       ))}
+      {reviews.total > 0 && (
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
+          <Bar share={reviews.done / reviews.total} />
+          <Text variant="hint">
+            {t('dayReview')}:{' '}
+            {reviews.collected
+              ? t('monthCollected')
+              : `${reviews.done} ${t('of')} ${reviews.total}`}
+          </Text>
+        </View>
+      )}
       <Legend />
     </View>
   );
