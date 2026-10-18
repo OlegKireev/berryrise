@@ -8,6 +8,7 @@ import { useDayReview } from '../model/useDayReview';
 import { t } from '../i18n';
 
 import { SaveButton } from './SaveButton';
+import { View } from 'react-native';
 
 export function DayReviewPage() {
   const form = useDayReview();
@@ -58,13 +59,6 @@ export function DayReviewPage() {
         isSelected={(c) => form.craving === c}
         onPress={form.setCraving}
       />
-      <Choices
-        title={t('option.titles.hardship')}
-        keys={hardships}
-        label={(h) => t(`option.hardship.${h}`)}
-        isSelected={(h) => form.hardships.includes(h)}
-        onPress={form.toggleHardship}
-      />
       <Collapse open={form.showHelpers}>
         <Choices
           title={t('option.titles.helper')}
@@ -74,13 +68,28 @@ export function DayReviewPage() {
           onPress={form.toggleHelper}
         />
       </Collapse>
-
-      <Input
-        value={form.note}
-        onChangeText={form.setNote}
-        placeholder={t('note')}
-        multiline
+      <Choices
+        title={t('option.titles.hardship')}
+        keys={hardships}
+        label={(h) => t(`option.hardship.${h}`)}
+        isSelected={(h) => form.hardships.includes(h)}
+        onPress={form.toggleHardship}
       />
+
+      <View>
+        <Text
+          variant="label"
+          style={{ marginBottom: 6 }}
+        >
+          {t('note')}
+        </Text>
+        <Input
+          value={form.note}
+          onChangeText={form.setNote}
+          placeholder={t('notePlaceholder')}
+          multiline
+        />
+      </View>
     </Screen>
   );
 }

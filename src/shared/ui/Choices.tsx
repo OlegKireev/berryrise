@@ -1,3 +1,4 @@
+import { View } from 'react-native';
 import { Chip } from './Chip';
 import { ChipRow } from './ChipRow';
 import { Text } from './Text';
@@ -19,8 +20,15 @@ export function Choices<K extends string | number>({
   onPress,
 }: Props<K>) {
   return (
-    <>
-      {title && <Text variant="label">{title}</Text>}
+    <View>
+      {title && (
+        <Text
+          variant="label"
+          style={{ marginBottom: 6 }}
+        >
+          {title}
+        </Text>
+      )}
       <ChipRow>
         {keys.map((k) => (
           <Chip
@@ -31,6 +39,6 @@ export function Choices<K extends string | number>({
           />
         ))}
       </ChipRow>
-    </>
+    </View>
   );
 }

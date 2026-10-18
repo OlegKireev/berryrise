@@ -1,3 +1,5 @@
+import { View } from 'react-native';
+
 import { hardships, moods, places } from '@/shared/config';
 import {
   Button,
@@ -59,12 +61,20 @@ export function RelapsePage() {
         onPress={form.toggleHardship}
       />
 
-      <Input
-        value={form.note}
-        onChangeText={form.setNote}
-        placeholder={t('note')}
-        multiline
-      />
+      <View>
+        <Text
+          variant="label"
+          style={{ marginBottom: 6 }}
+        >
+          {t('note')}
+        </Text>
+        <Input
+          value={form.note}
+          onChangeText={form.setNote}
+          placeholder={t('notePlaceholder')}
+          multiline
+        />
+      </View>
 
       <Button
         variant="primary"
