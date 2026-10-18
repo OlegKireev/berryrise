@@ -9,7 +9,7 @@ export type Streak = {
   current: number; // трезвых дней подряд, заканчивая сегодняшним
   best: number; // самая длинная серия
   total: number; // всего трезвых дней
-  since: number; // начало текущей серии: старт или последний срыв, epoch ms
+  since: string; // первый трезвый день текущей серии: день после старта или последнего срыва, YYYY-MM-DD; в день 0 - завтра
 };
 
 const relapsesInRange = (startAt: number, relapseAts: number[], now: number) =>
@@ -61,5 +61,10 @@ export function streak(
   }
 
   const relapses = relapsesInRange(startAt, relapseAts, now);
-  return { current: run, best, total, since: Math.max(startAt, ...relapses) };
+  return {
+    current: run,
+    best,
+    total,
+    since: addDays(toDay(Math.max(startAt, ...relapses)), 1),
+  };
 }

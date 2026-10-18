@@ -8,7 +8,7 @@ import { insertRelapse } from '@/entities/relapse';
 import { logPartyRelapse } from '@/features/log-party-relapse';
 import { syncNotifications } from '@/features/notifications';
 import type { Hardship, Mood, Place } from '@/shared/config';
-import { toggle } from '@/shared/lib';
+import { dayDate, toDay, toggle } from '@/shared/lib';
 
 // Форма срыва. null - еще грузим
 export function useRelapse() {
@@ -63,7 +63,8 @@ export function useRelapse() {
   };
 
   return {
-    startAt: habit.startAt,
+    // Срыв не раньше начала дня старта: у старых записей в startAt еще есть время
+    minAt: dayDate(toDay(habit.startAt)),
     at,
     setAt,
     mood,

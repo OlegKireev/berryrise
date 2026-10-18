@@ -2,7 +2,7 @@ import { createT } from '@/shared/i18n';
 
 export const t = createT({
   ru: {
-    startAt: 'Старт',
+    startAt: 'Последний день с алкоголем',
     version: 'Версия',
     logEmpty: 'Записей пока нет.',
     saveToPhone: 'Сохранить на телефон',
@@ -19,7 +19,7 @@ export const t = createT({
       'В файле все твои данные, включая заметки. Храни его там, куда не заглядывают посторонние. Импорт заменит все данные на телефоне данными из файла.',
   },
   en: {
-    startAt: 'Start',
+    startAt: 'Last drinking day',
     version: 'Version',
     logEmpty: 'No entries yet.',
     saveToPhone: 'Save to phone',

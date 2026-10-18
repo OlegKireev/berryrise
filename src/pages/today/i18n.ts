@@ -5,6 +5,7 @@ export const t = createT(
   {
     ru: {
       since: 'с',
+      firstSoberTomorrow: 'Первый трезвый день - завтра',
       withoutAlcohol: 'без алкоголя',
       dayReviewToday: 'Итоги за сегодня',
       dayReviewYesterday: 'Итоги за вчера',
@@ -24,6 +25,7 @@ export const t = createT(
     },
     en: {
       since: 'since',
+      firstSoberTomorrow: 'Your first sober day is tomorrow',
       withoutAlcohol: 'sober',
       dayReviewToday: "Today's review",
       dayReviewYesterday: "Yesterday's review",

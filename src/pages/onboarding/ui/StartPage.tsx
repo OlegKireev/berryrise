@@ -21,7 +21,8 @@ export function StartPage() {
       <Text variant="title">{t('startTitle')}</Text>
       <Text>{t('startHint')}</Text>
       <DateTimeField
-        value={startAt ?? new Date()}
+        mode="date"
+        value={startAt}
         onChange={setStartAt}
         max={new Date()}
       />

@@ -19,8 +19,9 @@ export const t = createT({
     warningText:
       'При таком потреблении резкий отказ от алкоголя может быть опасен. Лучше посоветоваться с наркологом, он поможет бросить безопасно. Если станет плохо, вызывай скорую.',
     warningNext: 'Понятно, дальше',
-    startTitle: 'Когда ты бросил?',
-    startHint: 'Можно указать момент в прошлом.',
+    startTitle: 'Последний день с алкоголем',
+    startHint:
+      'Следующий день будет первым трезвым. Если бросаешь сегодня, оставь сегодняшний день.',
     startButton: 'Начать',
     reasonsStepTitle: 'Ради чего ты бросаешь?',
     reasonsStepHint:
@@ -53,8 +54,9 @@ export const t = createT({
     warningText:
       'With this level of drinking, quitting abruptly can be dangerous. Talk to an addiction specialist, they can help you quit safely. If you feel very unwell, call emergency services.',
     warningNext: 'Got it, next',
-    startTitle: 'When did you quit?',
-    startHint: 'You can pick a moment in the past.',
+    startTitle: 'Your last drinking day',
+    startHint:
+      "The next day will be your first sober one. If you're quitting today, keep today.",
     startButton: 'Start',
     reasonsStepTitle: 'Why are you quitting?',
     reasonsStepHint:

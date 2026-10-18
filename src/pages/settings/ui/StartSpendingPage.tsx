@@ -17,6 +17,7 @@ export function StartSpendingPage() {
     <Screen>
       <Text variant="label">{t('startAt')}</Text>
       <DateTimeField
+        mode="date"
         value={new Date(settings.habit.startAt)}
         onChange={settings.changeStart}
         max={new Date(settings.maxStart)}

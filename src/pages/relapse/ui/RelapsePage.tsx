@@ -27,7 +27,7 @@ export function RelapsePage() {
       <DateTimeField
         value={form.at ?? new Date()}
         onChange={form.setAt}
-        min={new Date(form.startAt)}
+        min={form.minAt}
         max={new Date()}
       />
 

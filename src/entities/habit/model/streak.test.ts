@@ -15,7 +15,7 @@ test('день старта не трезвый', () => {
     current: 0,
     best: 0,
     total: 0,
-    since: oct(13, 9),
+    since: '2026-10-14',
   });
 });
 
@@ -29,7 +29,7 @@ test('серия после срыва и всего трезвых', () => {
   const s = streak(oct(12, 23), [oct(15, 22)], oct(17));
   assert.equal(s.current, 2);
   assert.equal(s.total, 4);
-  assert.equal(s.since, oct(15, 22));
+  assert.equal(s.since, '2026-10-16');
 });
 
 test('лучшая серия в прошлом', () => {

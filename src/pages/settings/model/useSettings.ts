@@ -4,13 +4,14 @@ import { useCallback, useState } from 'react';
 
 import { getHabit, updateHabitStart, type Habit } from '@/entities/habit';
 import { listRelapses } from '@/entities/relapse';
+import { dayDate, toDay } from '@/shared/lib';
 
 // Настройки привычки. null - еще грузим
 export function useSettings() {
   const db = useSQLiteContext();
 
   const [habit, setHabit] = useState<Habit | null>(null);
-  // Старт не позже текущего момента и самого раннего срыва
+  // Старт не позже сегодняшнего дня и дня самого раннего срыва, локальная полночь
   const [maxStart, setMaxStart] = useState(0);
 
   useFocusEffect(
@@ -21,7 +22,8 @@ export function useSettings() {
           listRelapses(db),
         ]);
         setHabit(h);
-        setMaxStart(Math.min(Date.now(), relapses.at(-1)?.at ?? Infinity));
+        const last = Math.min(Date.now(), relapses.at(-1)?.at ?? Infinity);
+        setMaxStart(dayDate(toDay(last)).getTime());
       })();
     }, [db]),
   );
