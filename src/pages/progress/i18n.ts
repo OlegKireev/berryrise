@@ -1,3 +1,4 @@
+import { dayReviewDict } from '@/entities/day-review';
 import { habitDict } from '@/entities/habit';
 import { optionDict } from '@/shared/config';
 import { createT } from '@/shared/i18n';
@@ -123,5 +124,5 @@ export const t = createT(
       topHelper: 'Helps most:',
     },
   },
-  { habit: habitDict, option: optionDict },
+  { habit: habitDict, option: optionDict, review: dayReviewDict },
 );

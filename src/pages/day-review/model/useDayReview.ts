@@ -2,7 +2,12 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useEffect, useState } from 'react';
 
-import { reviewDay, getDayReview, saveDayReview } from '@/entities/day-review';
+import {
+  canReview,
+  getDayReview,
+  reviewDay,
+  saveDayReview,
+} from '@/entities/day-review';
 import { getHabit } from '@/entities/habit';
 import { syncNotifications } from '@/features/notifications';
 import {
@@ -23,7 +28,7 @@ export function useDayReview() {
   // День из уведомления или карточки дня, иначе по текущему времени. Считаем один раз при открытии:
   // сохраняем ровно за тот, что в заголовке
   const params = useLocalSearchParams<{ day?: string }>();
-  const [{ day, when }] = useState(() => {
+  const [{ day, when, tooEarly }] = useState(() => {
     const now = Date.now();
     const day = params.day ?? reviewDay(now);
     const today = toDay(now);
@@ -34,9 +39,10 @@ export function useDayReview() {
         : day === addDays(today, -1)
           ? ('yesterday' as const)
           : null;
-    return { day, when };
+    return { day, when, tooEarly: !canReview(day, now) };
   });
-  const [state, setState] = useState<{ beforeStart: boolean } | null>(null);
+  // later - формы нет, только подсказка про 18:00: день раньше старта или сегодня до 18:00
+  const [state, setState] = useState<{ later: boolean } | null>(null);
   const [mood, setMood] = useState<Mood | null>(null);
   const [craving, setCraving] = useState<Craving | null>(null);
   const [hardships, setHardships] = useState<Hardship[]>([]);
@@ -61,10 +67,10 @@ export function useDayReview() {
       }
 
       setState({
-        beforeStart: !habit || day < toDay(habit.startAt),
+        later: tooEarly || !habit || day < toDay(habit.startAt),
       });
     })();
-  }, [db, day]);
+  }, [db, day, tooEarly]);
 
   if (!state) {
     return null;

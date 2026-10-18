@@ -11,3 +11,8 @@ export function reviewDay(now: number): string {
     ? addDays(today, -1)
     : today;
 }
+
+// Можно ли сейчас заполнять итоги за день: за сегодня только с 18:00, прошлые дни всегда
+export function canReview(day: string, now: number): boolean {
+  return day !== toDay(now) || new Date(now).getHours() >= REVIEW_CUTOFF_HOUR;
+}

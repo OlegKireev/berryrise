@@ -17,7 +17,7 @@ export function DayReviewPage() {
     return null;
   }
 
-  if (form.beforeStart) {
+  if (form.later) {
     return (
       <Screen>
         <Text>

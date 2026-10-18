@@ -3,9 +3,9 @@ import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback, useEffect, useState } from 'react';
 
 import {
+  listDayReviewDates,
   REVIEW_CUTOFF_HOUR,
   reviewDay,
-  getDayReview,
 } from '@/entities/day-review';
 import {
   getHabit,
@@ -30,8 +30,8 @@ export function useToday() {
   const [data, setData] = useState<{
     habit: Habit;
     relapseAts: number[];
-    // день, за который итоги уже подведены
-    filledDay: string | null;
+    // дни, за которые итоги уже подведены
+    reviewDates: Set<string>;
     party: Party | null; // идущая вечеринка
     reasons: ReasonRow[];
   } | null>(null);
@@ -48,18 +48,18 @@ export function useToday() {
       }
 
       const now = Date.now();
-      const [relapses, review, party, reasons] = await Promise.all([
+      const [relapses, party, reasons, reviewDates] = await Promise.all([
         listRelapses(db),
-        getDayReview(db, reviewDay(now)),
         getActiveParty(db),
         listReasons(db),
+        listDayReviewDates(db),
       ]);
       setData({
         habit,
         relapseAts: relapses.map((r) => r.at),
-        filledDay: review?.date ?? null,
         party,
         reasons,
+        reviewDates: new Set(reviewDates),
       });
       setNow(now);
     })();
@@ -102,7 +102,12 @@ export function useToday() {
     streak: s,
     // null - причин нет
     reason: reasonOfDay(data.reasons, toDay(now)),
-    week: lastWeek(soberDays(habit.startAt, data.relapseAts, now), now),
+    week: lastWeek(
+      soberDays(habit.startAt, data.relapseAts, now),
+      now,
+      toDay(habit.startAt),
+      data.reviewDates,
+    ),
     saved: savings(s.total, habit.weeklySpend, habit.drinks),
     currency: habit.currency,
     hasDrinks: Object.keys(habit.drinks).length > 0,
@@ -112,7 +117,7 @@ export function useToday() {
     // итоги дня
     reviewDay: day,
     isToday: day === toDay(now),
-    reviewDone: data.filledDay === day,
+    reviewDone: data.reviewDates.has(day),
     beforeStart: day < toDay(habit.startAt),
     markPartySober: (id: string) =>
       setPartyResult(db, id, 'sober').then(afterParty),

@@ -1,5 +1,6 @@
 import { View } from 'react-native';
 
+import { cutoffTime } from '@/entities/day-review';
 import type { Craving, Hardship, Helper, Mood } from '@/shared/config';
 import { Button, Text } from '@/shared/ui';
 
@@ -16,10 +17,12 @@ type Props = {
     helpers: Helper[];
     note: string | null;
   } | null;
+  // сегодня до 18:00: вместо кнопки подсказка
+  locked: boolean;
 };
 
 // Итоги дня в карточке: ответы и переход заполнить или изменить за этот день
-export function DayReviewSummary({ date, review }: Props) {
+export function DayReviewSummary({ date, review, locked }: Props) {
   return (
     <View style={{ gap: 4 }}>
       <Text weight="semibold">{t('dayReview')}</Text>
@@ -50,10 +53,16 @@ export function DayReviewSummary({ date, review }: Props) {
       ) : (
         <Text variant="hint">{t('reviewEmpty')}</Text>
       )}
-      <Button
-        title={review ? t('reviewEdit') : t('reviewFill')}
-        href={{ pathname: '/day-review', params: { day: date } }}
-      />
+      {locked ? (
+        <Text variant="hint">
+          {t('review.later')} {cutoffTime}
+        </Text>
+      ) : (
+        <Button
+          title={review ? t('reviewEdit') : t('reviewFill')}
+          href={{ pathname: '/day-review', params: { day: date } }}
+        />
+      )}
     </View>
   );
 }

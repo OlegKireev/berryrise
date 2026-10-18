@@ -43,6 +43,7 @@ export function DayPage() {
         date={date}
         start={start}
         today={today}
+        now={data.now}
         got={data.got}
         onChanged={data.reload}
       />

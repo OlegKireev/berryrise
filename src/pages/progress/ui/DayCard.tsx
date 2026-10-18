@@ -1,6 +1,7 @@
 import { router } from 'expo-router';
 import { View } from 'react-native';
 
+import { canReview } from '@/entities/day-review';
 import { achievementKeys, type Got } from '@/entities/habit';
 import { Text } from '@/shared/ui';
 
@@ -17,13 +18,14 @@ type Props = {
   date: string; // YYYY-MM-DD, какой день грузить
   start: string; // день старта
   today: string;
+  now: number;
   got: Got;
   // срыв удален: календарь, стрик и достижения пора пересчитать
   onChanged: () => void;
 };
 
 // Содержимое карточки дня: статус, срывы, вечеринка, итоги и достижения. Данные грузит сама
-export function DayCard({ date, start, today, got, onChanged }: Props) {
+export function DayCard({ date, start, today, now, got, onChanged }: Props) {
   const { data, reload } = useDayCard(date);
 
   if (!data) {
@@ -65,6 +67,7 @@ export function DayCard({ date, start, today, got, onChanged }: Props) {
       <DayReviewSummary
         date={day}
         review={data.review}
+        locked={!canReview(day, now)}
       />
       {medals.length > 0 && (
         <View style={{ gap: 12 }}>

@@ -9,11 +9,24 @@ import {
   weekdayFromMonday,
 } from '@/shared/lib';
 
-// weekday: 0 - понедельник, как в weekdays из i18n
-export type WeekDay = { date: string; weekday: number; status: DayStatus };
+// weekday: 0 - понедельник, как в weekdays из i18n.
+// reviewed - есть итоги дня, canOpen - день от старта по сегодня, открывает карточку дня
+export type WeekDay = {
+  date: string;
+  weekday: number;
+  status: DayStatus;
+  reviewed: boolean;
+  canOpen: boolean;
+};
 
-// Шесть предыдущих дней и сегодня. Дня нет в days - это день старта или раньше
-export function lastWeek(days: Day[], now: number): WeekDay[] {
+// Шесть предыдущих дней и сегодня. Дня нет в days - это день старта или раньше.
+// start - день старта, reviewDates - дни с итогами (YYYY-MM-DD)
+export function lastWeek(
+  days: Day[],
+  now: number,
+  start: string,
+  reviewDates: Set<string>,
+): WeekDay[] {
   const sober = new Map(days.map((d) => [d.date, d.sober]));
   const today = toDay(now);
 
@@ -24,6 +37,8 @@ export function lastWeek(days: Day[], now: number): WeekDay[] {
       date,
       weekday: weekdayFromMonday(dayDate(date)),
       status: s === undefined ? null : s ? 'sober' : 'relapse',
+      reviewed: reviewDates.has(date),
+      canOpen: date >= start,
     };
   });
 }

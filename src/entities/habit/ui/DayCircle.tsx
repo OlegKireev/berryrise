@@ -6,6 +6,9 @@ import { useDayColor } from './dayColor';
 
 import type { DayStatus } from '../model/types';
 
+// тонкий пунктир в 1 px теряется
+const DASHED_WIDTH = 1.5;
+
 type Props = {
   label: string;
   status: DayStatus;
@@ -24,6 +27,8 @@ export function DayCircle({ label, status, today, size, dot }: Props) {
   const filled = status === 'relapse' || (!today && status !== null);
   // на закрашенном цифра и точка цветом фона, иначе в темной теме сливаются
   const fg = filled ? colors.background : today ? colors.text : colors.muted;
+  // идущий трезвый день: пунктир цветом трезвого, в цвет рамки его не видно
+  const dashed = today && !filled;
   return (
     <View
       style={{
@@ -33,9 +38,9 @@ export function DayCircle({ label, status, today, size, dot }: Props) {
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: filled ? color(status) : 'transparent',
-        borderWidth: filled ? 0 : 1,
-        borderColor: colors.border,
-        borderStyle: today && !filled ? 'dashed' : 'solid',
+        borderWidth: filled ? 0 : dashed ? DASHED_WIDTH : 1,
+        borderColor: dashed ? colors.sober : colors.border,
+        borderStyle: dashed ? 'dashed' : 'solid',
       }}
     >
       <Text style={{ fontSize: 14, color: fg }}>{label}</Text>
