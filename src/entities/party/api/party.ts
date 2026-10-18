@@ -97,18 +97,6 @@ export const setPartyResult = (
 export const cancelParty = (db: SQLiteDatabase, id: string) =>
   softDelete(db, 'party', id);
 
-// Была ли неудаленная вечеринка с началом в [from, to)
-export const hasPartyOn = async (
-  db: SQLiteDatabase,
-  from: number,
-  to: number,
-) =>
-  !!(await db.getFirstAsync(
-    'SELECT 1 FROM party WHERE deletedAt IS NULL AND startAt >= ? AND startAt < ?',
-    from,
-    to,
-  ));
-
 // Последняя неудаленная вечеринка с началом в [from, to), для карточки дня
 export const getPartyOn = async (
   db: SQLiteDatabase,

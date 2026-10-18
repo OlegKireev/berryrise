@@ -28,7 +28,6 @@ const load = async (db: SQLiteDatabase, date: string) => {
     review: review && {
       mood: review.mood,
       craving: review.craving,
-      places: review.places,
       hardships: review.hardships,
       helpers: review.helpers,
       note: review.note,

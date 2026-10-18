@@ -1,6 +1,6 @@
 import { View } from 'react-native';
 
-import type { Craving, Hardship, Helper, Mood, Place } from '@/shared/config';
+import type { Craving, Hardship, Helper, Mood } from '@/shared/config';
 import { Button, Text } from '@/shared/ui';
 
 import { Answer } from './Answer';
@@ -12,7 +12,6 @@ type Props = {
   review: {
     mood: Mood;
     craving: Craving;
-    places: Place[];
     hardships: Hardship[];
     helpers: Helper[];
     note: string | null;
@@ -33,10 +32,6 @@ export function DayReviewSummary({ date, review }: Props) {
           <Answer
             title={t('option.titles.craving')}
             value={t(`option.craving.${review.craving}`)}
-          />
-          <Answer
-            title={t('option.titles.place')}
-            value={review.places.map((p) => t(`option.place.${p}`)).join(', ')}
           />
           <Answer
             title={t('option.titles.hardship')}

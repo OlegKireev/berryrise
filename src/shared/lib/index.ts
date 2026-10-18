@@ -23,7 +23,7 @@ export {
   weekdayFromMonday,
 } from './utils/time';
 export { toDay } from './utils/toDay';
-export { toggle, toggleExclusive } from './utils/toggle';
+export { toggle } from './utils/toggle';
 export { iconMask } from './iconMask';
 export { useReduceMotion } from './useReduceMotion';
 export { clearLog, log, logError, logFile, readLog, trimLog } from './log';

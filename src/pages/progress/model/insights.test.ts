@@ -107,32 +107,60 @@ test('настроение: сколько дней было каждое', () =
 test('топ 3: по убыванию, равенство по порядку вопроса', () => {
   const reviews = [
     ...Array<ReturnType<typeof review>>(9).fill(
-      review('2026-10-01', { hardships: ['stress'] }),
+      review('2026-10-01', { craving: 'slight', hardships: ['stress'] }),
     ),
     ...Array<ReturnType<typeof review>>(5).fill(
-      review('2026-10-01', { hardships: ['boredom', 'fatigue'] }),
+      review('2026-10-01', {
+        craving: 'strong',
+        hardships: ['boredom', 'fatigue'],
+      }),
     ),
     ...Array<ReturnType<typeof review>>(2).fill(
-      review('2026-10-01', { hardships: ['loneliness'] }),
+      review('2026-10-01', {
+        craving: 'noticeable',
+        hardships: ['loneliness'],
+      }),
     ),
   ];
-  assert.deepEqual(run({ reviews }).hardships, [
+  const r = run({ reviews });
+  assert.deepEqual(r.hardships, [
     { key: 'stress', count: 9 },
     { key: 'fatigue', count: 5 },
     { key: 'boredom', count: 5 },
   ]);
+  assert.equal(r.cravingCount, 16);
 });
 
-test('топ без "ничего" и "ничего не понадобилось"', () => {
+test('топы только по дням с тягой', () => {
   const r = run({
     reviews: [
-      review('2026-10-01', { hardships: ['nothing'], helpers: ['notNeeded'] }),
-      review('2026-10-01', { hardships: ['nothing'], helpers: ['sleep'] }),
+      review('2026-10-01', {
+        craving: 'slight',
+        hardships: ['stress'],
+        helpers: ['hobby'],
+      }),
+      review('2026-10-02', { hardships: ['stress', 'boredom'] }),
+      review('2026-10-03', { helpers: ['sleep'] }),
     ],
   });
+  assert.equal(r.reviewCount, 3);
+  assert.equal(r.cravingCount, 1);
+  assert.deepEqual(r.hardships, [{ key: 'stress', count: 1 }]);
+  assert.deepEqual(r.helpers, [{ key: 'hobby', count: 1 }]);
+  assert.equal(r.topHelper, 'hobby');
+});
+
+test('тяги не было: топы пустые', () => {
+  const r = run({
+    reviews: [
+      review('2026-10-01', { hardships: ['stress'], helpers: ['sleep'] }),
+      review('2026-10-02', { hardships: ['anxiety'] }),
+    ],
+  });
+  assert.equal(r.cravingCount, 0);
   assert.deepEqual(r.hardships, []);
-  assert.deepEqual(r.helpers, [{ key: 'sleep', count: 1 }]);
-  assert.equal(r.topHelper, 'sleep');
+  assert.deepEqual(r.helpers, []);
+  assert.equal(r.topHelper, null);
 });
 
 test('срывы: без срывов null, без разбора только в счет', () => {

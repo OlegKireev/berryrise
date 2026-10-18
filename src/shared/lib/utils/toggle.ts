@@ -9,14 +9,3 @@ export const toggle = <T>(
       ? list
       : [...list, item]
     : list.filter((x) => x !== item);
-
-// Вариант "ничего" снимает остальные, любой другой снимает "ничего"
-export const toggleExclusive = <T>(list: T[], item: T, none: T): T[] =>
-  item === none
-    ? list.includes(none)
-      ? []
-      : [none]
-    : toggle(
-        list.filter((x) => x !== none),
-        item,
-      );

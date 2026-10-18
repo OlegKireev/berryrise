@@ -4,22 +4,14 @@ import { useEffect, useState } from 'react';
 
 import { reviewDay, getDayReview, saveDayReview } from '@/entities/day-review';
 import { getHabit } from '@/entities/habit';
-import { hasPartyOn } from '@/entities/party';
 import { syncNotifications } from '@/features/notifications';
 import {
   type Craving,
   type Hardship,
   type Helper,
   type Mood,
-  type Place,
 } from '@/shared/config';
-import {
-  addDays,
-  dayRange,
-  toDay,
-  toggle,
-  toggleExclusive,
-} from '@/shared/lib';
+import { addDays, toDay, toggle } from '@/shared/lib';
 
 // сколько держим награду перед закрытием
 const DONE_MS = 300;
@@ -47,7 +39,6 @@ export function useDayReview() {
   const [state, setState] = useState<{ beforeStart: boolean } | null>(null);
   const [mood, setMood] = useState<Mood | null>(null);
   const [craving, setCraving] = useState<Craving | null>(null);
-  const [places, setPlaces] = useState<Place[]>([]);
   const [hardships, setHardships] = useState<Hardship[]>([]);
   const [helpers, setHelpers] = useState<Helper[]>([]);
   const [note, setNote] = useState('');
@@ -64,17 +55,9 @@ export function useDayReview() {
       if (existing) {
         setMood(existing.mood);
         setCraving(existing.craving);
-        setPlaces(existing.places);
         setHardships(existing.hardships);
         setHelpers(existing.helpers);
         setNote(existing.note ?? '');
-      } else {
-        // Была вечеринка в этот день - заранее выбираем место "в компании"
-        const { from, to } = dayRange(day);
-
-        if (await hasPartyOn(db, from, to)) {
-          setPlaces(['company']);
-        }
       }
 
       setState({
@@ -97,9 +80,9 @@ export function useDayReview() {
       date: day,
       mood,
       craving,
-      places,
       hardships,
-      helpers,
+      // помощь спрашиваем только при тяге: скрытый выбор не сохраняем
+      helpers: craving === 'none' ? [] : helpers,
       note,
     });
     syncNotifications(db);
@@ -115,14 +98,11 @@ export function useDayReview() {
     setMood,
     craving,
     setCraving,
-    places,
-    togglePlace: (p: Place) => setPlaces(toggle(places, p)),
     hardships,
-    toggleHardship: (h: Hardship) =>
-      setHardships(toggleExclusive(hardships, h, 'nothing')),
+    toggleHardship: (h: Hardship) => setHardships(toggle(hardships, h)),
+    showHelpers: craving !== null && craving !== 'none',
     helpers,
-    toggleHelper: (h: Helper) =>
-      setHelpers(toggleExclusive(helpers, h, 'notNeeded')),
+    toggleHelper: (h: Helper) => setHelpers(toggle(helpers, h)),
     note,
     setNote,
     done,

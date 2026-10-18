@@ -1,7 +1,7 @@
 import { cutoffTime } from '@/entities/day-review';
-import { cravings, hardships, helpers, moods, places } from '@/shared/config';
+import { cravings, hardships, helpers, moods } from '@/shared/config';
 import { formatDay } from '@/shared/i18n';
-import { Choices, Input, Screen, Text } from '@/shared/ui';
+import { Choices, Collapse, Input, Screen, Text } from '@/shared/ui';
 
 import { useDayReview } from '../model/useDayReview';
 
@@ -59,26 +59,21 @@ export function DayReviewPage() {
         onPress={form.setCraving}
       />
       <Choices
-        title={t('option.titles.place')}
-        keys={places}
-        label={(p) => t(`option.place.${p}`)}
-        isSelected={(p) => form.places.includes(p)}
-        onPress={form.togglePlace}
-      />
-      <Choices
         title={t('option.titles.hardship')}
         keys={hardships}
         label={(h) => t(`option.hardship.${h}`)}
         isSelected={(h) => form.hardships.includes(h)}
         onPress={form.toggleHardship}
       />
-      <Choices
-        title={t('option.titles.helper')}
-        keys={helpers}
-        label={(h) => t(`option.helper.${h}`)}
-        isSelected={(h) => form.helpers.includes(h)}
-        onPress={form.toggleHelper}
-      />
+      <Collapse open={form.showHelpers}>
+        <Choices
+          title={t('option.titles.helper')}
+          keys={helpers}
+          label={(h) => t(`option.helper.${h}`)}
+          isSelected={(h) => form.helpers.includes(h)}
+          onPress={form.toggleHelper}
+        />
+      </Collapse>
 
       <Input
         value={form.note}

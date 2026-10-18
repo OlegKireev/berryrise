@@ -50,16 +50,18 @@ export function InsightsPage() {
             <TopList
               title={t('option.titles.hardship')}
               items={data.hardships}
-              total={data.reviewCount}
+              total={data.cravingCount}
               label={(k) => t(`option.hardship.${k}`)}
+              empty={data.cravingCount ? undefined : t('noCraving')}
             />
           </Card>
           <Card>
             <TopList
               title={t('option.titles.helper')}
               items={data.helpers}
-              total={data.reviewCount}
+              total={data.cravingCount}
               label={(k) => t(`option.helper.${k}`)}
+              empty={data.cravingCount ? undefined : t('noCraving')}
             />
           </Card>
         </>

@@ -12,10 +12,10 @@ export type Craving = (typeof cravings)[number];
 export const places = [
   'home',
   'work',
-  'company',
+  'guests',
   'bar',
-  'family',
   'road',
+  'outside',
 ] as const;
 export type Place = (typeof places)[number];
 
@@ -24,9 +24,10 @@ export const hardships = [
   'fatigue',
   'boredom',
   'loneliness',
+  'conflict',
+  'anxiety',
   'holiday',
   'othersDrinking',
-  'nothing',
 ] as const;
 export type Hardship = (typeof hardships)[number];
 
@@ -36,7 +37,9 @@ export const helpers = [
   'food',
   'talk',
   'sleep',
-  'activity',
-  'notNeeded',
+  'work',
+  'hobby',
+  'reasons',
+  'leftEarly',
 ] as const;
 export type Helper = (typeof helpers)[number];

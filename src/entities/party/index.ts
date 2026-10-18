@@ -5,7 +5,6 @@ export {
   getActiveParty,
   getParty,
   getPartyOn,
-  hasPartyOn,
   listCustomDrinks,
   listPartyResultsBetween,
   listPartyStartsSince,

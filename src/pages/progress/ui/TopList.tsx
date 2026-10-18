@@ -14,6 +14,7 @@ type Props<K> = {
   total: number; // от чего доля полоски: итоги дня или срывы
   label: (key: K) => string;
   sub?: boolean; // подзаголовок внутри блока: мельче заголовка блока
+  empty?: string; // текст пустого топа вместо "ничего не отмечено"
 };
 
 // Топ вариантов: подпись, полоска доли и число
@@ -23,6 +24,7 @@ export function TopList<K extends string>({
   total,
   label,
   sub,
+  empty,
 }: Props<K>) {
   return (
     <View style={{ gap: 12 }}>
@@ -53,7 +55,7 @@ export function TopList<K extends string>({
           </View>
         ))
       ) : (
-        <Text variant="hint">{t('nothingMarked')}</Text>
+        <Text variant="hint">{empty ?? t('nothingMarked')}</Text>
       )}
     </View>
   );

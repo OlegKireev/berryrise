@@ -1,6 +1,6 @@
 import type { SQLiteDatabase } from 'expo-sqlite';
 
-import type { Craving, Hardship, Helper, Mood, Place } from '@/shared/config';
+import type { Craving, Hardship, Helper, Mood } from '@/shared/config';
 import { newRow, parseRow, parseRows } from '@/shared/db';
 
 import { dayReviewSchema } from '../model/schema';
@@ -41,17 +41,16 @@ export const listDayReviewsBetween = async (
     ),
   );
 
-// Даты итогов, где в местах есть компания или бар: там обычно пьют. Для достижений
+// Даты итогов, где рядом пили: вечер в компании. Для достижений
 export const listCompanyDates = async (db: SQLiteDatabase) =>
   parse(await db.getAllAsync('SELECT * FROM dayReview WHERE deletedAt IS NULL'))
-    .filter((r) => r.places.some((p) => p === 'company' || p === 'bar'))
+    .filter((r) => r.hardships.includes('othersDrinking'))
     .map((r) => r.date);
 
 type DayReviewData = {
   date: string;
   mood: Mood;
   craving: Craving;
-  places: Place[];
   hardships: Hardship[];
   helpers: Helper[];
   note: string;
@@ -62,13 +61,12 @@ type DayReviewData = {
 export async function saveDayReview(db: SQLiteDatabase, data: DayReviewData) {
   const r = newRow();
   await db.runAsync(
-    `INSERT INTO dayReview (id, createdAt, updatedAt, date, mood, craving, places, hardships, helpers, note)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `INSERT INTO dayReview (id, createdAt, updatedAt, date, mood, craving, hardships, helpers, note)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
      ON CONFLICT(date) WHERE deletedAt IS NULL DO UPDATE SET
        updatedAt = excluded.updatedAt,
        mood = excluded.mood,
        craving = excluded.craving,
-       places = excluded.places,
        hardships = excluded.hardships,
        helpers = excluded.helpers,
        note = excluded.note`,
@@ -78,7 +76,6 @@ export async function saveDayReview(db: SQLiteDatabase, data: DayReviewData) {
     data.date,
     data.mood,
     data.craving,
-    JSON.stringify(data.places),
     JSON.stringify(data.hardships),
     JSON.stringify(data.helpers),
     data.note.trim() || null,

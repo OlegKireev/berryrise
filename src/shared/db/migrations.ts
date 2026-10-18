@@ -7,7 +7,8 @@ const row = `
   updatedAt INTEGER NOT NULL,
   deletedAt INTEGER`;
 
-// Индекс = номер версии минус 1. Уже выпущенные миграции не меняем, только добавляем новые.
+// Индекс = номер версии минус 1. Уже примененные на устройствах миграции не меняем, только добавляем новые.
+// Исключение - сворачивание, пока установка одна: так версия 2 (чистка вариантов итогов дня и срыва) свернута в версию 1.
 const migrations: string[] = [
   `
   CREATE TABLE habit (${row},
@@ -29,7 +30,6 @@ const migrations: string[] = [
     date TEXT NOT NULL,
     mood INTEGER NOT NULL,
     craving TEXT NOT NULL,
-    places TEXT NOT NULL DEFAULT '[]',
     hardships TEXT NOT NULL DEFAULT '[]',
     helpers TEXT NOT NULL DEFAULT '[]',
     note TEXT

@@ -64,14 +64,9 @@ export function periodDays(period: Period, now: number): string[] {
 
 export type Top<K> = { key: K; count: number }[];
 
-// Три самых частых варианта; при равенстве - порядок вопроса, skip ("ничего") не считаем
-const top3 = <K extends string>(
-  lists: K[][],
-  order: readonly K[],
-  skip?: K,
-): Top<K> =>
+// Три самых частых варианта; при равенстве - порядок вопроса
+const top3 = <K extends string>(lists: K[][], order: readonly K[]): Top<K> =>
   order
-    .filter((key) => key !== skip)
     .map((key) => ({ key, count: lists.filter((l) => l.includes(key)).length }))
     .filter((c) => c.count > 0)
     .sort((a, b) => b.count - a.count)
@@ -112,14 +107,16 @@ export function insights({ reviews, relapses, partyResults }: Input) {
   );
 
   const peak = Math.max(...cravingByWeekday.map((c) => c ?? 0));
+  // топы трудностей и помощи - только по дням, когда тянуло
+  const craved = reviews.filter((r) => r.craving !== 'none');
   const helpers = top3(
-    reviews.map((r) => r.helpers),
+    craved.map((r) => r.helpers),
     helperKeys,
-    'notNeeded',
   );
 
   return {
     reviewCount: reviews.length,
+    cravingCount: craved.length,
     enough: reviews.length >= REVIEWS_NEEDED,
     cravingByWeekday,
     // сколько дней было каждое настроение, от 1 до 5
@@ -128,9 +125,8 @@ export function insights({ reviews, relapses, partyResults }: Input) {
       count: reviews.filter((r) => r.mood === mood).length,
     })),
     hardships: top3(
-      reviews.map((r) => r.hardships),
+      craved.map((r) => r.hardships),
       hardshipKeys,
-      'nothing',
     ),
     helpers,
     relapses: relapses.length
@@ -143,7 +139,6 @@ export function insights({ reviews, relapses, partyResults }: Input) {
           hardships: top3(
             relapses.map((r) => r.hardships),
             hardshipKeys,
-            'nothing',
           ),
           places: top3(
             relapses.map((r) => r.places),
