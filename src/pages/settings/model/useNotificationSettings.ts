@@ -24,10 +24,11 @@ export function useNotificationSettings() {
 
   const checkPermission = () => permissionDenied().then(setDenied);
 
-  // Автозапуск включают из подсказки в системе: возврат оттуда не дает фокуса экрану
+  // Уведомления и автозапуск включают в системе: возврат оттуда не дает фокуса экрану
   useEffect(() => {
     const sub = AppState.addEventListener('change', (s) => {
       if (s === 'active') {
+        checkPermission();
         setAutostartHint(needsAutostartHint());
       }
     });
