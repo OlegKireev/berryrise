@@ -1,12 +1,10 @@
 import type { Habit } from '@/entities/habit';
 import { SpendingForm, useSpendingForm } from '@/features/edit-spending';
-import { DateTimeField, Screen, Text } from '@/shared/ui';
+import { Screen } from '@/shared/ui';
 
 import { useSettings } from '../model/useSettings';
 
-import { t } from '../i18n';
-
-export function StartSpendingPage() {
+export function SpendingPage() {
   const settings = useSettings();
 
   if (!settings) {
@@ -15,13 +13,6 @@ export function StartSpendingPage() {
 
   return (
     <Screen>
-      <Text variant="label">{t('startAt')}</Text>
-      <DateTimeField
-        mode="date"
-        value={new Date(settings.habit.startAt)}
-        onChange={settings.changeStart}
-        max={new Date(settings.maxStart)}
-      />
       <Spending habit={settings.habit} />
     </Screen>
   );

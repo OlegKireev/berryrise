@@ -1,6 +1,8 @@
 // По одной иконке, а не из корня пакета: Metro в dev не вырезает неиспользуемое
 import Archive from 'lucide-react-native/icons/archive';
 import Bell from 'lucide-react-native/icons/bell';
+import BellOff from 'lucide-react-native/icons/bell-off';
+import Calendar from 'lucide-react-native/icons/calendar';
 import Check from 'lucide-react-native/icons/check';
 import CalendarCheck from 'lucide-react-native/icons/calendar-check';
 import ChevronLeft from 'lucide-react-native/icons/chevron-left';
@@ -18,6 +20,8 @@ import { useColors } from './theme';
 const icons = {
   archive: Archive,
   bell: Bell,
+  bellOff: BellOff,
+  calendar: Calendar,
   calendarCheck: CalendarCheck,
   check: Check,
   chevronLeft: ChevronLeft,

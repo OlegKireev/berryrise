@@ -16,13 +16,23 @@ type Props = {
   onPress?: () => void;
   // то же, но переход по пути через router.push
   href?: Href;
+  // стрелка у нажимаемой строки; false - тап открывает что-то на месте, а не экран
+  arrow?: boolean;
 };
 
 // Отступ после иконки раздела шире
 const gaps = { icon: 12, plain: 8 };
 
 // Строка списка: подпись слева, справа значение или действие
-export function Row({ label, icon, children, style, onPress, href }: Props) {
+export function Row({
+  label,
+  icon,
+  children,
+  style,
+  onPress,
+  href,
+  arrow = true,
+}: Props) {
   const colors = useColors();
   const press = href ? () => router.push(href) : onPress;
   const rowStyle: StyleProp<ViewStyle> = [
@@ -43,7 +53,7 @@ export function Row({ label, icon, children, style, onPress, href }: Props) {
       )}
       <Text style={{ flex: 1 }}>{label}</Text>
       {children}
-      {press && (
+      {press && arrow && (
         <Icon
           name="chevronRight"
           size={20}

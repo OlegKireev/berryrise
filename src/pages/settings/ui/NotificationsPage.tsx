@@ -1,7 +1,7 @@
 import { Linking } from 'react-native';
 
 import { AutostartHint, NotificationForm } from '@/features/notifications';
-import { Button, Screen, Text } from '@/shared/ui';
+import { Button, Notice, Screen, Text } from '@/shared/ui';
 
 import { useNotificationSettings } from '../model/useNotificationSettings';
 
@@ -17,13 +17,13 @@ export function NotificationsPage() {
   return (
     <Screen>
       {settings.denied && (
-        <>
+        <Notice icon="bellOff">
           <Text>{t('notificationsDenied')}</Text>
           <Button
             title={t('openSystemSettings')}
             onPress={() => Linking.openSettings()}
           />
-        </>
+        </Notice>
       )}
       <NotificationForm
         value={settings.prefs}

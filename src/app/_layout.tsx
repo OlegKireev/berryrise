@@ -101,8 +101,8 @@ function Navigation() {
           options={{ title: t('settings') }}
         />
         <Stack.Screen
-          name="settings/start"
-          options={{ title: t('startSpending') }}
+          name="settings/spending"
+          options={{ title: t('spending') }}
         />
         <Stack.Screen
           name="settings/reasons"
@@ -114,7 +114,7 @@ function Navigation() {
         />
         <Stack.Screen
           name="settings/backup"
-          options={{ title: t('exportImport') }}
+          options={{ title: t('backup') }}
         />
         <Stack.Screen
           name="settings/about"

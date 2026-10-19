@@ -9,8 +9,14 @@ export function BackupPage() {
   const { onImported } = useBackup();
   return (
     <Screen>
-      <Text variant="hint">{t('backupHint')}</Text>
+      <Text variant="hint">{t('exportHint')}</Text>
       <ExportButton />
+      <Text
+        variant="hint"
+        style={{ marginTop: 12 }}
+      >
+        {t('importHint')}
+      </Text>
       <ImportButton
         confirm
         onImported={onImported}

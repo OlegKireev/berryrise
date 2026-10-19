@@ -16,27 +16,34 @@ type Props = {
   mode?: 'date' | 'datetime'; // date - только день, значение - локальная полночь
 };
 
-// Дата и время в границах [min, max]. Пикер времени границ не знает, поэтому результат прижимаем.
-export function DateTimeField({
-  value,
-  onChange,
-  min,
-  max,
-  mode = 'datetime',
-}: Props) {
-  const dateOnly = mode === 'date';
+// Выбор прижимаем к [min, max]: пикер времени границ не знает. date - локальная полночь
+const clamp = (
+  { min, max, mode }: Omit<Props, 'value' | 'onChange'>,
+  picked: Date,
+) => {
+  const d = mode === 'date' ? dayDate(toDay(picked.getTime())) : picked;
+  return new Date(
+    Math.min(Math.max(d.getTime(), min?.getTime() ?? -Infinity), max.getTime()),
+  );
+};
 
-  const set = (picked: Date) => {
-    const d = dateOnly ? dayDate(toDay(picked.getTime())) : picked;
-    onChange(
-      new Date(
-        Math.min(
-          Math.max(d.getTime(), min?.getTime() ?? -Infinity),
-          max.getTime(),
-        ),
-      ),
-    );
-  };
+const openAndroid = (props: Props, picker: 'date' | 'time') =>
+  DateTimePickerAndroid.open({
+    value: props.value,
+    mode: picker,
+    minimumDate: props.min,
+    maximumDate: props.max,
+    onValueChange: (_, d) => props.onChange(clamp(props, d)),
+  });
+
+// Только Android: сразу открыть выбор дня, без поля (строка "Дата старта" в настройках)
+export const pickDate = (props: Omit<Props, 'mode'>) =>
+  openAndroid({ ...props, mode: 'date' }, 'date');
+
+// Дата и время в границах [min, max]
+export function DateTimeField(props: Props) {
+  const { value, min, max, mode = 'datetime' } = props;
+  const dateOnly = mode === 'date';
 
   if (Platform.OS === 'ios') {
     return (
@@ -45,19 +52,13 @@ export function DateTimeField({
         mode={mode}
         minimumDate={min}
         maximumDate={max}
-        onValueChange={(_, d) => set(d)}
+        onValueChange={(_, d) => props.onChange(clamp({ min, max, mode }, d))}
       />
     );
   }
 
   const open = (picker: 'date' | 'time') =>
-    DateTimePickerAndroid.open({
-      value,
-      mode: picker,
-      minimumDate: min,
-      maximumDate: max,
-      onValueChange: (_, d) => set(d),
-    });
+    openAndroid({ ...props, mode }, picker);
 
   return (
     <View style={{ gap: 8 }}>

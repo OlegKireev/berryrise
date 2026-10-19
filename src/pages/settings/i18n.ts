@@ -3,8 +3,20 @@ import { createT } from '@/shared/i18n';
 export const t = createT({
   ru: {
     startAt: 'Последний день с алкоголем',
+    groupQuit: 'Мой отказ',
+    groupApp: 'Приложение',
+    perWeek: 'в неделю',
+    notSet: 'не указаны',
+    noneChosen: 'не выбраны',
+    of: 'из',
+    off: 'выключены',
+    offInSystem: 'выключены в системе',
+    laterStartTitle: 'Изменить дату старта?',
+    streakBecomes: 'Стрик станет',
+    insteadOf: 'вместо',
+    medalsLost: 'Часть достижений пропадет.',
+    change: 'Изменить',
     version: 'Версия',
-    update: 'обновление',
     checkUpdates: 'Проверить обновления',
     checking: 'Проверяю…',
     upToDate: 'Установлена последняя версия',
@@ -21,13 +33,26 @@ export const t = createT({
     notificationsDenied:
       'Уведомления выключены в системе, напоминания не придут.',
     openSystemSettings: 'Включить в настройках',
-    backupHint:
-      'В файле все твои данные, включая заметки. Храни его там, куда не заглядывают посторонние. Импорт заменит все данные на телефоне данными из файла.',
+    exportHint:
+      'В файле все твои данные, включая заметки. Храни его там, куда не заглядывают посторонние.',
+    importHint: 'Импорт заменит все данные на телефоне данными из файла.',
   },
   en: {
     startAt: 'Last drinking day',
+    groupQuit: 'My sobriety',
+    groupApp: 'App',
+    perWeek: 'a week',
+    notSet: 'not set',
+    noneChosen: 'none chosen',
+    of: 'of',
+    off: 'off',
+    offInSystem: 'off in system settings',
+    laterStartTitle: 'Change the start date?',
+    streakBecomes: 'Your streak will be',
+    insteadOf: 'instead of',
+    medalsLost: 'Some achievements will be lost.',
+    change: 'Change',
     version: 'Version',
-    update: 'update',
     checkUpdates: 'Check for updates',
     checking: 'Checking…',
     upToDate: 'You have the latest version',
@@ -44,7 +69,9 @@ export const t = createT({
     notificationsDenied:
       'Notifications are turned off in system settings, reminders will not arrive.',
     openSystemSettings: 'Turn on in settings',
-    backupHint:
-      'The file contains all your data, including notes. Keep it somewhere private. Import replaces all data on this phone with the data from the file.',
+    exportHint:
+      'The file contains all your data, including notes. Keep it somewhere private.',
+    importHint:
+      'Import replaces all data on this phone with the data from the file.',
   },
 });

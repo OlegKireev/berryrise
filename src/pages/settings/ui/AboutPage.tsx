@@ -2,7 +2,7 @@ import Constants from 'expo-constants';
 
 import { formatDate } from '@/shared/i18n';
 import { currentUpdate } from '@/shared/lib';
-import { Row, Screen, Text } from '@/shared/ui';
+import { Group, Notice, Row, Screen, Text } from '@/shared/ui';
 
 import { t } from '../i18n';
 import { useCheckUpdate } from '../model/useCheckUpdate';
@@ -16,20 +16,23 @@ export function AboutPage() {
       <Text variant="title">{Constants.expoConfig?.name}</Text>
       <Text variant="hint">
         {t('version')} {Constants.expoConfig?.version}
-        {update &&
-          ` (${t('update')} ${update.id}, ${formatDate(update.createdAt)})`}
+        {update && ` (${update.id}, ${formatDate(update.createdAt)})`}
       </Text>
-      <Text>{t('disclaimer')}</Text>
-      {available && (
+      <Notice icon="info">
+        <Text>{t('disclaimer')}</Text>
+      </Notice>
+      <Group>
+        {available && (
+          <Row
+            label={checking ? t('checking') : t('checkUpdates')}
+            onPress={check}
+          />
+        )}
         <Row
-          label={checking ? t('checking') : t('checkUpdates')}
-          onPress={check}
+          label={t('log')}
+          href="/settings/log"
         />
-      )}
-      <Row
-        label={t('log')}
-        href="/settings/log"
-      />
+      </Group>
     </Screen>
   );
 }
