@@ -13,7 +13,7 @@ export function StreakSummary({ streak }: { streak: Streak }) {
     <View>
       <Text
         weight="bold"
-        style={{ fontSize: 80, lineHeight: 88, letterSpacing: -2 }}
+        style={{ fontSize: 64, lineHeight: 72, letterSpacing: -2 }}
       >
         {streak.current}
       </Text>

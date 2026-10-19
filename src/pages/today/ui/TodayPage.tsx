@@ -54,7 +54,7 @@ export function TodayPage() {
         />
       )}
       {/* Срыв отдельно и внизу, чтобы не путать с остальными действиями */}
-      <View style={{ marginTop: 24 }}>
+      <View style={{ marginTop: 8 }}>
         <Button
           variant="quiet"
           title={t('hadRelapse')}

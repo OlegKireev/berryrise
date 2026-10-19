@@ -23,19 +23,29 @@ export function Savings({ saved, currency, hasDrinks }: Props) {
     );
   }
 
+  // одной строкой: слева сумма, справа порции и ккал - экран короче
   return (
-    <Card>
-      <Text variant="hint">{t('saved')}</Text>
-      {saved.money !== null && currency && (
-        <Text
-          weight="bold"
-          style={{ fontSize: 32 }}
-        >
-          {formatMoney(saved.money, currency)}
-        </Text>
-      )}
+    <Card
+      style={{
+        padding: 12,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'flex-end',
+      }}
+    >
+      <View>
+        <Text variant="hint">{t('saved')}</Text>
+        {saved.money !== null && currency && (
+          <Text
+            weight="bold"
+            style={{ fontSize: 28 }}
+          >
+            {formatMoney(saved.money, currency)}
+          </Text>
+        )}
+      </View>
       {hasDrinks && (
-        <View style={{ flexDirection: 'row', gap: 16 }}>
+        <View style={{ alignItems: 'flex-end' }}>
           <Text variant="hint">{portions(saved.portions)}</Text>
           <Text variant="hint">
             {formatNumber(saved.kcal)} {t('kcal')}

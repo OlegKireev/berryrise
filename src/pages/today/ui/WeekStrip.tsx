@@ -15,7 +15,6 @@ export function WeekStrip({ week }: { week: WeekDay[] }) {
       style={{
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginVertical: 8,
       }}
     >
       {week.map((d, i) => (

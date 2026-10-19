@@ -25,7 +25,7 @@ export function ReasonOfDay({ reason }: { reason: ReasonRow | null }) {
       accessibilityRole="button"
       onPress={openReasons}
     >
-      <Card>
+      <Card style={{ padding: 12, gap: 4 }}>
         <Text variant="hint">{t('reasonOfDay')}</Text>
         <Text
           weight="medium"
