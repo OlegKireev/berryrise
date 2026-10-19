@@ -8,8 +8,8 @@
       "developmentClient": true,
       "distribution": "internal",
       "android": { "buildType": "apk" },
-      // TODO(release): временно только arm64, чтобы сборка шла быстрее. Для релиза убрать reactNativeArchitectures:
-      // нужны все архитектуры (armeabi-v7a для старых телефонов, x86/x86_64 для эмуляторов).
+      // Только arm64, чтобы сборка шла быстрее: dev и preview ставим только на свои телефоны.
+      // Все архитектуры собирает только production.
       // NODE_ENV: без него @expo/env пишет в лог, что не знает режим для .env (а .env у нас нет)
       "env": {
         "ORG_GRADLE_PROJECT_reactNativeArchitectures": "arm64-v8a",
@@ -21,15 +21,16 @@
     "preview": {
       "distribution": "internal",
       "android": { "buildType": "apk" },
-      // TODO(release): см. development, для релиза убрать
+      // только arm64, см. development
       "env": { "ORG_GRADLE_PROJECT_reactNativeArchitectures": "arm64-v8a" },
       "channel": "preview"
     },
-    // Сборка для Google Play. TODO(release): архитектуры как у preview; политика приватности
-    // для Play должна упоминать проверку обновлений при запуске (единственный сетевой запрос)
+    // Сборка для Google Play. Все архитектуры по умолчанию (armeabi-v7a - старые и бюджетные
+    // телефоны с 32-битной системой, x86_64 - хромбуки): Play сам режет AAB по ABI, пользователю
+    // приходит только его вариант. TODO(release): политика приватности для Play должна упоминать
+    // проверку обновлений при запуске (единственный сетевой запрос)
     "production": {
       "android": { "buildType": "app-bundle" },
-      "env": { "ORG_GRADLE_PROJECT_reactNativeArchitectures": "arm64-v8a" },
       "channel": "production"
     }
   }

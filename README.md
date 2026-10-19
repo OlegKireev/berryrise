@@ -98,5 +98,5 @@ yarn update:promote                 # тот же бандл из preview в pro
 
 ## Перед релизом
 
-- `eas.json`: сейчас обе сборки только под arm64 (`TODO(release)`), чтобы собирались быстрее. Для релиза убрать `env` с `reactNativeArchitectures` - нужны все архитектуры.
+- `eas.json`: dev и preview собираются только под arm64 (`reactNativeArchitectures` в `env`), чтобы быстрее. production (AAB для Play) - под все архитектуры.
 - Политика приватности для Google Play: приложение при запуске проверяет обновления (запрос без данных пользователя). Production-сборка - профиль `production` в `eas.json` (канал `production`, AAB).
