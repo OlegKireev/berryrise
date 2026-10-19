@@ -17,7 +17,8 @@ import { useNotifications } from '@/features/notifications';
 import { useWidget } from '@/features/widget';
 import { migrate } from '@/shared/db';
 import { t } from '@/shared/i18n';
-import { headerOptions, navigationTheme } from '@/shared/ui';
+import { consumeUpdateReloaded, useUpdateOnResume } from '@/shared/lib';
+import { headerOptions, navigationTheme, toast } from '@/shared/ui';
 
 // Упавший при отрисовке экран показывает это вместо белого экрана и пишет ошибку в журнал
 export { ErrorPage as ErrorBoundary } from '@/pages/error';
@@ -29,6 +30,15 @@ SplashScreen.preventAutoHideAsync();
 function Background() {
   useNotifications();
   useWidget();
+  useUpdateOnResume();
+
+  // перезапуск ради обновления: без тоста выглядит как мигание сплэшем без причины
+  useEffect(() => {
+    if (consumeUpdateReloaded()) {
+      toast(t('appUpdated'));
+    }
+  }, []);
+
   return null;
 }
 

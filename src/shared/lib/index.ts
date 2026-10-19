@@ -29,4 +29,11 @@ export { useReduceMotion } from './useReduceMotion';
 export { clearLog, log, logError, logFile, readLog, trimLog } from './log';
 export { type LogEntry } from './logEntries';
 export { saveFile, shareFile } from './files';
-export { currentUpdate, logUpdateLaunch } from './updates';
+export {
+  consumeUpdateReloaded,
+  currentUpdate,
+  logUpdateLaunch,
+  otaEnabled,
+  reloadForUpdate,
+  useUpdateOnResume,
+} from './updates';

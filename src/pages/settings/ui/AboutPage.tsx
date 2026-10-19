@@ -5,9 +5,11 @@ import { currentUpdate } from '@/shared/lib';
 import { Row, Screen, Text } from '@/shared/ui';
 
 import { t } from '../i18n';
+import { useCheckUpdate } from '../model/useCheckUpdate';
 
 export function AboutPage() {
   const update = currentUpdate();
+  const { available, checking, check } = useCheckUpdate();
 
   return (
     <Screen>
@@ -18,6 +20,12 @@ export function AboutPage() {
           ` (${t('update')} ${update.id}, ${formatDate(update.createdAt)})`}
       </Text>
       <Text>{t('disclaimer')}</Text>
+      {available && (
+        <Row
+          label={checking ? t('checking') : t('checkUpdates')}
+          onPress={check}
+        />
+      )}
       <Row
         label={t('log')}
         href="/settings/log"

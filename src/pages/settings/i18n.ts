@@ -5,6 +5,11 @@ export const t = createT({
     startAt: 'Последний день с алкоголем',
     version: 'Версия',
     update: 'обновление',
+    checkUpdates: 'Проверить обновления',
+    checking: 'Проверяю…',
+    upToDate: 'Установлена последняя версия',
+    updateFailed:
+      'Не удалось проверить обновления. Проверь интернет и попробуй еще раз.',
     logEmpty: 'Записей пока нет.',
     saveToPhone: 'Сохранить на телефон',
     send: 'Отправить',
@@ -23,6 +28,11 @@ export const t = createT({
     startAt: 'Last drinking day',
     version: 'Version',
     update: 'update',
+    checkUpdates: 'Check for updates',
+    checking: 'Checking…',
+    upToDate: 'You have the latest version',
+    updateFailed:
+      "Couldn't check for updates. Check your connection and try again.",
     logEmpty: 'No entries yet.',
     saveToPhone: 'Save to phone',
     send: 'Send',
