@@ -5,7 +5,7 @@ context: |
   Write all artifacts in Russian. Code identifiers, file paths and commit messages stay in English.
   Product spec lives in docs/idea.md: check it before proposing a feature.
   Android-first; iOS must not break, but iOS-only work is out of scope unless stated.
-  No network, analytics or accounts: user data never leaves the device (except Android Auto Backup and manual export).
+  No analytics or accounts: user data never leaves the device (except Android Auto Backup and manual export). The only network request is the OTA update check on launch (expo-updates), with no user data.
   Development happens in a development build (expo-dev-client), not Expo Go; a new package with native code or a config plugin requires rebuilding it, call it out in design.
 
 rules:

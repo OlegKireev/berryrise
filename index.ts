@@ -4,11 +4,12 @@ import { registerWidgetTaskHandler } from 'react-native-android-widget';
 
 import { registerNotificationTask } from '@/features/notifications';
 import { widgetTaskHandler } from '@/features/widget';
-import { logError, trimLog } from '@/shared/lib';
+import { logError, logUpdateLaunch, trimLog } from '@/shared/lib';
 
 import 'expo-router/entry';
 
 trimLog();
+logUpdateLaunch();
 
 // Необработанные JS-ошибки (и из фона виджета) - в журнал, дальше как обычно:
 // redbox в dev, падение в release. Запись синхронная, до падения успевает

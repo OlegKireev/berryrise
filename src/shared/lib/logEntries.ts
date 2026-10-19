@@ -10,7 +10,8 @@ export type LogTag =
   | 'reasons'
   | 'spending'
   | 'onboarding'
-  | 'db';
+  | 'db'
+  | 'updates';
 
 const levels = ['error', 'info'] as const;
 type LogLevel = (typeof levels)[number];

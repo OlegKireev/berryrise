@@ -22,7 +22,15 @@
       "distribution": "internal",
       "android": { "buildType": "apk" },
       // TODO(release): см. development, для релиза убрать
-      "env": { "ORG_GRADLE_PROJECT_reactNativeArchitectures": "arm64-v8a" }
+      "env": { "ORG_GRADLE_PROJECT_reactNativeArchitectures": "arm64-v8a" },
+      "channel": "preview"
+    },
+    // Сборка для Google Play. TODO(release): архитектуры как у preview; политика приватности
+    // для Play должна упоминать проверку обновлений при запуске (единственный сетевой запрос)
+    "production": {
+      "android": { "buildType": "app-bundle" },
+      "env": { "ORG_GRADLE_PROJECT_reactNativeArchitectures": "arm64-v8a" },
+      "channel": "production"
     }
   }
 }

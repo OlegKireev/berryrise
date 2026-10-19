@@ -1,6 +1,5 @@
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
   "ignoreBinaries": ["adb"],
-  "ignoreDependencies": ["expo-updates"],
   "ignoreUnresolved": ["babel-jest"]
 }

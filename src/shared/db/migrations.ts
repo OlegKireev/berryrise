@@ -111,6 +111,8 @@ export async function migrate(db: SQLiteDatabase) {
 
   const { user_version } = row;
 
+  // Версия выше известной - штатный случай после отката OTA на старый бандл: срез пустой,
+  // база остается как есть. Поэтому миграции только аддитивные (см. CLAUDE.md)
   for (const [i, sql] of migrations.slice(user_version).entries()) {
     await db.withExclusiveTransactionAsync(async (tx) => {
       await tx.execAsync(sql);

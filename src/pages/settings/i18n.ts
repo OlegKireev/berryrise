@@ -4,6 +4,7 @@ export const t = createT({
   ru: {
     startAt: 'Последний день с алкоголем',
     version: 'Версия',
+    update: 'обновление',
     logEmpty: 'Записей пока нет.',
     saveToPhone: 'Сохранить на телефон',
     send: 'Отправить',
@@ -21,6 +22,7 @@ export const t = createT({
   en: {
     startAt: 'Last drinking day',
     version: 'Version',
+    update: 'update',
     logEmpty: 'No entries yet.',
     saveToPhone: 'Save to phone',
     send: 'Send',

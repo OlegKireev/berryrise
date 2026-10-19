@@ -23,6 +23,8 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
     scheme: 'berryrise-dev',
     ios: { ...config.ios, bundleIdentifier: 'com.berryrise.app.dev' },
     android: { ...config.android, package: 'com.berryrise.app.dev' },
+    // JS dev-сборке отдает dev-сервер, OTA ей не нужен
+    updates: { ...config.updates, enabled: false },
     // подписи виджетов тоже с dev, иначе в списке виджетов по два одинаковых
     plugins: config.plugins?.map((p) => {
       if (!Array.isArray(p) || p[0] !== 'react-native-android-widget') {
