@@ -47,6 +47,14 @@ export const listCompanyDates = async (db: SQLiteDatabase) =>
     .filter((r) => r.hardships.includes('othersDrinking'))
     .map((r) => r.date);
 
+// Неудаленные итоги с заметкой, для ленты заметок
+export const listDayReviewNotes = async (db: SQLiteDatabase) =>
+  parse(
+    await db.getAllAsync(
+      'SELECT * FROM dayReview WHERE deletedAt IS NULL AND note IS NOT NULL',
+    ),
+  );
+
 type DayReviewData = {
   date: string;
   mood: Mood;

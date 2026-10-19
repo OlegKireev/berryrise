@@ -34,6 +34,9 @@ export const t = createT(
       legendEmpty: 'нет итогов',
       monthCollected: 'месяц собран',
       allAchievements: 'Все',
+      allNotes: 'Все заметки',
+      // "Хорошо · тянуло: слегка"
+      noteCraving: 'тянуло',
       achievementsGot: 'Получено',
       of: 'из',
       // "еще 4 дня" / "4 days to go"
@@ -97,6 +100,8 @@ export const t = createT(
       legendEmpty: 'no review',
       monthCollected: 'month complete',
       allAchievements: 'All',
+      allNotes: 'All notes',
+      noteCraving: 'craving',
       achievementsGot: 'Unlocked',
       of: 'of',
       leftPrefix: '',

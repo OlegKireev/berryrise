@@ -1,6 +1,7 @@
 export {
   hasRelapseBetween,
   insertRelapse,
+  listRelapseNotes,
   listRelapses,
   listRelapsesBetween,
 } from './api/relapse';

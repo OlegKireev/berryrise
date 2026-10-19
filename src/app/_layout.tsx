@@ -141,6 +141,10 @@ function Navigation() {
           options={{ title: t('insights') }}
         />
         <Stack.Screen
+          name="notes"
+          options={{ title: t('notes') }}
+        />
+        <Stack.Screen
           name="company"
           options={{ title: t('company') }}
         />

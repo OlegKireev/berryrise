@@ -47,6 +47,14 @@ export const listRelapsesBetween = async (
     ),
   );
 
+// Неудаленные срывы с заметкой, для ленты заметок
+export const listRelapseNotes = async (db: SQLiteDatabase) =>
+  parse(
+    await db.getAllAsync(
+      'SELECT * FROM relapse WHERE deletedAt IS NULL AND note IS NOT NULL',
+    ),
+  );
+
 type NewRelapse = {
   habitId: string;
   at: number;

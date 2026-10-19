@@ -6,6 +6,7 @@ import { Screen, Text } from '@/shared/ui';
 import { Achievements } from './Achievements';
 import { Calendar } from './Calendar';
 import { InsightsPreview } from './InsightsPreview';
+import { NotesPreview } from './NotesPreview';
 import { StreakStats } from './StreakStats';
 
 import { useProgress } from '../model/useProgress';
@@ -42,6 +43,7 @@ export function ProgressPage() {
         gotCount={data.gotCount}
       />
       <InsightsPreview />
+      <NotesPreview />
     </Screen>
   );
 }

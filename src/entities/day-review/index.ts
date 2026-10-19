@@ -3,6 +3,7 @@ export {
   listDayReviewDates,
   listDayReviewsBetween,
   listCompanyDates,
+  listDayReviewNotes,
   saveDayReview,
 } from './api/dayReview';
 export { dayReviewSchema } from './model/schema';
