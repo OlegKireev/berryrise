@@ -98,5 +98,8 @@ yarn update:promote                 # тот же бандл из preview в pro
 
 ## Перед релизом
 
-- `eas.json`: dev и preview собираются только под arm64 (`reactNativeArchitectures` в `env`), чтобы быстрее. production (AAB для Play) - под все архитектуры.
+- `eas.json`: dev и preview собираются только под arm64 (`reactNativeArchitectures` в `env`), чтобы быстрее. production (AAB для Google Play и RuStore) - под все архитектуры, versionCode растет сам (`autoIncrement`).
+- Релиз: `yarn build:local:production` -> `dist/berryrise.aab`, один файл в оба стора. Перед загрузкой собрать из него APK (`bundletool build-apks --mode=universal` с ключом из EAS), поставить поверх preview с данными и пройти основные сценарии.
+- Подпись: оба стора сами подписывают APK из AAB. Ключ из EAS (экспорт через `yarn eas credentials`) загрузить в Google Play при создании приложения как ключ подписи приложения и в RuStore Консоль. Иначе стор подпишет своим ключом, и версии из разных сторов не встанут друг поверх друга и поверх preview (переход только через удаление, с потерей данных).
+- Проверить EAS Update из России без VPN (мобильный интернет РФ): опубликовать в preview и посмотреть запись `updates` в журнале. Если не доходит, менять `updates.url` на свой сервер нужно до релиза: это нативное изменение.
 - Политика приватности для Google Play: приложение при запуске проверяет обновления (запрос без данных пользователя). Production-сборка - профиль `production` в `eas.json` (канал `production`, AAB).

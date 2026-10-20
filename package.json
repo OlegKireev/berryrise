@@ -59,6 +59,7 @@
     "build:eas:preview": "yarn dlx eas-cli build --profile preview --platform android",
     "build:local:dev": "yarn dlx eas-cli build --local --profile development --platform android --output dist/berryrise-dev.apk",
     "build:local:preview": "yarn dlx eas-cli build --local --profile preview --platform android --output dist/berryrise-preview.apk",
+    "build:local:production": "yarn dlx eas-cli build --local --profile production --platform android --output dist/berryrise.aab",
     "install:dev": "adb install -r dist/berryrise-dev.apk",
     "install:preview": "adb install -r dist/berryrise-preview.apk",
     "eas": "yarn dlx eas-cli",
